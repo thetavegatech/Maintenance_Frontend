@@ -1,8 +1,8 @@
 {
+  "homepage": "https://thetavegatech.github.io/Maintenance-Management",
   "name": "@coreui/coreui-free-react-admin-template",
   "version": "4.5.0",
   "description": "CoreUI Free React Admin Template",
-  "homepage": ".",
   "bugs": {
     "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
   },
