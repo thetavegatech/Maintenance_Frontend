@@ -96,7 +96,7 @@ export default function EditForm() {
   }, [])
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/assets/${id}`)
+      const response = await axios.get(`https://mms-backend-n2zv.onrender.com/api/assets/${id}`)
       console.log(response)
       setAssetName(response.data.AssetName)
       setDescription(response.data.Description)
@@ -136,7 +136,7 @@ export default function EditForm() {
   const Update = (e) => {
     e.preventDefault()
     axios
-      .put(`http://localhost:5000/api/assets/${id}`, {
+      .put(`https://mms-backend-n2zv.onrender.com/api/assets/${id}`, {
         AssetName,
         Description,
         AssetCategory,

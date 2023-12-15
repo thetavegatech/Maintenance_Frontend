@@ -90,7 +90,7 @@ const WidgetsDropdown = () => {
   }
 
   useEffect(() => {
-    fetch('http://localhost:5000/getBreakdownData')
+    fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
       .then((response) => response.json())
       .then((fetchedBreakdowns) => {
         const aggregated = aggregateData(fetchedBreakdowns)
@@ -103,7 +103,7 @@ const WidgetsDropdown = () => {
   useEffect(() => {
     const breakdownType = []
     const getbreakdownRecord = async () => {
-      const dataReq = await fetch('http://localhost:5000/getBreakdownData')
+      const dataReq = await fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
       const dataRes = await dataReq.json()
       console.log(dataRes)
 
@@ -117,7 +117,7 @@ const WidgetsDropdown = () => {
   }, [])
 
   useEffect(() => {
-    fetch('http://localhost:5000/getBreakdownData')
+    fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
       .then((response) => response.json())
       .then((fetchedBreakdowns) => {
         setBreakdown(fetchedBreakdowns, breakdowns)
@@ -127,7 +127,7 @@ const WidgetsDropdown = () => {
   }, [])
 
   useEffect(() => {
-    fetch('http://localhost:5000/getAllData')
+    fetch('https://mms-backend-n2zv.onrender.com/getAllData')
       .then((response) => response.json())
       .then((fetchedTasks) => {
         setAssets(fetchedTasks)
@@ -143,7 +143,7 @@ const WidgetsDropdown = () => {
   }, [])
 
   useEffect(() => {
-    fetch(`http://localhost:5000/getAllData?nextDate=${formattedToday}`)
+    fetch(`https://mms-backend-n2zv.onrender.com/getAllData?nextDate=${formattedToday}`)
       .then((response) => response.json())
       .then((fetchedTasks) => {
         setTodaysTaskCount(fetchedTasks.length)
@@ -153,7 +153,7 @@ const WidgetsDropdown = () => {
   }, [])
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/assets')
+    fetch('https://mms-backend-n2zv.onrender.com/api/assets')
       .then((response) => response.json())
       .then((fetchedTasks) => {
         setAssets(fetchedTasks)

@@ -42,7 +42,7 @@ class AssetTable extends React.Component {
     }, delay)
 
     axios
-      .get('http://localhost:5000/getAllData')
+      .get('https://mms-backend-n2zv.onrender.com/getAllData')
       .then((response) => {
         let fetchedAssets = Array.isArray(response.data) ? response.data : [response.data]
 
@@ -78,7 +78,7 @@ class AssetTable extends React.Component {
 
   fetchData() {
     axios
-      .get('http://localhost:5000/getAllData')
+      .get('https://mms-backend-n2zv.onrender.com/getAllData')
       .then((response) => {
         this.setState({ assets: Array.isArray(response.data) ? response.data : [response.data] })
       })
@@ -92,7 +92,7 @@ class AssetTable extends React.Component {
     const isConfirmed = window.confirm('Are you sure you want to delete this data?')
     if (isConfirmed) {
       axios
-        .delete(`http://localhost:5000/deleteRecord/${id}`)
+        .delete(`https://mms-backend-n2zv.onrender.com/deleteRecord/${id}`)
         .then((response) => {
           console.log('Data deleted:', response.data)
 
@@ -226,7 +226,7 @@ class AssetTable extends React.Component {
     this.setState({ assets: updatedAssets }, () => {
       // After updating the state, send the updated data to the backend API
       axios
-        .post('http://localhost:5000/updateRecords', { assets: updatedAssets })
+        .post('https://mms-backend-n2zv.onrender.com/updateRecords', { assets: updatedAssets })
         .then((response) => {
           console.log('Next Date updated in the database:', response.data)
         })

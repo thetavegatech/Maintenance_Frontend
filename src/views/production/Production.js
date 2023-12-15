@@ -69,8 +69,8 @@ class BDList extends React.Component {
     const { selectedLocation } = this.state
 
     const apiUrl = selectedLocation
-      ? `http://localhost:5000/getBreakdownData?location=${selectedLocation}`
-      : 'http://localhost:5000/getBreakdownData'
+      ? `https://mms-backend-n2zv.onrender.com/getBreakdownData?location=${selectedLocation}`
+      : 'https://mms-backend-n2zv.onrender.com/getBreakdownData'
 
     axios
       .get(apiUrl)

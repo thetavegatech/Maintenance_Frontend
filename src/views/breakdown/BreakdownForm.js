@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import './Breakdown.css'
+// import './Breakdown.css'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { CTimePicker } from '@coreui/react'
@@ -18,7 +18,7 @@ export default function BreakDown() {
   useEffect(() => {
     // Fetch user data from the server
     axios
-      .get('http://localhost:5000/UserNo')
+      .get('https://mms-backend-n2zv.onrender.com/UserNo')
       .then((response) => {
         setUsers(response.data)
       })
@@ -106,7 +106,7 @@ export default function BreakDown() {
 
   useEffect(() => {
     // Fetch asset names from 'http://localhost:5000/getAllData'
-    fetch('http://localhost:5000/api/assets')
+    fetch('https://mms-backend-n2zv.onrender.com/api/assets')
       .then((res) => res.json())
       .then((data) => {
         // Extract unique asset names from the data
@@ -121,7 +121,7 @@ export default function BreakDown() {
 
   useEffect(() => {
     // Fetch the breakdown data from your API
-    fetch('http://localhost:5000/getBreakdownData')
+    fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
       .then((res) => res.json())
       .then((data) => {
         // Extract unique machine names from the breakdown data
@@ -185,7 +185,7 @@ export default function BreakDown() {
       Status,
     )
 
-    fetch('http://localhost:5000/saveBreakdown', {
+    fetch('https://mms-backend-n2zv.onrender.com/saveBreakdown', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',

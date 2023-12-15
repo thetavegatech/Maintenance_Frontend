@@ -14,7 +14,7 @@ export default function Users() {
   useEffect(() => {
     // Fetch user data from the server
     axios
-      .get('http://localhost:5000/UserNo')
+      .get('https://mms-backend-n2zv.onrender.com/UserNo')
       .then((response) => {
         setUsers(response.data)
       })
@@ -28,7 +28,7 @@ export default function Users() {
     const isConfirmed = window.confirm('Are you sure you want to delete this data?')
     if (isConfirmed) {
       axios
-        .delete(`http://localhost:5000/UserNo/${id}`)
+        .delete(`https://mms-backend-n2zv.onrender.com/UserNo/${id}`)
         .then((response) => {
           console.log('User deleted successfully:', response.data)
           // Update the user list after deletion

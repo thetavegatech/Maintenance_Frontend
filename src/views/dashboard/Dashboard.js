@@ -140,7 +140,7 @@ const Dashboard = () => {
   useEffect(() => {
     // Make an API request to fetch user information
     axios
-      .get('http://localhost:5000/getAlluser') // Replace with your API endpoint
+      .get('https://mms-backend-n2zv.onrender.com/getAlluser') // Replace with your API endpoint
       .then((response) => {
         const userData = response.data
         setUser({
@@ -154,7 +154,7 @@ const Dashboard = () => {
   }, [])
 
   useEffect(() => {
-    fetch('http://localhost:5000/getBreakdownData')
+    fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
       .then((response) => response.json())
       .then((fetchedBreakdowns) => {
         const aggregatedByLineName = aggregateDataByLineName(fetchedBreakdowns)
@@ -185,7 +185,7 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-    fetch('http://localhost:5000/getBreakdownData')
+    fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
       .then((response) => response.json())
       .then((fetchedBreakdowns) => {
         const aggregated = aggregateData(fetchedBreakdowns)
@@ -196,7 +196,7 @@ const Dashboard = () => {
   }, [])
 
   useEffect(() => {
-    fetch('http://localhost:5000/getBreakdownData')
+    fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
       .then((response) => response.json())
       .then((fetchedBreakdowns) => {
         setBreakdown(fetchedBreakdowns, breakdowns)
@@ -206,7 +206,7 @@ const Dashboard = () => {
   }, [])
 
   useEffect(() => {
-    fetch('http://localhost:5000/getAllData')
+    fetch('https://mms-backend-n2zv.onrender.com/getAllData')
       .then((response) => response.json())
 
       .then((fetchedTasks) => {
@@ -217,7 +217,7 @@ const Dashboard = () => {
   }, [])
 
   useEffect(() => {
-    fetch(`http://localhost:5000/getAllData?nextDate=${formattedToday}`)
+    fetch(`https://mms-backend-n2zv.onrender.com/getAllData?nextDate=${formattedToday}`)
       .then((response) => response.json())
       .then((fetchedTasks) => {
         setTodaysTaskCount(fetchedTasks.length)

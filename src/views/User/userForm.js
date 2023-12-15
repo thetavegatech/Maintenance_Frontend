@@ -22,7 +22,7 @@ const UserForm = () => {
     e.preventDefault()
 
     try {
-      const response = await axios.post('http://localhost:5000/UserNo', formData)
+      const response = await axios.post('https://mms-backend-n2zv.onrender.com/UserNo', formData)
       console.log('User created successfully:', response.data)
       navigate(-1)
       // You can handle further actions here, such as displaying a success message or redirecting the user.

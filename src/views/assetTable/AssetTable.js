@@ -17,7 +17,7 @@ class AssetTable extends React.Component {
 
   componentDidMount() {
     axios
-      .get('http://localhost:5000/api/assets') // Adjust the endpoint if necessary
+      .get('https://mms-backend-n2zv.onrender.com/api/assets') // Adjust the endpoint if necessary
       .then((response) => {
         // If the response is an array, simply set it to assets.
         // If it's an object, place it in an array as you've shown.

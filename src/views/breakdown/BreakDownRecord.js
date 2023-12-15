@@ -11,7 +11,7 @@ const BreakDownRecord = () => {
 
     // Fetching data based on the breakdown ID
     axios
-      .get(`http://localhost:5000/getBreakdownDataId/${id}`)
+      .get(`https://mms-backend-n2zv.onrender.com/getBreakdownDataId/${id}`)
       .then((response) => {
         // Assuming the API response has an 'Image' property
         setImageData(response.data.Image)

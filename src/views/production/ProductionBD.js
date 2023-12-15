@@ -36,7 +36,9 @@ export default function BreakDown() {
   }, [])
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/getBreakdownDataId/${id}`)
+      const response = await axios.get(
+        `https://mms-backend-n2zv.onrender.com/getBreakdownDataId/${id}`,
+      )
       console.log(response)
       setMachineName(response.data.MachineName)
       setBreakdownStartDate(response.data.BreakdownStartDate)
@@ -83,7 +85,7 @@ export default function BreakDown() {
     formData.append('attachment', attachment)
     // ... (append other data)
     axios
-      .put(`http://localhost:5000/updateBreakdownRecord/${id}`, {
+      .put(`https://mms-backend-n2zv.onrender.com/updateBreakdownRecord/${id}`, {
         MachineName,
         BreakdownStartDate,
         BreakdownEndDate,

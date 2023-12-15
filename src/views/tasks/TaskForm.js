@@ -22,7 +22,7 @@ const MyFormComponent = () => {
   useEffect(() => {
     // Fetch asset names when the component mounts
     axios
-      .get('http://localhost:5000/api/assets')
+      .get('https://mms-backend-n2zv.onrender.com/api/assets')
       .then((response) => {
         const names = Array.from(new Set(response.data.map((asset) => asset.AssetName)))
         setAssetNames(names)
@@ -71,7 +71,7 @@ const MyFormComponent = () => {
       // ... continue with other fields
 
       // Your fetch logic here
-      const response = await fetch('http://localhost:5000/saveAsset', {
+      const response = await fetch('https://mms-backend-n2zv.onrender.com/saveAsset', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',

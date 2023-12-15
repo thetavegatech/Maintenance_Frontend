@@ -19,7 +19,7 @@ export default function EditUser() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/UserNo/${id}`)
+      const response = await axios.get(`https://mms-backend-n2zv.onrender.com/UserNo/${id}`)
       const { name, phoneNumber, address, email } = response.data
       setUserData({ name, phoneNumber, address, email })
       setAddress(response.data.address)
@@ -39,7 +39,7 @@ export default function EditUser() {
   const handleUpdate = async (e) => {
     e.preventDefault()
     try {
-      await axios.put(`http://localhost:5000/UserNo/${id}`, userData)
+      await axios.put(`https://mms-backend-n2zv.onrender.com/UserNo/${id}`, userData)
       // Clear form data after successful update
       setUserData({
         name: '',
