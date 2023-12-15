@@ -37,7 +37,7 @@ const Register = () => {
     e.preventDefault()
 
     try {
-      const response = await axios.post('http://192.168.29.93:5000/api/users', {
+      const response = await axios.post('https://mms-frontend.onrender.com/api/users', {
         name: formData.username,
         email: formData.email,
         password: formData.password,
