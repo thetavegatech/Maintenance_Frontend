@@ -154,7 +154,7 @@ class BDList extends React.Component {
                     LineName
                   </CTableHeaderCell>
                   <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
-                    StageName
+                    Operations
                   </CTableHeaderCell>
                   <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
                     Status
@@ -193,7 +193,7 @@ class BDList extends React.Component {
                       {breakdown.LineName}
                     </CTableDataCell>
                     <CTableDataCell style={{ textAlign: 'center' }}>
-                      {breakdown.StageName}
+                      {breakdown.Operations}
                     </CTableDataCell>
                     <CTableDataCell style={{ textAlign: 'center' }}>
                       {breakdown.Status}

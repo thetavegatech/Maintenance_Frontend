@@ -14,15 +14,18 @@ export default function BreakDown() {
   const [BreakdownEndTime, setBreakdownEndTime] = useState('')
   const [Shift, setShift] = useState('') // Default to false
   const [LineName, setLineName] = useState('') // Default to false
-  const [StageName, setStageName] = useState('')
+  const [Operations, setOperations] = useState('')
   const [BreakdownPhenomenons, setBreakdownPhenomenons] = useState('')
   const [BreakdownType, setBreakdownType] = useState('')
-  const [OCC, setOCC] = useState('')
+  const [DetectOCC, setDetectOCC] = useState('')
   const [BreakdownTime, setBreakdownTime] = useState('')
   const [ActionTaken, setActionTaken] = useState('')
   const [WhyWhyAnalysis, setWhyWhyAnalysis] = useState('')
   const [RootCause, setRootCause] = useState('')
-  const [PermanentAction, setPermanentAction] = useState('')
+  const [PreventiveAction, setPreventiveAction] = useState('')
+  const [CorrectiveAction, setCorrectiveAction] = useState('')
+  const [SpareParts, setSpareParts] = useState('')
+  const [Cost, setCost] = useState('')
   const [TargetDate, setTargetDate] = useState('')
   const [Responsibility, setResponsibility] = useState('')
   const [HD, setHD] = useState('')
@@ -46,19 +49,23 @@ export default function BreakDown() {
       setBreakdownEndTime(response.data.BreakdownEndTime)
       setShift(response.data.Shift)
       setLineName(response.data.LineName)
-      setStageName(response.data.StageName)
+      setOperations(response.data.Operations)
       setBreakdownPhenomenons(response.data.BreakdownPhenomenons)
       setStatus(response.data.Status)
       setBreakdownType(response.data.BreakdownType)
-      setOCC(response.data.OCC)
+      setDetectOCC(response.data.DetectOCC)
       setBreakdownTime(response.data.BreakdownTime)
       setActionTaken(response.data.ActionTaken)
       setWhyWhyAnalysis(response.data.WhyWhyAnalysis)
       setRootCause(response.data.RootCause)
-      setPermanentAction(response.data.PermanentAction)
+      // setPermanentAction(response.data.PermanentAction)
       setTargetDate(response.data.TargetDate)
       setResponsibility(response.data.Responsibility)
+      setPreventiveAction(response.data.PreventiveAction)
+      setCorrectiveAction(response.data.CorrectiveAction)
       setHD(response.data.HD)
+      setSpareParts(response.data.SpareParts)
+      setCost(response.data.Cost)
       setRemark(response.data.Remark)
     } catch (error) {
       console.error('Error fetching data:', error)
@@ -76,15 +83,18 @@ export default function BreakDown() {
         BreakdownEndTime,
         Shift,
         LineName,
-        StageName,
+        Operations,
         BreakdownPhenomenons,
         BreakdownType,
-        OCC,
+        DetectOCC,
         BreakdownTime,
         ActionTaken,
         WhyWhyAnalysis,
         RootCause,
-        PermanentAction,
+        PreventiveAction,
+        CorrectiveAction,
+        SpareParts,
+        Cost,
         TargetDate,
         Responsibility,
         HD,
@@ -100,9 +110,13 @@ export default function BreakDown() {
         setBreakdownEndTime('')
         setShift('')
         setLineName('')
-        setStageName('')
+        setOperations('')
         setBreakdownPhenomenons('')
         setStatus('')
+        setPreventiveAction('')
+        setCorrectiveAction('')
+        setSpareParts('')
+        setCost('')
 
         // Assuming you have a navigate function or useHistory from react-router-dom
         // Navigate back to the previous page
@@ -174,14 +188,14 @@ export default function BreakDown() {
                 />
               </div>
               <div className="col-md-4">
-                <label htmlFor="stageName">Stage Name:</label>
+                <label htmlFor="stageName">Operations:</label>
                 <input
                   type="text"
                   className="form-control col-sm-6"
                   name="StageName"
-                  value={StageName}
+                  value={Operations}
                   disabled
-                  onChange={(e) => setStageName(e.target.value)}
+                  onChange={(e) => setOperations(e.target.value)}
                 />
               </div>
               <div className="col-md-4">
@@ -213,14 +227,14 @@ export default function BreakDown() {
                 </select>
               </div>
               <div className="col-md-4">
-                <label htmlFor="occ">OCC:</label>
+                <label htmlFor="occ">Detect OCC:</label>
                 <input
                   type="text"
                   disabled
                   className="form-control col-sm-6"
-                  name="OCC"
-                  value={OCC}
-                  onChange={(e) => setOCC(e.target.value)}
+                  name="DetectOCC"
+                  value={DetectOCC}
+                  onChange={(e) => setDetectOCC(e.target.value)}
                 />
               </div>
               <div className="col-md-4">
@@ -257,17 +271,6 @@ export default function BreakDown() {
                 />
               </div>
               <div className="col-md-4">
-                <label htmlFor="actionTaken">Action Taken:</label>
-                <input
-                  type="text"
-                  disabled
-                  name="ActionTaken"
-                  className="form-control col-sm-6"
-                  value={ActionTaken}
-                  onChange={(e) => setActionTaken(e.target.value)}
-                />
-              </div>
-              <div className="col-md-4">
                 <label htmlFor="whyWhy">Why-Why Analysis:</label>
                 <input
                   type="text"
@@ -290,14 +293,47 @@ export default function BreakDown() {
                 />
               </div>
               <div className="col-md-4">
-                <label htmlFor="permanentAction">Permanent Action:</label>
+                <label htmlFor="preventiveAction">Preventive Action:</label>
                 <input
                   type="text"
                   disabled
                   className="form-control col-sm-6"
-                  name="PermanentAction"
-                  value={PermanentAction}
-                  onChange={(e) => setPermanentAction(e.target.value)}
+                  name="PreventiveAction"
+                  value={PreventiveAction}
+                  onChange={(e) => setPreventiveAction(e.target.value)}
+                />
+              </div>
+              <div className="col-md-4">
+                <label htmlFor="correctiveAction">Corrective Action:</label>
+                <input
+                  type="text"
+                  disabled
+                  className="form-control col-sm-6"
+                  name="CorrectiveAction"
+                  value={CorrectiveAction}
+                  onChange={(e) => setCorrectiveAction(e.target.value)}
+                />
+              </div>
+              <div className="col-md-4">
+                <label htmlFor="spareParts">Spare Parts:</label>
+                <input
+                  type="text"
+                  disabled
+                  className="form-control col-sm-6"
+                  name="SpareParts"
+                  value={SpareParts}
+                  onChange={(e) => setSpareParts(e.target.value)}
+                />
+              </div>
+              <div className="col-md-4">
+                <label htmlFor="cost">Cost:</label>
+                <input
+                  type="text"
+                  disabled
+                  className="form-control col-sm-6"
+                  name="Cost"
+                  value={Cost}
+                  onChange={(e) => setCost(e.target.value)}
                 />
               </div>
               <div className="col-md-4">
@@ -349,8 +385,9 @@ export default function BreakDown() {
                 <select
                   className="form-control col-sm-6"
                   required
-                  id="status"
-                  name="status"
+                  id="Status"
+                  name="Status"
+                  value={Status}
                   onChange={(e) => setStatus(e.target.value)}
                 >
                   <option value="">Select an option</option>

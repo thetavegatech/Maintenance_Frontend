@@ -1,19 +1,13 @@
 import React from 'react'
+import { format } from 'date-fns'
+import * as XLSX from 'xlsx'
+
 // import BDList from './BDList';
 import axios from 'axios'
 import { NavLink } from 'react-router-dom'
 import { FaEdit } from 'react-icons/fa'
 import {
-  CAvatar,
   CButton,
-  CButtonGroup,
-  CCard,
-  CCardBody,
-  CCardFooter,
-  CCardHeader,
-  CCol,
-  CProgress,
-  CRow,
   CTable,
   CTableBody,
   CTableDataCell,
@@ -46,16 +40,8 @@ class BDList extends React.Component {
     // Filter assets based on the search query
     const filteredAssets = this.state.breakdowns.filter((breakDown) => {
       const taskLocationLower = (breakDown.Location || '').toLowerCase()
-      // const taskDescriptionLower = (asset.TaskDescription || '').toLowerCase()
-      // const scheduledMaintenanceLower = (
-      //   asset.ScheduledMaintenanceDatesandIntervals || ''
-      // ).toLowerCase()
-      // const statusLower = (asset.status || '').toLowerCase()
 
       return taskLocationLower.includes(query)
-      // taskDescriptionLower.includes(query) ||
-      // scheduledMaintenanceLower.includes(query) ||
-      // statusLower.includes(query)
     })
 
     this.setState({
@@ -89,6 +75,42 @@ class BDList extends React.Component {
     this.setState({ selectedLocation: event.target.value })
   }
 
+  exportToExcel = () => {
+    const { breakdowns } = this.state
+    // const dataToExport = searchQuery ? filteredBreakdowns : breakdowns
+    const dataToExport = breakdowns
+    const exportData = dataToExport.map((item) => ({
+      Date: format(new Date(item.BreakdownStartDate), 'HH:mm:ss dd-MM-yyyy'),
+      MachineName: item.MachineName,
+      BreakdownStartDate: item.BreakdownStartDate,
+      BreakdownType: item.BreakdownType,
+      BreakdownEndDate: item.BreakdownEndDate,
+      Shift: item.Shift,
+      Operations: item.Operations,
+      BreakdownPhenomenons: item.BreakdownPhenomenons,
+      WhyWhyAnalysis: item.WhyWhyAnalysis,
+      OCC: item.OCC,
+      RootCause: item.RootCause,
+      PreventiveAction: item.PreventiveAction,
+      CorrectiveAction: item.CorrectiveAction,
+      TargetDate: item.TargetDate,
+      Responsibility: item.Responsibility,
+      HD: item.HD,
+      Status: item.Status,
+      SpareParts: item.SpareParts,
+      Cost: item.Cost,
+      Location: item.Location,
+      LineName: item.LineName,
+      Remark: item.Remark,
+      // Status: item.Status,
+    }))
+
+    const ws = XLSX.utils.json_to_sheet(exportData)
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, ws, 'ReportData')
+    XLSX.writeFile(wb, 'reportdata.xlsx')
+  }
+
   render() {
     // const { breakdowns, selectedLocation } = this.state
     const { breakdowns, filteredAssets, searchLocation, searchQuery } = this.state
@@ -117,8 +139,16 @@ class BDList extends React.Component {
                 Add New
               </CButton>
             </NavLink>
+            <CButton
+              color="info"
+              type="button"
+              style={{ margin: '1rem' }}
+              onClick={this.exportToExcel}
+            >
+              Export to Excel
+            </CButton>
             {/* <h5>Search By Plant</h5> */}
-            <label htmlFor="searchTask" style={{ marginLeft: '70%' }}>
+            <label htmlFor="searchTask" style={{ marginLeft: '60%' }}>
               <span role="img" aria-label="search-icon"></span>
             </label>
             <select
@@ -155,6 +185,7 @@ class BDList extends React.Component {
                 <CTableHeaderCell style={{ textAlign: 'center' }}>Remark</CTableHeaderCell>
                 <CTableHeaderCell style={{ textAlign: 'center' }}>Status</CTableHeaderCell>
                 <CTableHeaderCell style={{ textAlign: 'center' }}>Edit</CTableHeaderCell>
+                {/* <CTableHeaderCell style={{ textAlign: 'center' }}>excel</CTableHeaderCell> */}
               </CTableRow>
             </CTableHead>
             <CTableBody>
@@ -194,10 +225,25 @@ class BDList extends React.Component {
                       <FaEdit />
                     </NavLink>
                   </CTableDataCell>
+                  {/* <CButton
+                    type="button"
+                    style={{ margin: '1rem', backgroundColor: 'grey' }}
+                    onClick={this.exportToExcel}
+                  >
+                    Export to Excel
+                  </CButton> */}
                 </CTableRow>
               ))}
             </CTableBody>
           </CTable>
+          {/* <CButton
+            color="info"
+            type="button"
+            style={{ margin: '1rem', backgroundColor: 'grey' }}
+            onClick={this.exportToExcel}
+          >
+            Export to Excel
+          </CButton> */}
         </div>
       </>
     )

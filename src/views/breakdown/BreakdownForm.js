@@ -26,34 +26,6 @@ export default function BreakDown() {
         console.error('Error fetching user data:', error)
       })
   }, [])
-  // Modify the handleUserSelect function
-  // const handleUserSelect = (_id) => {
-  //   // setno(_id)
-  //   return console.log(_id)
-
-  //   // const no = _id
-  //   // console.log(no)
-  //   // setno(no)
-  //   // // console.log(_id)
-  //   // const selectedUser = usernos.find((user) => user.phoneNumber === _id)
-  //   // // console.log(selectedUser)
-  //   // // setSelectedUsers(selectedUser)
-  //   // // let number = _id
-  //   // // console.log(number)
-
-  //   // if (selectedUser) {
-  //   //   // setSelectedUsers(selectedUser)
-  //   //   // Check if the user is already selected
-  //   //   const isSelected = selectedUsers.some((user) => user.phoneNumber === selectedUser.phoneNumber)
-  //   //   // console.log(isSelected)
-
-  //   //   if (!isSelected) {
-  //   //     // If not selected, add the user to the array
-  //   //     setSelectedUsers([...selectedUsers, selectedUser])
-  //   //   }
-  //   // }
-
-  // }
 
   const [selectedUserNumbers, setSelectedUserNumbers] = useState([])
 
@@ -85,7 +57,7 @@ export default function BreakDown() {
     BreakdownEndTime: '',
     Shift: '',
     LineName: '',
-    StageName: '',
+    Operations: '',
     BreakdownPhenomenons: '',
     BreakdownType: '',
     OCC: '',
@@ -146,7 +118,7 @@ export default function BreakDown() {
       BreakdownEndTime,
       Shift,
       LineName,
-      StageName,
+      Operations,
       BreakdownPhenomenons,
       BreakdownType,
       OCC,
@@ -170,7 +142,7 @@ export default function BreakDown() {
       BreakdownEndTime,
       Shift,
       LineName,
-      StageName,
+      Operations,
       BreakdownPhenomenons,
       BreakdownType,
       OCC,
@@ -201,7 +173,7 @@ export default function BreakDown() {
         BreakdownEndTime,
         Shift,
         LineName,
-        StageName,
+        Operations,
         BreakdownPhenomenons,
         BreakdownType,
         OCC,
@@ -230,6 +202,7 @@ export default function BreakDown() {
       [e.target.name]: e.target.value,
     })
   }
+
   const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
   const numbers = '7020804148' // Replace with the phone numbers
   const data1 = 'test'
@@ -237,7 +210,7 @@ export default function BreakDown() {
   const sender = 'AAABRD'
 
   const sendSMS = (formData, selectedUsers) => {
-    const { MachineName, BreakdownStartDate, Shift, LineName, StageName, BreakdownPhenomenons } =
+    const { MachineName, BreakdownStartDate, Shift, LineName, Operations, BreakdownPhenomenons } =
       formData
     // Formulate a simple message
     const message = encodeURIComponent(
@@ -441,15 +414,15 @@ export default function BreakDown() {
               />
             </div>
             <div className="col-md-6">
-              <label htmlFor="stageName" style={{ marginBottom: '10px' }}>
-                Stage Name:
+              <label htmlFor="operations" style={{ marginBottom: '10px' }}>
+                Operations:
               </label>
               <input
                 type="text"
                 required
                 className="form-control col-sm-6"
-                name="StageName"
-                value={formData.StageName}
+                name="Operations"
+                value={formData.Operations}
                 onChange={handleChange}
                 placeholder=""
               />

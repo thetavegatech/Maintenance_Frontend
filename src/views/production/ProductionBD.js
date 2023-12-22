@@ -14,21 +14,28 @@ export default function BreakDown() {
   const [BreakdownEndTime, setBreakdownEndTime] = useState('')
   const [Shift, setShift] = useState('') // Default to false
   const [LineName, setLineName] = useState('') // Default to false
-  const [StageName, setStageName] = useState('')
+  const [Operations, setOperations] = useState('')
   const [BreakdownPhenomenons, setBreakdownPhenomenons] = useState('')
   const [BreakdownType, setBreakdownType] = useState('')
-  const [OCC, setOCC] = useState('')
+  const [DetectOCC, setOCC] = useState('')
   // const [BreakdownTime, setBreakdownTime] = useState('')
   const [ActionTaken, setActionTaken] = useState('')
-  const [WhyWhyAnalysis, setWhyWhyAnalysis] = useState('')
+  // const [WhyWhyAnalysis, setWhyWhyAnalysis] = useState('')
   const [RootCause, setRootCause] = useState('')
-  const [PermanentAction, setPermanentAction] = useState('')
+  const [PreventiveAction, setPreventiveAction] = useState('')
+  const [CorrectiveAction, setCorrectiveAction] = useState('')
   const [TargetDate, setTargetDate] = useState('')
   const [Responsibility, setResponsibility] = useState('')
   const [HD, setHD] = useState('')
   const [Remark, setRemark] = useState('')
   const [Status, setStatus] = useState('')
   const [Location, setLocation] = useState('')
+  const [SpareParts, setSpareParts] = useState('')
+  const [Cost, setCost] = useState('')
+  const [WhyWhyAnalysis, setWhyWhyAnalysis] = useState('')
+  const [whyWhyAnalysisList, setWhyWhyAnalysisList] = useState([])
+  const [formData, setFormData] = useState({})
+  // const [WhyWhyAnalysis, setWhyWhyAnalysis] = useState([''])
   //   let status = 'pending'
 
   useEffect(() => {
@@ -47,10 +54,12 @@ export default function BreakDown() {
       setBreakdownEndTime(response.data.BreakdownEndTime)
       setShift(response.data.Shift)
       setLineName(response.data.LineName)
-      setStageName(response.data.StageName)
+      setOperations(response.data.Operations)
       setBreakdownPhenomenons(response.data.BreakdownPhenomenons)
       setStatus(response.data.Status)
       setLocation(response.data.Location)
+      setSpareParts(response.data.SpareParts)
+      setCost(response.data.Cost)
     } catch (error) {
       console.error('Error fetching data:', error)
     }
@@ -93,15 +102,17 @@ export default function BreakDown() {
         BreakdownEndTime,
         Shift,
         LineName,
-        StageName,
+        Operations,
         BreakdownPhenomenons,
         BreakdownType,
-        OCC,
+        DetectOCC,
         // BreakdownTime,
         ActionTaken,
+        // WhyWhyAnalysis,
         WhyWhyAnalysis,
         RootCause,
-        PermanentAction,
+        PreventiveAction,
+        CorrectiveAction,
         TargetDate,
         Responsibility,
         HD,
@@ -110,6 +121,9 @@ export default function BreakDown() {
         attachment,
         Location,
         Image,
+        SpareParts,
+        Cost,
+        whyWhyAnalysisList,
       })
       .then((result) => {
         console.log(result)
@@ -120,11 +134,17 @@ export default function BreakDown() {
         setBreakdownEndTime('')
         setShift('')
         setLineName('')
-        setStageName('')
+        setOperations('')
         setBreakdownPhenomenons('')
         setStatus('pending')
         setLocation('')
         setImage('')
+        setPreventiveAction('')
+        setCorrectiveAction('')
+        setCost('')
+        setSpareParts('')
+        setWhyWhyAnalysis('')
+        setWhyWhyAnalysisList('')
         // setAttachment('')
 
         // Assuming you have a navigate function or useHistory from react-router-dom
@@ -132,6 +152,22 @@ export default function BreakDown() {
         navigate(-1)
       })
       .catch((err) => console.log(err))
+  }
+
+  const handleWhyWhyAnalysisChange = (e, index) => {
+    const newWhyWhyAnalysis = [...WhyWhyAnalysis]
+    newWhyWhyAnalysis[index] = e.target.value
+    setWhyWhyAnalysis(newWhyWhyAnalysis)
+  }
+
+  const addWhyWhyAnalysisField = () => {
+    setWhyWhyAnalysis([...WhyWhyAnalysis, ''])
+  }
+
+  const removeWhyWhyAnalysisField = (index) => {
+    const newWhyWhyAnalysis = [...WhyWhyAnalysis]
+    newWhyWhyAnalysis.splice(index, 1)
+    setWhyWhyAnalysis(newWhyWhyAnalysis)
   }
 
   const [attachment, setAttachment] = useState(null)
@@ -210,14 +246,14 @@ export default function BreakDown() {
                 />
               </div>
               <div className="col-md-6">
-                <label htmlFor="stageName">Stage Name:</label>
+                <label htmlFor="operations">Operations:</label>
                 <input
                   type="text"
                   className="form-control col-sm-6"
-                  name="StageName"
-                  value={StageName}
+                  name="Operations"
+                  value={Operations}
                   disabled
-                  onChange={(e) => setStageName(e.target.value)}
+                  onChange={(e) => setOperations(e.target.value)}
                 />
               </div>
               <div className="col-md-6">
@@ -255,30 +291,42 @@ export default function BreakDown() {
                 >
                   <option value="">Select an option</option>
                   <option value="Mechanical">Mechanical</option>
-                  <option value="Engeenieer">Engeenieer</option>
-                  <option value="Production">Production</option>
+                  <option value="Electrical">Electrical</option>
+                  <option value="Electronic">Electronic</option>
+                  <option value="Production Setting">Production Setting</option>
                 </select>
               </div>
               <div className="col-md-6">
-                <label htmlFor="occ">OCC:</label>
+                <label htmlFor="occ">Detect OCC:</label>
                 <input
                   type="text"
                   required
                   className="form-control col-sm-6"
-                  name="OCC"
-                  value={OCC}
+                  name="DetectOCC"
+                  value={DetectOCC}
                   onChange={(e) => setOCC(e.target.value)}
                 />
               </div>
               <div className="col-md-6">
-                <label htmlFor="actionTaken">Action Taken:</label>
+                <label htmlFor="spareparts">Spare Parts:</label>
                 <input
                   type="text"
                   required
-                  name="ActionTaken"
+                  name="SpareParts"
                   className="form-control col-sm-6"
-                  value={ActionTaken}
-                  onChange={(e) => setActionTaken(e.target.value)}
+                  value={SpareParts}
+                  onChange={(e) => setSpareParts(e.target.value)}
+                />
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="cost">Cost:</label>
+                <input
+                  type="text"
+                  required
+                  name="Cost"
+                  className="form-control col-sm-6"
+                  value={Cost}
+                  onChange={(e) => setCost(e.target.value)}
                 />
               </div>
               <div className="col-md-6">
@@ -292,6 +340,27 @@ export default function BreakDown() {
                   onChange={(e) => setWhyWhyAnalysis(e.target.value)}
                 />
               </div>
+              {/* {WhyWhyAnalysis.map((value, index) => (
+                <div className="col-md-6" key={index}>
+                  <label htmlFor={`whyWhy${index}`}>Why-Why Analysis:</label>
+                  <input
+                    type="text"
+                    required
+                    className="form-control col-sm-6"
+                    name={`WhyWhyAnalysis_${index}`}
+                    value={value}
+                    onChange={(e) => handleWhyWhyAnalysisChange(e, index)}
+                  />
+                </div>
+              ))} */}
+              {/* <button
+                className="btn btn-primary"
+                style={{ width: '20%', marginBottom: '10px' }}
+                type="button"
+                onClick={addWhyWhyAnalysisField}
+              >
+                Add Why-Why Analysis
+              </button> */}
               <div className="col-md-6">
                 <label htmlFor="rootCause">Root Cause:</label>
                 <input
@@ -304,14 +373,25 @@ export default function BreakDown() {
                 />
               </div>
               <div className="col-md-6">
-                <label htmlFor="permanentAction">Permanent Action:</label>
+                <label htmlFor="PreventiveAction">Preventive Action:</label>
                 <input
                   type="text"
                   required
                   className="form-control col-sm-6"
-                  name="PermanentAction"
-                  value={PermanentAction}
-                  onChange={(e) => setPermanentAction(e.target.value)}
+                  name="PreventiveAction"
+                  value={PreventiveAction}
+                  onChange={(e) => setPreventiveAction(e.target.value)}
+                />
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="correctiveAction">Corrective Action:</label>
+                <input
+                  type="text"
+                  required
+                  className="form-control col-sm-6"
+                  name="CorrectiveAction"
+                  value={CorrectiveAction}
+                  onChange={(e) => setCorrectiveAction(e.target.value)}
                 />
               </div>
               <div className="col-md-6">
@@ -388,7 +468,6 @@ export default function BreakDown() {
                   onChange={convertToBse64}
                 ></input>
               </div>
-
               <div style={{ marginTop: '20px' }}>
                 <button
                   className="btn btn-primary"

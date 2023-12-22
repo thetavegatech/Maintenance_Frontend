@@ -30,7 +30,7 @@ class AssetTable extends React.Component {
 
     // Set the time for 12:00 AM (midnight)
     const twelveAM = new Date()
-    twelveAM.setHours(18, 10, 0, 0)
+    twelveAM.setHours(11, 0, 0, 0)
 
     // Calculate the delay until 12:00 AM
     const delay = twelveAM - new Date()
@@ -153,10 +153,6 @@ class AssetTable extends React.Component {
         }
       }
     }
-
-    // Update "Next Date" for each asset based on its frequency
-    // Update "Next Date" for each asset based on its frequency
-    // Update "Next Date" for each asset based on its frequency
     const updatedAssets = assets.map((asset) => {
       const nextDate = new Date(asset.nextDate)
 
@@ -216,6 +212,9 @@ class AssetTable extends React.Component {
 
         // If the task is completed and the next date is beyond today, set status to "Pending"
         if (asset.status === 'Completed' && today < nextDate) {
+          asset.status = 'Pending'
+        } else {
+          // Default status if none of the conditions match
           asset.status = 'Pending'
         }
       }

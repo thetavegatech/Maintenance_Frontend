@@ -5,35 +5,17 @@ const MyFormComponent = () => {
   // Define state variables for form inputs
   const [formData, setFormData] = useState({
     AssetName: '',
-    Description: '',
-    AssetCategory: '',
+    MachineNo: '',
+    SrNo: '',
+    MachineType: '',
+    Make: '',
+    Controller: '',
+    PowerRatting: '',
+    CapecitySpindle: '',
+    AxisTravels: '',
+    Ranking: '',
+    InstallationDate: '',
     Location: '',
-    ManufacturersName: '',
-    ManufacturersAddress: '',
-    ManufacturersContactNo: '',
-    ManufacturersEmail: '',
-    ModelNumber: '',
-    SerialNumber: '',
-    PurchaseDate: '',
-    WarrantyStartDate: '',
-    WarrantyEndDate: '',
-    PurchaseCost: '',
-    AcquisitionMethod: '',
-    WarrantyProviderManufacturerContact: '',
-    WarrantyTermsandConditions: '',
-    SupplierVendorInformation: '',
-    CurrentOwner: '',
-    DepartmentResponsible: '',
-    LocationDepartment: '',
-    PhysicalLocation: '',
-    CurrentStatus: '',
-    ExpectedUsefulLife: '',
-    DateofLastMaintenance: '',
-    DetailsofMaintenanceActivities: '',
-    ScheduledMaintenanceDatesandIntervals: '',
-    PMDetails: '',
-    StartDateofMaintenance: '',
-    NextScheduledDate: '',
   })
   const navigate = useNavigate()
 
@@ -45,45 +27,27 @@ const MyFormComponent = () => {
       // Destructure form data from the state
       const {
         AssetName,
-        Description,
-        AssetCategory,
+        MachineNo,
+        SrNo,
+        MachineType,
+        Make,
+        Controller,
+        PowerRatting,
+        CapecitySpindle,
+        AxisTravels,
+        Ranking,
         Location,
-        ManufacturersName,
-        ManufacturersAddress,
-        ManufacturersContactNo,
-        ManufacturersEmail,
-        ModelNumber,
-        SerialNumber,
-        PurchaseDate,
-        WarrantyStartDate,
-        WarrantyEndDate,
-        PurchaseCost,
-        AcquisitionMethod,
-        WarrantyProviderManufacturerContact,
-        WarrantyTermsandConditions,
-        SupplierVendorInformation,
-        CurrentOwner,
-        DepartmentResponsible,
-        LocationDepartment,
-        PhysicalLocation,
-        CurrentStatus,
-        ExpectedUsefulLife,
-        DateofLastMaintenance,
-        DetailsofMaintenanceActivities,
-        ScheduledMaintenanceDatesandIntervals,
-        PMDetails,
-        StartDateofMaintenance,
-        NextScheduledDate,
+        InstallationDate,
       } = formData
 
       console.log('Asset Name:', AssetName)
-      console.log('Description:', Description)
-      console.log('Asset Category:', AssetCategory)
+      console.log('MachineNo:', MachineNo)
+      console.log('SrNo:', SrNo)
       console.log('Location:', Location)
-      console.log('Manufacturers Name:', ManufacturersName)
-      console.log('Manufacturers Address:', ManufacturersAddress)
-      console.log('Manufacturers Contact No:', ManufacturersContactNo)
-      console.log('Manufacturers Email:', ManufacturersEmail)
+      console.log('MachineType:', MachineType)
+      console.log('Make:', Make)
+      console.log('Controller:', Controller)
+      console.log('PowerRatting:', PowerRatting)
       // ... continue with other fields
 
       // Your fetch logic here
@@ -94,39 +58,7 @@ const MyFormComponent = () => {
           Accept: 'application/json',
           'Access-Control-Allow-Origin': '*',
         },
-        body: JSON.stringify({
-          AssetName,
-          Description,
-          AssetCategory,
-          Location,
-          ManufacturersName,
-          ManufacturersAddress,
-          ManufacturersContactNo,
-          ManufacturersEmail,
-          ModelNumber,
-          SerialNumber,
-          PurchaseDate,
-          WarrantyStartDate,
-          WarrantyEndDate,
-          PurchaseCost,
-          AcquisitionMethod,
-          WarrantyProviderManufacturerContact,
-          WarrantyTermsandConditions,
-          SupplierVendorInformation,
-          CurrentOwner,
-          DepartmentResponsible,
-          LocationDepartment,
-          PhysicalLocation,
-          CurrentStatus,
-          ExpectedUsefulLife,
-          DateofLastMaintenance,
-          DetailsofMaintenanceActivities,
-          ScheduledMaintenanceDatesandIntervals,
-          PMDetails,
-          startDate: StartDateofMaintenance,
-          nextDate: NextScheduledDate,
-          // Add other form data here as needed
-        }),
+        body: JSON.stringify(formData),
       })
       navigate(-1)
 
@@ -143,59 +75,40 @@ const MyFormComponent = () => {
   //   const { name, value } = e.target
   //   setFormData({ ...formData, [name]: value })
   // }
-  const someFunction = () => {
-    const startDate = this.state.StartDateofMaintenance
-    const frequency = this.state.ScheduledMaintenanceDatesandIntervals
-    const nextDate = this.getNextScheduleDate(startDate, frequency)
-    this.setState({ NextScheduledDate: nextDate.toISOString().split('T')[0] })
-    console.log(nextDate) // or any other logic you want with nextDate
-  }
-
-  // Handle frequency change
-  const handleFrequencyChange = (e) => {
-    const frequency = e.target.value
-    const startDate = formData.StartDateofMaintenance
-    const nextDate = getNextScheduleDate(startDate, frequency)
-    setFormData({
-      ...formData,
-      ScheduledMaintenanceDatesandIntervals: frequency,
-      NextScheduledDate: nextDate.toISOString().split('T')[0],
-    })
-  }
 
   // Calculate the next scheduled date based on frequency
-  const getNextScheduleDate = (startDate, frequency) => {
-    let newDate = new Date(startDate)
+  // const getNextScheduleDate = (startDate, frequency) => {
+  //   let newDate = new Date(startDate)
 
-    switch (frequency.toLowerCase()) {
-      case 'daily':
-        newDate.setDate(newDate.getDate() + 1)
-        break
-      case 'weekly':
-        newDate.setDate(newDate.getDate() + 7)
-        break
-      case 'fifteen days':
-        newDate.setDate(newDate.getDate() + 15)
-        break
-      case 'monthly':
-        newDate.setMonth(newDate.getMonth() + 1)
-        break
-      case 'quarterly':
-        newDate.setMonth(newDate.getMonth() + 3)
-        break
-      case 'half year':
-        newDate.setMonth(newDate.getMonth() + 6)
-        break
-      case 'yearly':
-        newDate.setFullYear(newDate.getFullYear() + 1)
-        break
-      default:
-        throw new Error('Unsupported frequency')
-    }
+  //   switch (frequency.toLowerCase()) {
+  //     case 'daily':
+  //       newDate.setDate(newDate.getDate() + 1)
+  //       break
+  //     case 'weekly':
+  //       newDate.setDate(newDate.getDate() + 7)
+  //       break
+  //     case 'fifteen days':
+  //       newDate.setDate(newDate.getDate() + 15)
+  //       break
+  //     case 'monthly':
+  //       newDate.setMonth(newDate.getMonth() + 1)
+  //       break
+  //     case 'quarterly':
+  //       newDate.setMonth(newDate.getMonth() + 3)
+  //       break
+  //     case 'half year':
+  //       newDate.setMonth(newDate.getMonth() + 6)
+  //       break
+  //     case 'yearly':
+  //       newDate.setFullYear(newDate.getFullYear() + 1)
+  //       break
+  //     default:
+  //       throw new Error('Unsupported frequency')
+  //   }
 
-    console.log('New Scheduled Date:', newDate)
-    return newDate
-  }
+  //   console.log('New Scheduled Date:', newDate)
+  //   return newDate
+  // }
 
   return (
     // <div
@@ -224,7 +137,7 @@ const MyFormComponent = () => {
     >
       <form onSubmit={handleSubmit} style={{ margin: '3%' }}>
         <div className="row g-3">
-          <div className="col-md-5">
+          <div className="col-md-6">
             <label htmlFor="assetName" style={{ marginBottom: '10px' }}>
               Machine Name:
             </label>
@@ -233,35 +146,109 @@ const MyFormComponent = () => {
               type="text"
               className="form-control col-sm-6"
               id="assetName"
+              // value={''}
               onChange={(e) => setFormData({ ...formData, AssetName: e.target.value })}
             />
           </div>
-          <div className="col-md-5">
-            <label htmlFor="description" style={{ marginBottom: '10px' }} className="form-label">
-              Description:
+          <div className="col-md-6">
+            <label htmlFor="machineNo" style={{ marginBottom: '10px' }} className="form-label">
+              Machine No:
             </label>
             <input
               className="form-control col-sm-6"
               required
-              id="assetDescription"
-              defaultValue={''}
-              onChange={(e) => setFormData({ ...formData, Description: e.target.value })}
+              type="number"
+              id="MachineNo"
+              value={formData.MachineNo}
+              // value={''}
+              onChange={(e) => setFormData({ ...formData, MachineNo: e.target.value })}
             />
           </div>
-          {/* <div className="col-md-5">
-              <label htmlFor="location" className="form-label">
-                Location:
-              </label>
-              <input
-                type="text"
-                required
-                className="form-control col-sm-6"
-                id="assetLocation"
-                style={{ marginBottom: '10px' }}
-                onChange={(e) => setFormData({ ...formData, Location: e.target.value })}
-              />
-            </div> */}
-          <div className="col-md-5">
+          <div className="col-md-6">
+            <label htmlFor="srno" style={{ marginBottom: '10px' }}>
+              Sr No:
+            </label>
+            <input
+              required
+              type="number"
+              className="form-control col-sm-6"
+              id="srno"
+              onChange={(e) => setFormData({ ...formData, SrNo: e.target.value })}
+            />
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="assetmachinetype" style={{ marginBottom: '10px' }}>
+              Machine Type:
+            </label>
+            <input
+              required
+              type="text"
+              className="form-control col-sm-6"
+              id="assetmachinetype"
+              onChange={(e) => setFormData({ ...formData, MachineType: e.target.value })}
+            />
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="make" style={{ marginBottom: '10px' }}>
+              Make:
+            </label>
+            <input
+              required
+              type="text"
+              className="form-control col-sm-6"
+              id="make"
+              onChange={(e) => setFormData({ ...formData, Make: e.target.value })}
+            />
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="controller" style={{ marginBottom: '10px' }}>
+              Controller:
+            </label>
+            <input
+              required
+              type="text"
+              className="form-control col-sm-6"
+              id="controller"
+              onChange={(e) => setFormData({ ...formData, Controller: e.target.value })}
+            />
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="powerRatting" style={{ marginBottom: '10px' }}>
+              Power Ratting:
+            </label>
+            <input
+              required
+              type="text"
+              className="form-control col-sm-6"
+              id="powerRatting"
+              onChange={(e) => setFormData({ ...formData, PowerRatting: e.target.value })}
+            />
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="capecitySpindle" style={{ marginBottom: '10px' }}>
+              Capecity Spindle:
+            </label>
+            <input
+              required
+              type="text"
+              className="form-control col-sm-6"
+              id="capecitySpindle"
+              onChange={(e) => setFormData({ ...formData, CapecitySpindle: e.target.value })}
+            />
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="axistravels" style={{ marginBottom: '10px' }}>
+              Axis Travels:
+            </label>
+            <input
+              required
+              type="text"
+              className="form-control col-sm-6"
+              id="axistravels"
+              onChange={(e) => setFormData({ ...formData, AxisTravels: e.target.value })}
+            />
+          </div>
+          <div className="col-md-6">
             <label htmlFor="assetLocation" className="form-label">
               Location:
             </label>
@@ -280,17 +267,17 @@ const MyFormComponent = () => {
               <option value="Plant 4">Plant 4</option>
             </select>
           </div>
-          <div className="col-md-5">
-            <label htmlFor="assetCategory" className="form-label">
-              Asset Category:
+          <div className="col-md-6">
+            <label htmlFor="ranking" className="form-label">
+              Ranking:
             </label>
             <select
               className="form-control col-sm-6"
               required
-              id="assetCategory"
-              name="assetCategory"
+              id="ranking"
+              name="ranking"
               style={{ marginBottom: '10px' }}
-              onChange={(e) => setFormData({ ...formData, AssetCategory: e.target.value })}
+              onChange={(e) => setFormData({ ...formData, Ranking: e.target.value })}
             >
               <option value="">Select an option</option>
               <option value="A">A</option>
@@ -298,6 +285,18 @@ const MyFormComponent = () => {
               <option value="C">C</option>
               <option value="D">D</option>
             </select>
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="installationDate" style={{ marginBottom: '10px' }}>
+              Insatallation Date:
+            </label>
+            <input
+              required
+              type="date"
+              className="form-control col-sm-6"
+              id="installationDate"
+              onChange={(e) => setFormData({ ...formData, InsatllationDate: e.target.value })}
+            />
           </div>
           <div className="col-xs-12">
             <button

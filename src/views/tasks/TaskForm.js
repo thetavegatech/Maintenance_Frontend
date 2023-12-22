@@ -283,23 +283,6 @@ const MyFormComponent = () => {
                 onChange={(e) => setFormData({ ...formData, TaskDescription: e.target.value })}
               />
             </div>
-            {/* <div className="col-md-5">
-              <label htmlFor="assetCategory" className="form-label">
-                Asset Category:
-              </label>
-              <select
-                className="form-control"
-                id="assetCategory"
-                name="assetCategory"
-                onChange={(e) => setFormData({ ...formData, AssetCategory: e.target.value })}
-              >
-                <option value="">Select an option</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-                <option value="D">D</option>
-              </select>
-            </div> */}
             <div className="col-md-5">
               <label htmlFor="StartDateofMaintenance">Start From :</label>
               <input

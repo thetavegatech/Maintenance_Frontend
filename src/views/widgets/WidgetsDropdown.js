@@ -1,22 +1,4 @@
 import React, { useState, useEffect } from 'react'
-// import {
-//   BsFillArchiveFill,
-//   BsFillGrid3X3GapFill,
-//   BsPeopleFill,
-//   BsFillBellFill,
-// } from 'react-icons/bs'
-// import {
-//   BarChart,
-//   Bar,
-//   XAxis,
-//   YAxis,
-//   CartesianGrid,
-//   Tooltip,
-//   Legend,
-//   ResponsiveContainer,
-//   LineChart,
-//   Line,
-// } from 'recharts'
 import { NavLink } from 'react-router-dom'
 import {
   CRow,
@@ -127,21 +109,115 @@ const WidgetsDropdown = () => {
   }, [])
 
   useEffect(() => {
-    fetch('https://mms-backend-n2zv.onrender.com/getAllData')
-      .then((response) => response.json())
-      .then((fetchedTasks) => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://mms-backend-n2zv.onrender.com/getAllData')
+        const fetchedTasks = await response.json()
+
         setAssets(fetchedTasks)
         setTotalTasks(fetchedTasks.length)
 
         // Calculate the count of pending tasks
         const pendingTasks = fetchedTasks.filter((asset) => asset.status === 'Pending')
         setPendingTaskCount(pendingTasks.length)
-        const completdTasks = fetchedTasks.filter((asset) => asset.status === 'Completed')
-        setcompletdTasksCount(completdTasks.length)
-      })
-      .catch((error) => console.error('Error fetching tasks: ', error))
+        const completedTasks = fetchedTasks.filter((asset) => asset.status === 'Completed')
+        setcompletdTasksCount(completedTasks.length)
+
+        // Check if it's the end of the month
+        const currentDate = new Date()
+        const isEndOfMonth =
+          currentDate.getDate() ===
+          new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()
+
+        if (isEndOfMonth && pendingTasks.length > 0) {
+          // Send SMS for pending tasks
+          const formData = {
+            MachineName: 'ExampleMachine', // Replace with actual data
+            BreakdownStartDate: '2023-01-01', // Replace with actual data
+            Shift: 'Morning', // Replace with actual data
+            LineName: 'Production Line', // Replace with actual data
+            Operations: 'Some Operations', // Replace with actual data
+            BreakdownPhenomenons: 'Some Breakdown Phenomenons', // Replace with actual data
+          }
+
+          // const sendSMS = (numbers, sender, pendingTasksCount) => {
+          //   // Formulate a message with the pending task count
+          //   const message = encodeURIComponent(
+          //     'Breakdown For ' +
+          //       pendingTasksCount +
+          //       // 'Date of Breakdown Start' +
+          //       // BreakdownStartDate +
+          //       ' please visit concerned department Details are ',
+          //     // BreakdownPhenomenons +
+          //     // ' - Aurangabad Auto Ancillary',
+          //   )
+
+          //   // Create the API URL
+          //   const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${numbers}&message=${message}`
+
+          //   // Use fetch to send the SMS
+          //   fetch(url)
+          //     .then((response) => response.json())
+          //     .then((data) => {
+          //       console.log('SMS sent successfully:', data)
+          //       console.log(numbers, data1)
+          //     })
+          //     .catch((error) => {
+          //       console.error('Error sending SMS:', error)
+          //     })
+          // }
+          // // You can modify the numbers, sender, and message as needed
+          // sendSMS(formData, numbers, sender, pendingTasks.length)
+        }
+      } catch (error) {
+        console.error('Error fetching tasks: ', error)
+      }
+    }
+
+    fetchData()
   }, [])
 
+  const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
+  const numbers = '7020804148' // Replace with the phone numbers
+  const data1 = 'pending tasks'
+  const data2 = 'Please visit the concerned department for details.'
+  const sender = 'AAABRD'
+
+  const sendSMS = (formData, numbers, sender, pendingTasksCount) => {
+    // Formulate a message with the pending task count
+    const message = encodeURIComponent(
+      'Breakdown For ' +
+        pendingTasksCount +
+        // 'Date of Breakdown Start' +
+        // BreakdownStartDate +
+        ' please visit concerned department Details are ',
+      // BreakdownPhenomenons +
+      // ' - Aurangabad Auto Ancillary',
+    )
+
+    // Create the API URL
+    const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${7020804148}&message=${message}`
+
+    // Use fetch to send the SMS
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('SMS sent successfully:', data)
+        console.log(numbers, data1)
+      })
+      .catch((error) => {
+        console.error('Error sending SMS:', error)
+      })
+  }
+
+  const formData = {} // Replace with actual form data
+  const pendingTasksCount = 3 // Replace with the actual pending tasks count
+  // sendSMS(formData, numbers, sender, pendingTasksCount)
+
+  const handleButtonClick = () => {
+    // Call the SMS sending function
+    sendSMS(numbers)
+  }
   useEffect(() => {
     fetch(`https://mms-backend-n2zv.onrender.com/getAllData?nextDate=${formattedToday}`)
       .then((response) => response.json())
@@ -366,7 +442,19 @@ const WidgetsDropdown = () => {
                 <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
               </CDropdownToggle>
               <CDropdownMenu>
-                <CDropdownItem>Action</CDropdownItem>
+                <CDropdownItem
+                  type="submit"
+                  onClick={handleButtonClick}
+                  className="btn btn-primary"
+                  style={{
+                    marginTop: '20px',
+                    fontSize: '16px',
+                    backgroundColor: '#3448db',
+                    marginBottom: '10px',
+                  }}
+                >
+                  Action
+                </CDropdownItem>
                 {/* <CDropdownItem>Another action</CDropdownItem>
                 <CDropdownItem>Something else here...</CDropdownItem>
                 <CDropdownItem disabled>Disabled action</CDropdownItem> */}

@@ -33,7 +33,7 @@ class AssetTable extends React.Component {
     const isConfirmed = window.confirm('Are you sure you want to delete this data?')
     if (isConfirmed) {
       axios
-        .delete(`http://Localhost:5000/api/assets/${id}`)
+        .delete(`https://mms-backend-n2zv.onrender.com/api/assets/${id}`)
         .then((response) => {
           console.log('Data deleted:', response.data)
 
@@ -105,25 +105,12 @@ class AssetTable extends React.Component {
     // const { assets } = this.state // Destructuring assets from state for ease of access
 
     const { assets, filteredAssets, searchLocation, searchQuery } = this.state
-
-    // Filter assets based on the searchLocation
-    // const filteredAssets = assets.filter(
-    //   (asset) =>
-    //     asset.AssetName &&
-    //     asset.AssetName.toLowerCase().includes(searchLocation.toLowerCase()) &&
-    //     asset.Description &&
-    //     asset.Description.toLowerCase().includes(searchLocation.toLowerCase()) &&
-    //     asset.Location &&
-    //     asset.Location.toLowerCase().includes(searchLocation.toLowerCase()),
-    // )
     const { isClicked } = this.state
     // Filter assets to include only rows with all values filled
     const validatedAssets = assets.filter(
       (asset) =>
         asset.AssetName &&
         asset.AssetName.trim() !== '' &&
-        asset.Description &&
-        asset.Description.trim() !== '' &&
         asset.Location &&
         asset.Location.trim() !== '',
     )
@@ -167,8 +154,9 @@ class AssetTable extends React.Component {
           <CTable bordered striped hover responsive>
             <CTableHead color="dark">
               <tr>
+                <th style={{ textAlign: 'center' }}>Sr No</th>
                 <th style={{ textAlign: 'center' }}>Machine Name</th>
-                <th style={{ textAlign: 'center' }}>Description</th>
+                <th style={{ textAlign: 'center' }}>Machine Type</th>
                 <th style={{ textAlign: 'center' }}>Location</th>
                 <th style={{ textAlign: 'center' }}>Edit</th>
                 <th style={{ textAlign: 'center' }}>Delete</th>
@@ -187,8 +175,9 @@ class AssetTable extends React.Component {
               )}
               {(this.state.searchQuery ? filteredAssets : validatedAssets).map((asset) => (
                 <tr key={asset._id}>
+                  <td style={{ textAlign: 'center' }}>{asset.SrNo}</td>
                   <td style={{ textAlign: 'center' }}>{asset.AssetName}</td>
-                  <td style={{ textAlign: 'center' }}>{asset.Description}</td>
+                  <td style={{ textAlign: 'center' }}>{asset.MachineType}</td>
                   <td style={{ textAlign: 'center' }}>{asset.Location}</td>
                   <td style={{ textAlign: 'center' }}>
                     <NavLink to={`/editasset/${asset._id}`} style={{ color: '#000080' }}>

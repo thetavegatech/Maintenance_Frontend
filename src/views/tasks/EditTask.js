@@ -40,59 +40,7 @@ export default function EditForm() {
   const [WarrantyTermsandConditions, setWarrantyTermsandConditions] = useState('')
   const [PMDetails, setPMDetails] = useState('')
 
-  const [startDate, setstartDate] = useState('') // assuming you need this
-  // const [ScheduledMaintenanceDatesandIntervals, setScheduledMaintenanceDatesandIntervals] = useState('');
-  // const [nextDate, setnextDate] = useState('')
-
-  // const handleFrequencyChange = (e) => {
-  //   const frequency = e.target.value
-  //   const startDate = StartDateofMaintenance
-  //   const newDate = getNextScheduleDate(startDate, frequency)
-  //   setScheduledMaintenanceDatesandIntervals(frequency)
-  //   setNextScheduledDate(newDate.toISOString().split('T')[0])
-  // }
-
-  // const someFunction = () => {
-  //   const startDate = this.state.StartDateofMaintenance
-  //   const frequency = this.state.ScheduledMaintenanceDatesandIntervals
-  //   const nextDate = this.getNextScheduleDate(startDate, frequency)
-  //   this.setState({ nextScheduledDate: nextDate.toISOString().split('T')[0] })
-  //   console.log(nextDate) // or any other logic you want with nextDate
-  // }
-
-  // function getNextScheduleDate(startDate, frequency) {
-  //   let newDate = new Date(startDate)
-
-  //   switch (frequency.toLowerCase()) {
-  //     case 'daily':
-  //       newDate.setDate(newDate.getDate() + 1)
-  //       break
-  //     case 'weekly':
-  //       newDate.setDate(newDate.getDate() + 7)
-  //       break
-  //     case 'fifteen days':
-  //       newDate.setDate(newDate.getDate() + 15)
-  //       break
-  //     case 'monthly':
-  //       newDate.setMonth(newDate.getMonth() + 1)
-  //       break
-  //     case 'quarterly':
-  //       newDate.setMonth(newDate.getMonth() + 3)
-  //       break
-  //     case 'half year':
-  //       newDate.setMonth(newDate.getMonth() + 6)
-  //       break
-  //     case 'yearly':
-  //       newDate.setFullYear(newDate.getFullYear() + 1)
-  //       break
-  //     default:
-  //       throw new Error('Unsupported frequency')
-  //   }
-
-  //   console.log('New Scheduled Date:', newDate)
-  //   return newDate
-  // }
-
+  const [startDate, setstartDate] = useState('')
   useEffect(() => {
     fetchData()
   }, [])

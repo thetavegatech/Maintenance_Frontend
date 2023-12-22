@@ -9,46 +9,21 @@ export default function EditForm() {
   const { id } = useParams()
   const navigate = useNavigate()
   const [AssetName, setAssetName] = useState('')
-  const [Description, setDescription] = useState('')
-  const [AssetCategory, setAssetCategory] = useState('') // Default to false
+  const [MachineNo, setMachineNo] = useState('')
   const [Location, setLocation] = useState('') // Default to false
-  const [ManufacturersName, setManufacturersName] = useState('')
-  const [ManufacturersAddress, setManufacturersAddress] = useState('')
-  const [ManufacturersContactNo, setManufacturersContactNo] = useState('')
-  const [SupplierVendorInformation, setSupplierVendorInformation] = useState('')
-  const [CurrentOwner, setCurrentOwner] = useState('')
-  const [DepartmentResponsible, setDepartmentResponsible] = useState('')
-  const [LocationDepartment, setLocationDepartment] = useState('')
-  const [PhysicalLocation, setPhysicalLocation] = useState('')
-  const [CurrentStatus, setCurrentStatus] = useState('')
-  const [ExpectedUsefulLife, setExpectedUsefulLife] = useState('')
-  const [DateofLastMaintenance, setDateofLastMaintenance] = useState('')
-  const [DetailsofMaintenanceActivities, setDetailsofMaintenanceActivities] = useState('')
-  const [ScheduledMaintenanceDatesandIntervals, setScheduledMaintenanceDatesandIntervals] =
-    useState('')
-  const [ManufacturersEmail, seManufacturersEmail] = useState('')
-  const [ModelNumber, setModelNumber] = useState('')
-  const [SerialNumber, setSerialNumber] = useState('')
-  const [PurchaseCost, setPurchaseCost] = useState('')
-  const [PurchaseDate, setPurchaseDate] = useState('')
-  const [WarrantyStartDate, setWarrantyStartDate] = useState('')
-  const [WarrantyEndDate, seWarrantyEndDate] = useState('')
-  const [AcquisitionMethod, setAcquisitionMethod] = useState('')
-  const [WarrantyProviderManufacturerContact, setWarrantyProviderManufacturerContact] = useState('')
-  const [WarrantyTermsandConditions, setWarrantyTermsandConditions] = useState('')
-  const [PMDetails, setPMDetails] = useState('')
+  const [SrNo, setSrNo] = useState('')
+  const [MachineType, setMachineType] = useState('')
+  const [Make, setMake] = useState('')
+  const [Controller, setController] = useState('')
+  const [PowerRatting, setPowerRatting] = useState('')
+  const [CapecitySpindle, setCapecitySpindle] = useState('')
+  const [AxisTravels, setAxisTravels] = useState('')
+  const [Ranking, setRanking] = useState('')
+  const [InstallationDate, setInstallationDate] = useState('')
 
   const [StartDateofMaintenance, setStartDateofMaintenance] = useState('') // assuming you need this
   // const [ScheduledMaintenanceDatesandIntervals, setScheduledMaintenanceDatesandIntervals] = useState('');
   const [nextScheduledDate, setNextScheduledDate] = useState('')
-
-  const handleFrequencyChange = (e) => {
-    const frequency = e.target.value
-    const startDate = StartDateofMaintenance
-    const newDate = getNextScheduleDate(startDate, frequency)
-    setScheduledMaintenanceDatesandIntervals(frequency)
-    setNextScheduledDate(newDate.toISOString().split('T')[0])
-  }
 
   const someFunction = () => {
     const startDate = this.state.StartDateofMaintenance
@@ -99,35 +74,17 @@ export default function EditForm() {
       const response = await axios.get(`https://mms-backend-n2zv.onrender.com/api/assets/${id}`)
       console.log(response)
       setAssetName(response.data.AssetName)
-      setDescription(response.data.Description)
-      setAssetCategory(response.data.AssetCategory)
+      setMachineNo(response.data.MachineNo)
+      setSrNo(response.data.SrNo)
       setLocation(response.data.Location)
-      setManufacturersName(response.data.ManufacturersName)
-      setManufacturersAddress(response.data.ManufacturersAddress)
-      setManufacturersContactNo(response.data.ManufacturersContactNo)
-      setSupplierVendorInformation(response.data.SupplierVendorInformation)
-      setCurrentOwner(response.data.CurrentOwner)
-      setDepartmentResponsible(response.data.DepartmentResponsible)
-      setLocationDepartment(response.data.LocationDepartment)
-      setPhysicalLocation(response.data.PhysicalLocation)
-      setCurrentStatus(response.data.CurrentStatus)
-      setExpectedUsefulLife(response.data.ExpectedUsefulLife)
-      setDateofLastMaintenance(response.data.DateofLastMaintenance)
-      setDetailsofMaintenanceActivities(response.data.DetailsofMaintenanceActivities)
-      setScheduledMaintenanceDatesandIntervals(response.data.ScheduledMaintenanceDatesandIntervals)
-      seManufacturersEmail(response.data.ManufacturersEmail)
-      setModelNumber(response.data.ModelNumber)
-      setSerialNumber(response.data.SerialNumber)
-      setPurchaseCost(response.data.PurchaseCost)
-      setPurchaseDate(response.data.PurchaseDate)
-      setWarrantyStartDate(response.data.WarrantyStartDate)
-      setAcquisitionMethod(response.data.AcquisitionMethod)
-      seWarrantyEndDate(response.data.WarrantyEndDate)
-      setWarrantyProviderManufacturerContact(response.data.WarrantyProviderManufacturerContact)
-      setWarrantyTermsandConditions(response.data.WarrantyTermsandConditions)
-      setPMDetails(response.data.PMDetails)
-      setStartDateofMaintenance(response.data.startDate)
-      setNextScheduledDate(response.data.nextDate)
+      setMachineType(response.data.MachineType)
+      setMake(response.data.Make)
+      setController(response.data.Controller)
+      setPowerRatting(response.data.PowerRatting)
+      setCapecitySpindle(response.data.CapecitySpindle)
+      setAxisTravels(response.data.AxisTravels)
+      setRanking(response.data.Ranking)
+      setInstallationDate(response.data.InstallationDate)
     } catch (error) {
       console.error('Error fetching data:', error)
     }
@@ -138,45 +95,21 @@ export default function EditForm() {
     axios
       .put(`https://mms-backend-n2zv.onrender.com/api/assets/${id}`, {
         AssetName,
-        Description,
-        AssetCategory,
+        MachineNo,
+        SrNo,
+        MachineType,
+        Make,
+        Controller,
+        PowerRatting,
+        CapecitySpindle,
+        AxisTravels,
+        Ranking,
         Location,
-        ManufacturersName,
-        ManufacturersAddress,
-        ManufacturersContactNo,
-        ManufacturersEmail,
-        ModelNumber,
-        SerialNumber,
-        PurchaseDate,
-        WarrantyStartDate,
-        WarrantyEndDate,
-        PurchaseCost,
-        AcquisitionMethod,
-        WarrantyProviderManufacturerContact,
-        WarrantyTermsandConditions,
-        SupplierVendorInformation,
-        CurrentOwner,
-        DepartmentResponsible,
-        LocationDepartment,
-        PhysicalLocation,
-        CurrentStatus,
-        ExpectedUsefulLife,
-        DateofLastMaintenance,
-        DetailsofMaintenanceActivities,
-        ScheduledMaintenanceDatesandIntervals,
-        PMDetails,
-        startDate: StartDateofMaintenance,
-        nextDate: nextScheduledDate,
+        InstallationDate,
       })
       .then((result) => {
         console.log(result)
         setAssetName('')
-        setDescription('')
-        setAssetCategory('')
-        setLocation('')
-        setStartDateofMaintenance('')
-        setScheduledMaintenanceDatesandIntervals('')
-        setNextScheduledDate('')
 
         // Assuming you have a navigate function or useHistory from react-router-dom
         // Navigate back to the previous page
@@ -187,17 +120,6 @@ export default function EditForm() {
 
   return (
     <>
-      {/* <div
-        className="container-lg"
-        style={{
-          border: '2px solid #ccc',
-          backgroundColor: '',
-          padding: '20px',
-          borderRadius: '10px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          width: '100%',
-        }}
-      > */}
       <div
         className="tab-content1"
         style={{
@@ -229,101 +151,76 @@ export default function EditForm() {
                   onChange={(e) => setAssetName(e.target.value)}
                 />
               </div>
-              {/* <div className="col-md-4">
-                <label htmlFor="assetDescription">Description:</label>
-                <textarea
-                  className="form-control col-sm-6"
-                  id="assetDescription"
-                  defaultValue={''}
-                  name="Description"
-                  value={Description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </div> */}
               <div className="col-md-5">
-                <label htmlFor="assetCategory" style={{ marginBottom: '10px' }}>
-                  Asset Category:
+                <label htmlFor="MachineNo" style={{ marginBottom: '10px' }}>
+                  MachineNo:
                 </label>
                 <input
                   type="text"
                   required
                   style={{ marginBottom: '10px' }}
                   className="form-control col-sm-4"
-                  id="assetCategory"
-                  name="AssetCategory"
-                  value={AssetCategory}
-                  onChange={(e) => setAssetCategory(e.target.value)}
+                  id="MachineNo"
+                  name="MachineNo"
+                  value={MachineNo}
+                  onChange={(e) => setMachineNo(e.target.value)}
                 />
               </div>
-              {/* <div className="col-md-5">
-                <label htmlFor="assetLocation">Location:</label>
-                <input
-                  type="text"
-                  className="form-control col-sm-4"
-                  id="assetLocation"
-                  name="Location"
-                  value={Location}
-                  onChange={(e) => setLocation(e.target.value)}
-                />
-              </div> */}
             </div>
           </form>
         </div>
         <form onSubmit={Update}>
           <div className="row g-2">
             <div className="col-md-5">
-              <label htmlFor="PMDetaiils" style={{ marginBottom: '10px' }}>
-                Current Status:
+              <label htmlFor="SrNo" style={{ marginBottom: '10px' }}>
+                SrNo:
               </label>
-              <select
+              <input
                 className="form-control col-sm-4"
                 required
                 style={{ marginBottom: '10px' }}
-                id="currentstatus"
-                name="CurrentStatus"
-                value={CurrentStatus}
-                onChange={(e) => setCurrentStatus(e.target.value)}
-              >
-                <option value="Daily">In use</option>
-                <option value="Weekly">Under Repair</option>
-                <option value="Fifteen Days">In Storage</option>
-              </select>
+                id="SrNo"
+                name="SrNo"
+                value={SrNo}
+                onChange={(e) => setSrNo(e.target.value)}
+              />
+              {/* </input> */}
             </div>
             <div className="col-md-5">
-              <label htmlFor="usefulLife" style={{ marginBottom: '10px' }}>
-                Expected Useful Life:
+              <label htmlFor="MachineType" style={{ marginBottom: '10px' }}>
+                MachineType:
               </label>
               <input
                 type="text"
                 required
                 style={{ marginBottom: '10px' }}
                 className="form-control col-sm-4"
-                id="usefulLife"
-                name="ExpectedUsefulLife"
-                value={ExpectedUsefulLife}
-                onChange={(e) => setExpectedUsefulLife(e.target.value)}
+                id="MachineType"
+                name="MachineType"
+                value={MachineType}
+                onChange={(e) => setMachineType(e.target.value)}
               />
             </div>
             <div className="col-md-5">
-              <label htmlFor="lastMaintenanceDate" style={{ marginBottom: '10px' }}>
-                Date of Last Maintenance:
+              <label htmlFor="Make" style={{ marginBottom: '10px' }}>
+                Make:
               </label>
               <input
-                type="date"
+                type="text"
                 required
                 style={{ marginBottom: '10px' }}
                 className="form-control col-sm-4"
-                id="lastMaintenanceDate"
-                name="DateofLastMaintenance"
-                value={DateofLastMaintenance}
-                onChange={(e) => setDateofLastMaintenance(e.target.value)}
+                id="Make"
+                name="Make"
+                value={Make}
+                onChange={(e) => setMake(e.target.value)}
               />
             </div>
             <div className="col-md-5">
               <label htmlFor="assetLocation" className="form-label">
                 Location:
               </label>
-              <select
+              <input
                 className="form-control col-sm-6"
                 required
                 id="assetLocation"
@@ -331,13 +228,7 @@ export default function EditForm() {
                 value={Location}
                 style={{ marginBottom: '10px' }}
                 onChange={(e) => setLocation(e.target.value)}
-              >
-                <option value="">Select an option</option>
-                <option value="Plant 1">Plant 1</option>
-                <option value="Plant 2">Plant 2</option>
-                <option value="Plant 3">Plant 3</option>
-                <option value="Plant 4">Plant 4</option>
-              </select>
+              />
             </div>
             {/* <div className="col-md-5">
               <label htmlFor="maintenanceActivities">Details of Maintenance Activities:</label>
@@ -351,91 +242,93 @@ export default function EditForm() {
               />
             </div> */}
             <div className="col-md-5">
-              <label htmlFor="PMDetails" style={{ marginBottom: '10px' }}>
-                PM Details:
+              <label htmlFor="Controller" style={{ marginBottom: '10px' }}>
+                Controller:
               </label>
               <textarea
                 className="form-control col-sm-4"
                 required
-                id="PMDetails"
+                id="Controller"
                 style={{ marginBottom: '10px' }}
                 defaultValue={''}
-                name="PMDetails"
-                value={PMDetails}
-                onChange={(e) => setPMDetails(e.target.value)}
-              />
-            </div>
-            {/* <div className="col-md-5">
-                <label htmlFor="StartDateofMaintenance">Start From :</label>
-                <input
-                  type="date"
-                  className="form-control col-sm-4"
-                  id="StartDateofMaintenance"
-                  name="StartDateofMaintenance"
-                  value={StartDateofMaintenance}
-                  onChange={(e) => setStartDateofMaintenance(e.target.value)}
-                />
-              </div> */}
-            {/* <div className="col-md-5">
-                <label htmlFor="scheduledMaintenance">
-                  Scheduled Maintenance Dates and Intervals:
-                </label>
-                <select
-                  className="form-control col-sm-4"
-                  id="scheduledMaintenance"
-                  name="ScheduledMaintenanceDatesandIntervals"
-                  value={ScheduledMaintenanceDatesandIntervals}
-                  onChange={handleFrequencyChange}
-                >
-                  <option value="Daily">Daily</option>
-                  <option value="Weekly">Weekly</option>
-                  <option value="Fifteen Days">Fifteen Days</option>
-                  <option value="Monthly">Monthly</option>
-                  <option value="Quarterly">Quarterly</option>
-                  <option value="Half Year">Half Year</option>
-                  <option value="Yearly">Yearly</option>
-                </select>
-              </div> */}
-
-            {/* <div className="col-md-5">
-                <label htmlFor="NextDateofMaintenance">Next Date of Maintenance :</label>
-                <input
-                  type="date"
-                  className="form-control col-sm-4"
-                  id="nextScheduledDate"
-                  value={nextScheduledDate}
-                  readOnly // to make it non-editable
-                  onChange={(e) => setNextScheduledDate(e.target.value)}
-                />
-              </div> */}
-            <div className="col-md-5">
-              <label htmlFor="assetDescription" style={{ marginBottom: '10px' }}>
-                Description:
-              </label>
-              <textarea
-                className="form-control col-sm-4"
-                required
-                style={{ marginBottom: '10px' }}
-                id="assetDescription"
-                defaultValue={''}
-                name="Description"
-                value={Description}
-                onChange={(e) => setDescription(e.target.value)}
+                name="Controller"
+                value={Controller}
+                onChange={(e) => setController(e.target.value)}
               />
             </div>
             <div className="col-md-5">
-              <label htmlFor="maintenanceActivities" style={{ marginBottom: '10px' }}>
-                Details of Maintenance Activities:
+              <label htmlFor="PowerRatting" style={{ marginBottom: '10px' }}>
+                PowerRatting:
               </label>
               <textarea
                 className="form-control col-sm-4"
                 required
                 style={{ marginBottom: '10px' }}
-                id="maintenanceActivities"
+                id="PowerRatting"
                 defaultValue={''}
-                name="DetailsofMaintenanceActivities"
-                value={DetailsofMaintenanceActivities}
-                onChange={(e) => setDetailsofMaintenanceActivities(e.target.value)}
+                name="PowerRatting"
+                value={PowerRatting}
+                onChange={(e) => setPowerRatting(e.target.value)}
+              />
+            </div>
+            <div className="col-md-5">
+              <label htmlFor="CapecitySpindle" style={{ marginBottom: '10px' }}>
+                CapecitySpindle:
+              </label>
+              <textarea
+                className="form-control col-sm-4"
+                required
+                style={{ marginBottom: '10px' }}
+                id="CapecitySpindle"
+                defaultValue={''}
+                name="CapecitySpindle"
+                value={CapecitySpindle}
+                onChange={(e) => setCapecitySpindle(e.target.value)}
+              />
+            </div>
+            <div className="col-md-5">
+              <label htmlFor="AxisTravels" style={{ marginBottom: '10px' }}>
+                AxisTravels:
+              </label>
+              <textarea
+                className="form-control col-sm-4"
+                required
+                style={{ marginBottom: '10px' }}
+                id="AxisTravels"
+                defaultValue={''}
+                name="AxisTravels"
+                value={AxisTravels}
+                onChange={(e) => setAxisTravels(e.target.value)}
+              />
+            </div>
+            <div className="col-md-5">
+              <label htmlFor="Ranking" style={{ marginBottom: '10px' }}>
+                Ranking:
+              </label>
+              <textarea
+                className="form-control col-sm-4"
+                required
+                style={{ marginBottom: '10px' }}
+                id="Ranking"
+                defaultValue={''}
+                name="Ranking"
+                value={Ranking}
+                onChange={(e) => setRanking(e.target.value)}
+              />
+            </div>
+            <div className="col-md-5">
+              <label htmlFor="InstallationDate" style={{ marginBottom: '10px' }}>
+                InstallationDate:
+              </label>
+              <textarea
+                className="form-control col-sm-4"
+                required
+                style={{ marginBottom: '10px' }}
+                id="InstallationDate"
+                defaultValue={''}
+                name="InstallationDate"
+                value={InstallationDate}
+                onChange={(e) => setInstallationDate(e.target.value)}
               />
             </div>
           </div>
