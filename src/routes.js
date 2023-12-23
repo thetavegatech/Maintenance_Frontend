@@ -23,6 +23,8 @@ const EditTask = React.lazy(() => import('./views/tasks/EditTask'))
 const Users = React.lazy(() => import('./views/User/Users'))
 // const BreakDownRecord = React.lazy(() => import('./views/breakdown/BreakDownRecord'))
 const BreakDownRecord = React.lazy(() => import('./views/breakdown/BreakDownRecord.js'))
+const AssetRecord = React.lazy(() => import('./views/assetTable/AssetRecord'))
+const TaskRecord = React.lazy(() => import('./views/tasks/TaskRecord'))
 
 // Base
 
@@ -78,6 +80,8 @@ const routes = [
   { path: '/userForm', name: 'UserForm', element: UserForm },
   { path: '/editUser/:id', name: 'EditUser', element: EditUser },
   { path: '/breakDownRecord/:id', name: 'breakdownrecord', element: BreakDownRecord },
+  { path: '/assetRecord/:id', name: 'assetRecord', element: AssetRecord },
+  { path: '/taskRecord/:id', name: 'taskRecord', element: TaskRecord },
 ]
 
 export default routes

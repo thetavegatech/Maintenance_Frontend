@@ -16,8 +16,24 @@ const MyFormComponent = () => {
     Ranking: '',
     InstallationDate: '',
     Location: '',
+    ManufacturingYear: '',
+    Image: '',
   })
   const navigate = useNavigate()
+
+  const [Image, setImage] = useState('')
+  function convertToBse64(e) {
+    console.log(e)
+    let reader = new FileReader()
+    reader.readAsDataURL(e.target.files[0])
+    reader.onload = () => {
+      console.log(reader.result) // base64encoded string
+      setImage(reader.result)
+    }
+    reader.onerror = (err) => {
+      console.log(err)
+    }
+  }
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -37,9 +53,12 @@ const MyFormComponent = () => {
         AxisTravels,
         Ranking,
         Location,
+        // InstallationDate,
         InstallationDate,
+        ManufacturingYear,
+        Image,
       } = formData
-
+      setImage('')
       console.log('Asset Name:', AssetName)
       console.log('MachineNo:', MachineNo)
       console.log('SrNo:', SrNo)
@@ -48,6 +67,8 @@ const MyFormComponent = () => {
       console.log('Make:', Make)
       console.log('Controller:', Controller)
       console.log('PowerRatting:', PowerRatting)
+      console.log('Image:', setImage)
+      console.log('InstallationDate:', InstallationDate)
       // ... continue with other fields
 
       // Your fetch logic here
@@ -69,46 +90,6 @@ const MyFormComponent = () => {
       // navigate(-1)
     }
   }
-
-  // Handle changes in form inputs
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target
-  //   setFormData({ ...formData, [name]: value })
-  // }
-
-  // Calculate the next scheduled date based on frequency
-  // const getNextScheduleDate = (startDate, frequency) => {
-  //   let newDate = new Date(startDate)
-
-  //   switch (frequency.toLowerCase()) {
-  //     case 'daily':
-  //       newDate.setDate(newDate.getDate() + 1)
-  //       break
-  //     case 'weekly':
-  //       newDate.setDate(newDate.getDate() + 7)
-  //       break
-  //     case 'fifteen days':
-  //       newDate.setDate(newDate.getDate() + 15)
-  //       break
-  //     case 'monthly':
-  //       newDate.setMonth(newDate.getMonth() + 1)
-  //       break
-  //     case 'quarterly':
-  //       newDate.setMonth(newDate.getMonth() + 3)
-  //       break
-  //     case 'half year':
-  //       newDate.setMonth(newDate.getMonth() + 6)
-  //       break
-  //     case 'yearly':
-  //       newDate.setFullYear(newDate.getFullYear() + 1)
-  //       break
-  //     default:
-  //       throw new Error('Unsupported frequency')
-  //   }
-
-  //   console.log('New Scheduled Date:', newDate)
-  //   return newDate
-  // }
 
   return (
     // <div
@@ -152,7 +133,7 @@ const MyFormComponent = () => {
           </div>
           <div className="col-md-6">
             <label htmlFor="machineNo" style={{ marginBottom: '10px' }} className="form-label">
-              Machine No:
+              M/C No:
             </label>
             <input
               className="form-control col-sm-6"
@@ -166,7 +147,7 @@ const MyFormComponent = () => {
           </div>
           <div className="col-md-6">
             <label htmlFor="srno" style={{ marginBottom: '10px' }}>
-              Sr No:
+              MKG Sr No:
             </label>
             <input
               required
@@ -178,7 +159,7 @@ const MyFormComponent = () => {
           </div>
           <div className="col-md-6">
             <label htmlFor="assetmachinetype" style={{ marginBottom: '10px' }}>
-              Machine Type:
+              M/C Type:
             </label>
             <input
               required
@@ -280,10 +261,11 @@ const MyFormComponent = () => {
               onChange={(e) => setFormData({ ...formData, Ranking: e.target.value })}
             >
               <option value="">Select an option</option>
-              <option value="A">A</option>
-              <option value="B">B</option>
-              <option value="C">C</option>
-              <option value="D">D</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
             </select>
           </div>
           <div className="col-md-6">
@@ -291,13 +273,37 @@ const MyFormComponent = () => {
               Insatallation Date:
             </label>
             <input
-              required
+              // required
               type="date"
               className="form-control col-sm-6"
-              id="installationDate"
-              onChange={(e) => setFormData({ ...formData, InsatllationDate: e.target.value })}
+              id="InstallationDate"
+              name="InstallationDate"
+              onChange={(e) => setFormData({ ...formData, InstallationDate: e.target.value })}
             />
           </div>
+          <div className="col-md-6">
+            <label htmlFor="manufacturingyear" style={{ marginBottom: '10px' }}>
+              Manufacturing Year:
+            </label>
+            <input
+              required
+              type="year"
+              // min="2000"
+              className="form-control col-sm-6"
+              id="manufacturingyear"
+              onChange={(e) => setFormData({ ...formData, ManufacturingYear: e.target.value })}
+            />
+          </div>
+          {/* <div className="col-md-6">
+            <label htmlFor="attachment">Attachment:</label>
+            <input
+              type="file"
+              id="Image"
+              name="Image"
+              className="form-control col-sm-6"
+              onChange={convertToBse64}
+            ></input>
+          </div> */}
           <div className="col-xs-12">
             <button
               type="submit"

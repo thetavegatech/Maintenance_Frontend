@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import CIcon from '@coreui/icons-react'
 // import './Breakdown.css'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
+import { CButton } from '@coreui/react'
+import { cilPlus } from '@coreui/icons'
 
 export default function BreakDown() {
   const { id } = useParams()
@@ -35,7 +38,6 @@ export default function BreakDown() {
   const [WhyWhyAnalysis, setWhyWhyAnalysis] = useState('')
   const [whyWhyAnalysisList, setWhyWhyAnalysisList] = useState([])
   const [formData, setFormData] = useState({})
-  // const [WhyWhyAnalysis, setWhyWhyAnalysis] = useState([''])
   //   let status = 'pending'
 
   useEffect(() => {
@@ -81,12 +83,27 @@ export default function BreakDown() {
     }
   }
 
+  const [dataArray, setDataArray] = useState([])
+
+  const handleInputChange = (e) => {
+    setWhyWhyAnalysis(e.target.value)
+  }
+
+  const handleButtonClick = () => {
+    setWhyWhyAnalysisList([...whyWhyAnalysisList, WhyWhyAnalysis])
+    setWhyWhyAnalysis('') // Clear the input field after adding to the array
+  }
+
   const Update = (e) => {
     e.preventDefault()
 
     // Create a FormData object to append the file data
     const formData = new FormData()
     formData.append('attachment', attachment)
+
+    // Combine input values into a single field in the form data
+    const fieldData = whyWhyAnalysisList.join(',')
+    setFormData({ WhyWhyAnalysis: fieldData })
 
     // Append other data to the FormData object
     formData.append('MachineName', MachineName)
@@ -109,7 +126,8 @@ export default function BreakDown() {
         // BreakdownTime,
         ActionTaken,
         // WhyWhyAnalysis,
-        WhyWhyAnalysis,
+        // WhyWhyAnalysis,
+        WhyWhyAnalysis: fieldData,
         RootCause,
         PreventiveAction,
         CorrectiveAction,
@@ -126,7 +144,7 @@ export default function BreakDown() {
         whyWhyAnalysisList,
       })
       .then((result) => {
-        console.log(result)
+        console.log(formData)
         setMachineName('')
         setBreakdownStartDate('')
         setBreakdownEndDate('')
@@ -143,8 +161,8 @@ export default function BreakDown() {
         setCorrectiveAction('')
         setCost('')
         setSpareParts('')
-        setWhyWhyAnalysis('')
-        setWhyWhyAnalysisList('')
+        setWhyWhyAnalysis([])
+        setWhyWhyAnalysisList()
         // setAttachment('')
 
         // Assuming you have a navigate function or useHistory from react-router-dom
@@ -154,23 +172,8 @@ export default function BreakDown() {
       .catch((err) => console.log(err))
   }
 
-  const handleWhyWhyAnalysisChange = (e, index) => {
-    const newWhyWhyAnalysis = [...WhyWhyAnalysis]
-    newWhyWhyAnalysis[index] = e.target.value
-    setWhyWhyAnalysis(newWhyWhyAnalysis)
-  }
-
-  const addWhyWhyAnalysisField = () => {
-    setWhyWhyAnalysis([...WhyWhyAnalysis, ''])
-  }
-
-  const removeWhyWhyAnalysisField = (index) => {
-    const newWhyWhyAnalysis = [...WhyWhyAnalysis]
-    newWhyWhyAnalysis.splice(index, 1)
-    setWhyWhyAnalysis(newWhyWhyAnalysis)
-  }
-
   const [attachment, setAttachment] = useState(null)
+  console.log(whyWhyAnalysisList)
 
   return (
     <>
@@ -329,38 +332,70 @@ export default function BreakDown() {
                   onChange={(e) => setCost(e.target.value)}
                 />
               </div>
-              <div className="col-md-6">
+              {/* <div className="col-md-5">
                 <label htmlFor="whyWhy">Why-Why Analysis:</label>
                 <input
                   type="text"
-                  required
-                  className="form-control col-sm-6"
+                  // required
+                  className="form-control col-sm-5"
                   name="WhyWhyAnalysis"
+                  // value={WhyWhyAnalysis}
                   value={WhyWhyAnalysis}
-                  onChange={(e) => setWhyWhyAnalysis(e.target.value)}
+                  onChange={handleInputChange}
+                  // onChange={(e) => setWhyWhyAnalysis(e.target.value)}
                 />
+                <button type="button" onClick={handleButtonClick}>
+                  Add Input
+                </button>
               </div>
-              {/* {WhyWhyAnalysis.map((value, index) => (
-                <div className="col-md-6" key={index}>
-                  <label htmlFor={`whyWhy${index}`}>Why-Why Analysis:</label>
-                  <input
+              <div>
+                <h6>Content:</h6>
+                <ul>
+                  {whyWhyAnalysisList &&
+                    whyWhyAnalysisList.map((item, index) => <li key={index}>{item}</li>)}
+                </ul>
+              </div> */}
+              {/* <button type="button" onClick={handleButtonClick}>
+                Add Input
+              </button> */}
+
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div className="col-md-5" style={{ marginRight: '10px' }}>
+                  <label htmlFor="whyWhy">Why-Why Analysis:</label>
+                  <textarea
+                    style={{ display: '' }}
                     type="text"
-                    required
-                    className="form-control col-sm-6"
-                    name={`WhyWhyAnalysis_${index}`}
-                    value={value}
-                    onChange={(e) => handleWhyWhyAnalysisChange(e, index)}
+                    className="form-control col-sm-5"
+                    name="WhyWhyAnalysis"
+                    value={WhyWhyAnalysis}
+                    onChange={handleInputChange}
                   />
                 </div>
-              ))} */}
-              {/* <button
-                className="btn btn-primary"
-                style={{ width: '20%', marginBottom: '10px' }}
-                type="button"
-                onClick={addWhyWhyAnalysisField}
-              >
-                Add Why-Why Analysis
-              </button> */}
+                {/* <button type="button" onClick={handleButtonClick}>
+                    Add Input
+                  </button> */}
+                <div
+                  style={{
+                    display: '',
+                    marginRight: '15px',
+                    // alignItems: 'center',
+                    marginTop: '10px',
+                  }}
+                >
+                  <CButton>
+                    <CIcon icon={cilPlus} className="ml-2" onClick={handleButtonClick} />
+                  </CButton>
+                </div>
+                {/* </div> */}
+                <div style={{ display: '' }}>
+                  <h6>Add:</h6>
+                  <ul>
+                    {whyWhyAnalysisList &&
+                      whyWhyAnalysisList.map((item, index) => <li key={index}>{item}</li>)}
+                  </ul>
+                </div>
+              </div>
+
               <div className="col-md-6">
                 <label htmlFor="rootCause">Root Cause:</label>
                 <input
@@ -468,6 +503,7 @@ export default function BreakDown() {
                   onChange={convertToBse64}
                 ></input>
               </div>
+
               <div style={{ marginTop: '20px' }}>
                 <button
                   className="btn btn-primary"

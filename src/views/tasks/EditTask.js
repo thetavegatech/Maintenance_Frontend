@@ -39,11 +39,26 @@ export default function EditForm() {
   const [WarrantyProviderManufacturerContact, setWarrantyProviderManufacturerContact] = useState('')
   const [WarrantyTermsandConditions, setWarrantyTermsandConditions] = useState('')
   const [PMDetails, setPMDetails] = useState('')
-
+  const [Image, setImage] = useState('')
   const [startDate, setstartDate] = useState('')
+
   useEffect(() => {
     fetchData()
   }, [])
+
+  function convertToBse64(e) {
+    console.log(e)
+    let reader = new FileReader()
+    reader.readAsDataURL(e.target.files[0])
+    reader.onload = () => {
+      console.log(reader.result) // base64encoded string
+      setImage(reader.result)
+    }
+    reader.onerror = (err) => {
+      console.log(err)
+    }
+  }
+
   const fetchData = async () => {
     try {
       const response = await axios.get(`https://mms-backend-n2zv.onrender.com/getId/${id}`)
@@ -77,7 +92,7 @@ export default function EditForm() {
       setWarrantyProviderManufacturerContact(response.data.WarrantyProviderManufacturerContact)
       setWarrantyTermsandConditions(response.data.WarrantyTermsandConditions)
       setPMDetails(response.data.PMDetails)
-      // setstartDate(response.data.startDate)
+      setImage(response.data.Image)
       setstartDate(formatDate(response.data.startDate))
       // setnextDate(response.data.nextDate)
       setstatus(response.data.status)
@@ -120,6 +135,7 @@ export default function EditForm() {
         ScheduledMaintenanceDatesandIntervals,
         PMDetails,
         status,
+        Image,
         startDate,
         // nextDate,
       })
@@ -134,6 +150,7 @@ export default function EditForm() {
         setScheduledMaintenanceDatesandIntervals('')
         // setnextDate('')
         setstatus('')
+        setImage('')
 
         // Assuming you have a navigate function or useHistory from react-router-dom
         // Navigate back to the previous page
@@ -268,6 +285,14 @@ export default function EditForm() {
                 <option value="Completed">Completed</option>
                 {/* <option value="open">Open</option> */}
               </select>
+            </div>
+            <div className="col-md-6">
+              <label htmlFor="attachment">Attachment:</label>
+              <input
+                type="file"
+                className="form-control col-sm-6"
+                onChange={convertToBse64}
+              ></input>
             </div>
             <button className="btn btn-primary mb-2" style={{ margin: '10px' }} type="submit">
               Save

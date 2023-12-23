@@ -160,6 +160,7 @@ class AssetTable extends React.Component {
                 <th style={{ textAlign: 'center' }}>Location</th>
                 <th style={{ textAlign: 'center' }}>Edit</th>
                 <th style={{ textAlign: 'center' }}>Delete</th>
+                <th>Images</th>
               </tr>
             </CTableHead>
             <tbody>
@@ -193,6 +194,11 @@ class AssetTable extends React.Component {
                       {/* <img src={dlt} alt="" width={30} height={30} /> */}
                       <MdDelete />
                     </button>
+                  </td>
+                  <td style={{ textAlign: 'center' }}>
+                    <NavLink to={`/assetRecord/${asset._id}`}>
+                      <img src={asset.Image} height={50} width={50} />
+                    </NavLink>
                   </td>
                 </tr>
               ))}

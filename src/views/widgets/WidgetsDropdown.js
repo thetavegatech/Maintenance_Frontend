@@ -10,6 +10,7 @@ import {
   CWidgetStatsA,
 } from '@coreui/react'
 import { getStyle } from '@coreui/utils'
+import { useNavigate } from 'react-router-dom'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
@@ -27,6 +28,7 @@ import {
 } from 'recharts'
 
 const WidgetsDropdown = () => {
+  const navigate = useNavigate()
   const [breakdownType, setbreakdownType] = useState([])
 
   const [formattedChartData, setFormattedChartData] = useState([])
@@ -139,35 +141,6 @@ const WidgetsDropdown = () => {
             Operations: 'Some Operations', // Replace with actual data
             BreakdownPhenomenons: 'Some Breakdown Phenomenons', // Replace with actual data
           }
-
-          // const sendSMS = (numbers, sender, pendingTasksCount) => {
-          //   // Formulate a message with the pending task count
-          //   const message = encodeURIComponent(
-          //     'Breakdown For ' +
-          //       pendingTasksCount +
-          //       // 'Date of Breakdown Start' +
-          //       // BreakdownStartDate +
-          //       ' please visit concerned department Details are ',
-          //     // BreakdownPhenomenons +
-          //     // ' - Aurangabad Auto Ancillary',
-          //   )
-
-          //   // Create the API URL
-          //   const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${numbers}&message=${message}`
-
-          //   // Use fetch to send the SMS
-          //   fetch(url)
-          //     .then((response) => response.json())
-          //     .then((data) => {
-          //       console.log('SMS sent successfully:', data)
-          //       console.log(numbers, data1)
-          //     })
-          //     .catch((error) => {
-          //       console.error('Error sending SMS:', error)
-          //     })
-          // }
-          // // You can modify the numbers, sender, and message as needed
-          // sendSMS(formData, numbers, sender, pendingTasks.length)
         }
       } catch (error) {
         console.error('Error fetching tasks: ', error)
@@ -234,14 +207,7 @@ const WidgetsDropdown = () => {
       .then((fetchedTasks) => {
         setAssets(fetchedTasks)
         setTotalTasks(fetchedTasks.length)
-
-        //   // Calculate the count of pending tasks
-        //   const pendingTasks = fetchedTasks.filter((asset) => asset.status === 'Pending')
-        //   setPendingTaskCount(pendingTasks.length)
-        //   const completdTasks = fetchedTasks.filter((asset) => asset.status === 'Completed')
-        //   setcompletdTasksCount(completdTasks.length)
       })
-    // .catch((error) => console.error('Error fetching tasks: ', error))
   }, [])
 
   return (
@@ -266,7 +232,10 @@ const WidgetsDropdown = () => {
                 <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
               </CDropdownToggle>
               <CDropdownMenu>
-                <CDropdownItem>Action</CDropdownItem>
+                {/* Use NavLink to navigate to other page */}
+                <NavLink to="/production" className="nav-link">
+                  <CDropdownItem>View More</CDropdownItem>
+                </NavLink>
               </CDropdownMenu>
             </CDropdown>
           }
@@ -317,10 +286,10 @@ const WidgetsDropdown = () => {
                 <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
               </CDropdownToggle>
               <CDropdownMenu>
-                <CDropdownItem>Action</CDropdownItem>
-                {/* <CDropdownItem>Another action</CDropdownItem>
-                <CDropdownItem>Something else here...</CDropdownItem>
-                <CDropdownItem disabled>Disabled action</CDropdownItem> */}
+                {/* Use NavLink to navigate to other page */}
+                <NavLink to="/assetTable" className="nav-link">
+                  <CDropdownItem>View More</CDropdownItem>
+                </NavLink>
               </CDropdownMenu>
             </CDropdown>
           }
@@ -369,10 +338,10 @@ const WidgetsDropdown = () => {
                 <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
               </CDropdownToggle>
               <CDropdownMenu>
-                <CDropdownItem>Action</CDropdownItem>
-                {/* <CDropdownItem>Another action</CDropdownItem>
-                <CDropdownItem>Something else here...</CDropdownItem>
-                <CDropdownItem disabled>Disabled action</CDropdownItem> */}
+                {/* Use NavLink to navigate to other page */}
+                <NavLink to="/taskTable" className="nav-link">
+                  <CDropdownItem>View More</CDropdownItem>
+                </NavLink>
               </CDropdownMenu>
             </CDropdown>
           }
@@ -445,12 +414,9 @@ const WidgetsDropdown = () => {
                 <CDropdownItem
                   type="submit"
                   onClick={handleButtonClick}
-                  className="btn btn-primary"
+                  // className="btn btn-primary"
                   style={{
-                    marginTop: '20px',
                     fontSize: '16px',
-                    backgroundColor: '#3448db',
-                    marginBottom: '10px',
                   }}
                 >
                   Action

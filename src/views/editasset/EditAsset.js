@@ -20,10 +20,25 @@ export default function EditForm() {
   const [AxisTravels, setAxisTravels] = useState('')
   const [Ranking, setRanking] = useState('')
   const [InstallationDate, setInstallationDate] = useState('')
+  const [ManufacturingYear, setManufacturingYear] = useState('')
 
   const [StartDateofMaintenance, setStartDateofMaintenance] = useState('') // assuming you need this
   // const [ScheduledMaintenanceDatesandIntervals, setScheduledMaintenanceDatesandIntervals] = useState('');
   const [nextScheduledDate, setNextScheduledDate] = useState('')
+  const [Image, setImage] = useState('')
+
+  function convertToBse64(e) {
+    console.log(e)
+    let reader = new FileReader()
+    reader.readAsDataURL(e.target.files[0])
+    reader.onload = () => {
+      console.log(reader.result) // base64encoded string
+      setImage(reader.result)
+    }
+    reader.onerror = (err) => {
+      console.log(err)
+    }
+  }
 
   const someFunction = () => {
     const startDate = this.state.StartDateofMaintenance
@@ -85,6 +100,8 @@ export default function EditForm() {
       setAxisTravels(response.data.AxisTravels)
       setRanking(response.data.Ranking)
       setInstallationDate(response.data.InstallationDate)
+      setManufacturingYear(response.data.ManufacturingYear)
+      setImage(response.data.Image)
     } catch (error) {
       console.error('Error fetching data:', error)
     }
@@ -106,10 +123,13 @@ export default function EditForm() {
         Ranking,
         Location,
         InstallationDate,
+        ManufacturingYear,
+        Image,
       })
       .then((result) => {
         console.log(result)
         setAssetName('')
+        setImage('')
 
         // Assuming you have a navigate function or useHistory from react-router-dom
         // Navigate back to the previous page
@@ -320,9 +340,10 @@ export default function EditForm() {
               <label htmlFor="InstallationDate" style={{ marginBottom: '10px' }}>
                 InstallationDate:
               </label>
-              <textarea
+              <input
                 className="form-control col-sm-4"
-                required
+                type="date"
+                // required
                 style={{ marginBottom: '10px' }}
                 id="InstallationDate"
                 defaultValue={''}
@@ -330,6 +351,29 @@ export default function EditForm() {
                 value={InstallationDate}
                 onChange={(e) => setInstallationDate(e.target.value)}
               />
+            </div>
+            <div className="col-md-5">
+              <label htmlFor="manufacturingyear" style={{ marginBottom: '10px' }}>
+                Manufacturing Year:
+              </label>
+              <input
+                required
+                type="year"
+                className="form-control col-sm-4"
+                id="ManufacturingYear"
+                defaultValue={''}
+                name="ManufacturingYear"
+                value={ManufacturingYear}
+                onChange={(e) => setManufacturingYear(e.target.value)}
+              />
+            </div>
+            <div className="col-md-5">
+              <label htmlFor="attachment">Attachment:</label>
+              <input
+                type="file"
+                className="form-control col-sm-4"
+                onChange={convertToBse64}
+              ></input>
             </div>
           </div>
           <button

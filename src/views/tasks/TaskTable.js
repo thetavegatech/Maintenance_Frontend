@@ -30,7 +30,7 @@ class AssetTable extends React.Component {
 
     // Set the time for 12:00 AM (midnight)
     const twelveAM = new Date()
-    twelveAM.setHours(11, 0, 0, 0)
+    twelveAM.setHours(10, 53, 0, 0)
 
     // Calculate the delay until 12:00 AM
     const delay = twelveAM - new Date()
@@ -311,6 +311,7 @@ class AssetTable extends React.Component {
               <th style={{ textAlign: 'center' }}>Status</th>
               <th style={{ textAlign: 'center' }}>Edit </th>
               <th style={{ textAlign: 'center' }}>Delete</th>
+              <th>Image</th>
             </tr>
           </CTableHead>
           <tbody>
@@ -351,6 +352,11 @@ class AssetTable extends React.Component {
                     {/* <img src={dlt} alt="" width={30} height={30} /> */}
                     <MdDelete />
                   </button>
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  <NavLink to={`/taskRecord/${asset._id}`}>
+                    <img src={asset.Image} height={50} width={50} />
+                  </NavLink>
                 </td>
               </tr>
             ))}
