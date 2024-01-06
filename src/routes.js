@@ -25,6 +25,8 @@ const Users = React.lazy(() => import('./views/User/Users'))
 const BreakDownRecord = React.lazy(() => import('./views/breakdown/BreakDownRecord.js'))
 const AssetRecord = React.lazy(() => import('./views/assetTable/AssetRecord'))
 const TaskRecord = React.lazy(() => import('./views/tasks/TaskRecord'))
+const PMSchedule = React.lazy(() => import('./views/PM/PMSchedule'))
+const EditPM = React.lazy(() => import('./views/PM/EditPM'))
 
 // Base
 
@@ -82,6 +84,8 @@ const routes = [
   { path: '/breakDownRecord/:id', name: 'breakdownrecord', element: BreakDownRecord },
   { path: '/assetRecord/:id', name: 'assetRecord', element: AssetRecord },
   { path: '/taskRecord/:id', name: 'taskRecord', element: TaskRecord },
+  { path: '/pmSchedule', name: 'pmSchedule', element: PMSchedule },
+  { path: '/editPM/:id', name: 'editPM', element: EditPM },
 ]
 
 export default routes

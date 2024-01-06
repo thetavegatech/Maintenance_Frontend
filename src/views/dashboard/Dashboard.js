@@ -66,13 +66,6 @@ import {
   Line,
 } from 'recharts'
 
-import avatar1 from 'src/assets/images/avatars/1.jpg'
-import avatar2 from 'src/assets/images/avatars/2.jpg'
-import avatar3 from 'src/assets/images/avatars/3.jpg'
-import avatar4 from 'src/assets/images/avatars/4.jpg'
-import avatar5 from 'src/assets/images/avatars/5.jpg'
-import avatar6 from 'src/assets/images/avatars/6.jpg'
-
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import BreakDown from './../production/ProductionBD'
@@ -132,26 +125,21 @@ const Dashboard = () => {
     return Object.keys(aggregatedData)
   }
 
-  // const [user, setUser] = useState({
-  //   username: '',
-  //   userRoll: '',
-  // })
-
-  useEffect(() => {
-    // Make an API request to fetch user information
-    axios
-      .get('https://mms-backend-n2zv.onrender.com/getAlluser') // Replace with your API endpoint
-      .then((response) => {
-        const userData = response.data
-        setUser({
-          username: userData.username,
-          userRoll: userData.userRoll,
-        })
-      })
-      .catch((error) => {
-        console.error('Error fetching user info:', error)
-      })
-  }, [])
+  // useEffect(() => {
+  //   // Make an API request to fetch user information
+  //   axios
+  //     .get('https://mms-backend-n2zv.onrender.com/getAlluser') // Replace with your API endpoint
+  //     .then((response) => {
+  //       const userData = response.data
+  //       setUser({
+  //         username: userData.username,
+  //         userRoll: userData.userRoll,
+  //       })
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching user info:', error)
+  //     })
+  // }, [])
 
   useEffect(() => {
     fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
@@ -229,25 +217,10 @@ const Dashboard = () => {
 
   return (
     <>
-      <div style={{ marginLeft: '70%' }}>
-        {/* <h5>Welcome to the Dashboard, {username}!</h5> */}
-        {/* <p>User Role: {userRoll}</p> */}
-      </div>
+      <div style={{ marginLeft: '70%' }}></div>
       <WidgetsDropdown />
       <CCard className="mb-4"></CCard>
-      {/* <div>
-        <p>Username: {user.username}</p>
-        <p>User Roll: {user.userRoll}</p>
-      </div> */}
       <CRow>
-        {/* <CCol xs={12}>
-          <DocsCallout
-            name="Chart"
-            href="components/chart"
-            content="React wrapper component for Chart.js 3.0, the most popular charting library."
-          />
-        </CCol> */}
-
         <CCol xs={12} lg={6}>
           <CCard className="mb-4">
             <CCardHeader>BreakDown Type Wise Chart</CCardHeader>

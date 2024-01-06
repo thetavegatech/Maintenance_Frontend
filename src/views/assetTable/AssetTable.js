@@ -82,14 +82,13 @@ class AssetTable extends React.Component {
     // Filter assets based on the search query
     const filteredAssets = this.state.assets.filter((asset) => {
       const taskLocationLower = (asset.Location || '').toLowerCase()
-      // const taskDescriptionLower = (asset.TaskDescription || '').toLowerCase()
+      const taskDescriptionLower = (asset.AssetName || '').toLowerCase()
       // const scheduledMaintenanceLower = (
       //   asset.ScheduledMaintenanceDatesandIntervals || ''
       // ).toLowerCase()
       // const statusLower = (asset.status || '').toLowerCase()
 
-      return taskLocationLower.includes(query)
-      // taskDescriptionLower.includes(query) ||
+      return taskLocationLower.includes(query) || taskDescriptionLower.includes(query)
       // scheduledMaintenanceLower.includes(query) ||
       // statusLower.includes(query)
     })
@@ -138,7 +137,7 @@ class AssetTable extends React.Component {
             <span role="img" aria-label="search-icon"></span>
           </label>
           <input
-            placeholder="Search by Location"
+            placeholder="Search by Asset/Location"
             style={{
               marginBottom: '10px',
               padding: '8px',

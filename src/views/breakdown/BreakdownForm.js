@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { CTimePicker } from '@coreui/react'
 import TimePicker from 'react-time-picker'
+import { useDispatch, useSelector } from 'react-redux'
 import 'react-datepicker/dist/react-datepicker.css'
 
 export default function BreakDown() {
@@ -14,6 +15,12 @@ export default function BreakDown() {
   const [selected, setSelected] = useState(null)
   const [isFullTime, setIsFullTime] = useState(false)
   const [selectedTime, setSelectedTime] = useState('12:00')
+  const [value, setValue] = useState('')
+  const [filteredAssetNames, setFilteredAssetNames] = useState([])
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false)
+
+  const userrole = useSelector((state) => state.auth.userInfo?.role) || ''
+  const username = useSelector((state) => state.auth.userInfo?.name)
 
   useEffect(() => {
     // Fetch user data from the server
@@ -76,6 +83,41 @@ export default function BreakDown() {
   const [assetNames, setAssetNames] = useState([])
   // const [isFullTime, setIsFullTime] = useState(false)
 
+  const onChange = (event) => {
+    const searchValue = event.target.value
+    setFormData({
+      ...formData,
+      MachineName: event.target.value,
+    })
+    onSearch(searchValue, assetNames, setFilteredAssetNames)
+    // onSearch(searchValue, machineNames, setFilteredMachineNames)
+  }
+
+  const onSearch = (searchTerm, items, setFilteredItems) => {
+    setValue(searchTerm)
+
+    // Filter names based on the search term
+    const filteredItems = items.filter((item) =>
+      item.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
+
+    console.log('Search Term:', searchTerm)
+    console.log('Filtered Machines:', filteredAssetNames)
+
+    setFilteredItems(filteredItems)
+    setIsDropdownVisible(filteredItems.length > 0)
+  }
+
+  const handleOptionSelect = (selectedValue) => {
+    setFormData({
+      ...formData,
+      AssetName: selectedValue,
+      MachineName: selectedValue,
+    })
+
+    setIsDropdownVisible(false) // Hide the dropdown after selecting an option
+  }
+
   useEffect(() => {
     // Fetch asset names from 'http://localhost:5000/getAllData'
     fetch('https://mms-backend-n2zv.onrender.com/api/assets')
@@ -88,21 +130,6 @@ export default function BreakDown() {
       })
       .catch((error) => {
         console.error('Error fetching asset names: ', error)
-      })
-  }, [])
-
-  useEffect(() => {
-    // Fetch the breakdown data from your API
-    fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
-      .then((res) => res.json())
-      .then((data) => {
-        // Extract unique machine names from the breakdown data
-        const uniqueMachineNames = [...new Set(data.map((item) => item.MachineName))]
-        // Set the machineNames state with the unique machine names
-        setMachineNames(uniqueMachineNames)
-      })
-      .catch((error) => {
-        console.error('Error fetching breakdown data: ', error)
       })
   }, [])
 
@@ -209,18 +236,19 @@ export default function BreakDown() {
   const data2 = 'test'
   const sender = 'AAABRD'
 
-  const sendSMS = (formData, selectedUsers) => {
+  const sendSMS = (formData, selectedUsers, username) => {
     const { MachineName, BreakdownStartDate, Shift, LineName, Operations, BreakdownPhenomenons } =
       formData
     // Formulate a simple message
     const message = encodeURIComponent(
       'Breakdown For ' +
         MachineName +
-        // 'Date of Breakdown Start' +
-        // BreakdownStartDate +
         ' please visit concerned department Details are ' +
         BreakdownPhenomenons +
+        ' - send by- ' +
+        username +
         ' - Aurangabad Auto Ancillary',
+      // 'by' + username,
     )
 
     const phoneNumbers = usernos.map((user) => user.phoneNumber).join(',')
@@ -247,7 +275,7 @@ export default function BreakDown() {
 
   const handleButtonClick = () => {
     // Call the SMS sending function
-    sendSMS(formData, selectedUsers)
+    sendSMS(formData, selectedUsers, username)
   }
   return (
     <>
@@ -275,7 +303,7 @@ export default function BreakDown() {
       >
         <form action="" method="post" onSubmit={handleSubmit}>
           <div className="row g-2">
-            <div className="col-md-6">
+            {/* <div className="col-md-6">
               <label htmlFor="machineName" style={{ marginBottom: '10px', fontSize: '16px' }}>
                 Machine Name:
               </label>
@@ -288,13 +316,78 @@ export default function BreakDown() {
                 style={{ marginBottom: '10px' }}
               >
                 <option value="">Select a machine</option>
-                {/* Populate the dropdown options with asset names */}
+
                 {assetNames.map((asset, index) => (
                   <option key={index} value={asset}>
                     {asset}
                   </option>
                 ))}
               </select>
+            </div> */}
+            <div className="col-md-6">
+              <label htmlFor="assetName" style={{ marginBottom: '10px', fontSize: '16px' }}>
+                Machine Name:
+              </label>
+              <div style={{ position: 'relative' }}>
+                <input
+                  type="text"
+                  value={formData.AssetName}
+                  className="form-control col-md-6"
+                  onChange={onChange}
+                />
+                <button onClick={() => onSearch(value, assetNames, setFilteredAssetNames)}>
+                  Search
+                </button>
+
+                {filteredAssetNames.length > 0 && (
+                  <div
+                    className="dropdown"
+                    style={{
+                      position: 'absolute',
+                      top: '100%',
+                      left: 0,
+                      width: '100%',
+                      border: '1px solid #ccc',
+                      borderRadius: '4px',
+                      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                      backgroundColor: '#fff',
+                      zIndex: 1,
+                    }}
+                  >
+                    {isDropdownVisible && (
+                      <div
+                        className="dropdown"
+                        style={{
+                          position: 'absolute',
+                          top: '100%',
+                          left: 0,
+                          width: '100%',
+                          border: '1px solid #ccc',
+                          borderRadius: '4px',
+                          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                          backgroundColor: '#fff',
+                          zIndex: 1,
+                        }}
+                      >
+                        {filteredAssetNames.map((item, index) => (
+                          <div
+                            key={index}
+                            onClick={() => handleOptionSelect(item)}
+                            className="dropdown-row"
+                            style={{
+                              cursor: 'pointer',
+                              padding: '10px',
+                              borderBottom: '1px solid #eee',
+                            }}
+                          >
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
             <div className="col-md-6">
               <label

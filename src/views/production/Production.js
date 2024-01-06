@@ -24,6 +24,8 @@ class BDList extends React.Component {
     message: '',
     searchQuery: '',
     isHovered: false,
+    startDate: '',
+    endDate: '',
   }
 
   handleMouseEnter = () => {
@@ -38,16 +40,35 @@ class BDList extends React.Component {
     const query = e.target.value.toLowerCase()
 
     // Filter assets based on the search query
+    // const filteredAssets = this.state.breakdowns.filter((breakDown) => {
+    // const taskLocationLower = (breakDown.Location || '').toLowerCase()
+
     const filteredAssets = this.state.breakdowns.filter((breakDown) => {
       const taskLocationLower = (breakDown.Location || '').toLowerCase()
+      const startDateMatch =
+        !this.state.startDate ||
+        (breakDown.BreakdownStartDate && breakDown.BreakdownStartDate >= this.state.startDate)
+      const endDateMatch =
+        !this.state.endDate ||
+        (breakDown.BreakdownStartDate && breakDown.BreakdownStartDate <= this.state.endDate)
 
-      return taskLocationLower.includes(query)
+      // return taskLocationLower.includes(query)
+      return (
+        taskLocationLower.includes(query) && startDateMatch && endDateMatch
+        // ... other conditions if needed
+      )
     })
 
     this.setState({
       filteredAssets,
       // searchLocation: e.target.value,
       searchQuery: query,
+    })
+  }
+
+  handleDateChange = (field, value) => {
+    this.setState({
+      [field]: value,
     })
   }
 
@@ -127,6 +148,23 @@ class BDList extends React.Component {
         <div className="container">
           {/* </div> */}
           {/* <div className="table-controls"> */}
+          <div style={{ display: 'flex', marginBottom: '10px', marginLeft: '60% ' }}>
+            <label htmlFor="startDate">Start Date: </label>
+            <input
+              type="date"
+              id="startDate"
+              value={this.state.startDate}
+              onChange={(e) => this.handleDateChange('startDate', e.target.value)}
+              style={{ marginRight: '10px' }}
+            />
+            <label htmlFor="endDate">End Date: </label>
+            <input
+              type="date"
+              id="endDate"
+              value={this.state.endDate}
+              onChange={(e) => this.handleDateChange('endDate', e.target.value)}
+            />
+          </div>
           <div>
             <NavLink to="/breakdownForm">
               {' '}

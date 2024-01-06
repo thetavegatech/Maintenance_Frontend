@@ -73,6 +73,15 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: 'PMTasks',
+    to: '/pmSchedule',
+    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+    },
+  },
+  {
+    component: CNavItem,
     name: 'Logout',
     to: '/logout',
     icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,

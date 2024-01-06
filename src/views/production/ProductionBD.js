@@ -93,6 +93,12 @@ export default function BreakDown() {
     setWhyWhyAnalysisList([...whyWhyAnalysisList, WhyWhyAnalysis])
     setWhyWhyAnalysis('') // Clear the input field after adding to the array
   }
+  // const handleButtonClick = () => {
+  //   if (WhyWhyAnalysis.trim() !== '') {
+  //     setWhyWhyAnalysisList([...whyWhyAnalysisList, WhyWhyAnalysis])
+  //     setWhyWhyAnalysis('') // Clear the input field after adding to the list
+  //   }
+  // }
 
   const Update = (e) => {
     e.preventDefault()
@@ -163,6 +169,8 @@ export default function BreakDown() {
         setSpareParts('')
         setWhyWhyAnalysis([])
         setWhyWhyAnalysisList()
+        console.log('Form submitted!')
+        console.log('whyWhyAnalysisList:', whyWhyAnalysisList)
         // setAttachment('')
 
         // Assuming you have a navigate function or useHistory from react-router-dom
@@ -296,10 +304,12 @@ export default function BreakDown() {
                   <option value="Mechanical">Mechanical</option>
                   <option value="Electrical">Electrical</option>
                   <option value="Electronic">Electronic</option>
+                  <option value="Hydrolic">Hydrolic</option>
+                  <option value="Neumatic">Neumatic</option>
                   <option value="Production Setting">Production Setting</option>
                 </select>
               </div>
-              <div className="col-md-6">
+              {/* <div className="col-md-6">
                 <label htmlFor="occ">Detect OCC:</label>
                 <input
                   type="text"
@@ -309,7 +319,7 @@ export default function BreakDown() {
                   value={DetectOCC}
                   onChange={(e) => setOCC(e.target.value)}
                 />
-              </div>
+              </div> */}
               <div className="col-md-6">
                 <label htmlFor="spareparts">Spare Parts:</label>
                 <input
@@ -321,7 +331,7 @@ export default function BreakDown() {
                   onChange={(e) => setSpareParts(e.target.value)}
                 />
               </div>
-              <div className="col-md-6">
+              {/* <div className="col-md-6">
                 <label htmlFor="cost">Cost:</label>
                 <input
                   type="text"
@@ -331,7 +341,7 @@ export default function BreakDown() {
                   value={Cost}
                   onChange={(e) => setCost(e.target.value)}
                 />
-              </div>
+              </div> */}
               {/* <div className="col-md-5">
                 <label htmlFor="whyWhy">Why-Why Analysis:</label>
                 <input
@@ -371,9 +381,6 @@ export default function BreakDown() {
                     onChange={handleInputChange}
                   />
                 </div>
-                {/* <button type="button" onClick={handleButtonClick}>
-                    Add Input
-                  </button> */}
                 <div
                   style={{
                     display: '',
@@ -390,12 +397,24 @@ export default function BreakDown() {
                 <div style={{ display: '' }}>
                   <h6>Add:</h6>
                   <ul>
-                    {whyWhyAnalysisList &&
-                      whyWhyAnalysisList.map((item, index) => <li key={index}>{item}</li>)}
+                    {whyWhyAnalysisList.map((item, index) => (
+                      <li key={index}>{`WhyWhy${index + 1}: ${item}`}</li>
+                    ))}
                   </ul>
                 </div>
               </div>
 
+              <div className="col-md-6">
+                <label htmlFor="cost">Cost:</label>
+                <input
+                  type="text"
+                  required
+                  name="Cost"
+                  className="form-control col-sm-6"
+                  value={Cost}
+                  onChange={(e) => setCost(e.target.value)}
+                />
+              </div>
               <div className="col-md-6">
                 <label htmlFor="rootCause">Root Cause:</label>
                 <input

@@ -57,6 +57,7 @@ const MyFormComponent = () => {
         InstallationDate,
         ManufacturingYear,
         Image,
+        // Image,
       } = formData
       setImage('')
       console.log('Asset Name:', AssetName)
@@ -67,7 +68,7 @@ const MyFormComponent = () => {
       console.log('Make:', Make)
       console.log('Controller:', Controller)
       console.log('PowerRatting:', PowerRatting)
-      console.log('Image:', setImage)
+      console.log('Image:', Image)
       console.log('InstallationDate:', InstallationDate)
       // ... continue with other fields
 
@@ -92,18 +93,6 @@ const MyFormComponent = () => {
   }
 
   return (
-    // <div
-    //   className="container-lg"
-    //   style={{
-    //     border: '2px solid #ccc',
-    //     backgroundColor: '',
-    //     padding: '20px',
-    //     borderRadius: '10px',
-    //     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    //     height: '50%',
-    //     width: '80%',
-    //   }}
-    // >
     <div
       className="container"
       style={{
@@ -294,7 +283,7 @@ const MyFormComponent = () => {
               onChange={(e) => setFormData({ ...formData, ManufacturingYear: e.target.value })}
             />
           </div>
-          {/* <div className="col-md-6">
+          <div className="col-md-6">
             <label htmlFor="attachment">Attachment:</label>
             <input
               type="file"
@@ -303,7 +292,7 @@ const MyFormComponent = () => {
               className="form-control col-sm-6"
               onChange={convertToBse64}
             ></input>
-          </div> */}
+          </div>
           <div className="col-xs-12">
             <button
               type="submit"

@@ -222,11 +222,14 @@ export default function BreakDown() {
                 >
                   <option value="">Select an option</option>
                   <option value="Mechanical">Mechanical</option>
-                  <option value="Engeenieer">Engeenieer</option>
-                  <option value="Production">Production</option>
+                  <option value="Electrical">Electrical</option>
+                  <option value="Electronic">Electronic</option>
+                  <option value="Hydrolic">Hydrolic</option>
+                  <option value="Neumatic">Neumatic</option>
+                  <option value="Production Setting">Production Setting</option>
                 </select>
               </div>
-              <div className="col-md-4">
+              {/* <div className="col-md-4">
                 <label htmlFor="occ">Detect OCC:</label>
                 <input
                   type="text"
@@ -236,7 +239,7 @@ export default function BreakDown() {
                   value={DetectOCC}
                   onChange={(e) => setDetectOCC(e.target.value)}
                 />
-              </div>
+              </div> */}
               <div className="col-md-4">
                 <label htmlFor="breakdownStartTime">Breakdown Start Time:</label>
                 <input

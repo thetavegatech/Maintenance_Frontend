@@ -3,6 +3,7 @@ import React from 'react'
 import axios from 'axios'
 import { FaEdit } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
+import { CInput } from '@coreui/react'
 import {
   CAvatar,
   CButton,
@@ -30,6 +31,8 @@ class BDList extends React.Component {
     message: '',
     searchQuery: '',
     isHovered: false,
+    startDate: '',
+    endDate: '',
   }
 
   handleMouseEnter = () => {
@@ -44,18 +47,30 @@ class BDList extends React.Component {
     const query = e.target.value.toLowerCase()
 
     // Filter assets based on the search query
+    // const filteredAssets = this.state.breakdowns.filter((breakDown) => {
+    // const taskLocationLower = (breakDown.Location || '').toLowerCase()
+    // const taskDescriptionLower = (asset.TaskDescription || '').toLowerCase()
+    // const scheduledMaintenanceLower = (
+    //   asset.ScheduledMaintenanceDatesandIntervals || ''
+    // ).toLowerCase()
+    // const statusLower = (asset.status || '').toLowerCase()
+
     const filteredAssets = this.state.breakdowns.filter((breakDown) => {
       const taskLocationLower = (breakDown.Location || '').toLowerCase()
-      // const taskDescriptionLower = (asset.TaskDescription || '').toLowerCase()
-      // const scheduledMaintenanceLower = (
-      //   asset.ScheduledMaintenanceDatesandIntervals || ''
-      // ).toLowerCase()
-      // const statusLower = (asset.status || '').toLowerCase()
-
-      return taskLocationLower.includes(query)
+      const startDateMatch =
+        !this.state.startDate ||
+        (breakDown.BreakdownStartDate && breakDown.BreakdownStartDate >= this.state.startDate)
+      const endDateMatch =
+        !this.state.endDate ||
+        (breakDown.BreakdownStartDate && breakDown.BreakdownStartDate <= this.state.endDate)
+      // return taskLocationLower.includes(query)
       // taskDescriptionLower.includes(query) ||
       // scheduledMaintenanceLower.includes(query) ||
       // statusLower.includes(query)
+      return (
+        taskLocationLower.includes(query) && startDateMatch && endDateMatch
+        // ... other conditions if needed
+      )
     })
 
     this.setState({
@@ -89,6 +104,12 @@ class BDList extends React.Component {
     this.setState({ selectedLocation: event.target.value })
   }
 
+  handleDateChange = (field, value) => {
+    this.setState({
+      [field]: value,
+    })
+  }
+
   render() {
     const { breakdowns, filteredAssets, searchLocation, searchQuery } = this.state
     const openBreakdowns = breakdowns.filter((breakdown) => breakdown.Status === 'open')
@@ -100,6 +121,24 @@ class BDList extends React.Component {
 
     return (
       <>
+        <div style={{ display: 'flex', marginBottom: '10px' }}>
+          <label htmlFor="startDate">Start Date: </label>
+          <input
+            type="date"
+            id="startDate"
+            value={this.state.startDate}
+            onChange={(e) => this.handleDateChange('startDate', e.target.value)}
+            style={{ marginRight: '10px' }}
+          />
+          <label htmlFor="endDate">End Date: </label>
+          <input
+            type="date"
+            id="endDate"
+            value={this.state.endDate}
+            onChange={(e) => this.handleDateChange('endDate', e.target.value)}
+          />
+        </div>
+
         <div className="container">
           <label htmlFor="searchTask" style={{ marginLeft: '0%' }}>
             <span role="img" aria-label="search-icon"></span>

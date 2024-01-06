@@ -99,11 +99,6 @@ const MyFormComponent = () => {
     }
   }
 
-  // Handle changes in form inputs
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target
-  //   setFormData({ ...formData, [name]: value })
-  // }
   const someFunction = () => {
     const startDate = this.state.StartDateofMaintenance
     const frequency = this.state.ScheduledMaintenanceDatesandIntervals
@@ -123,40 +118,6 @@ const MyFormComponent = () => {
       NextScheduledDate: nextDate.toISOString().split('T')[0],
     })
   }
-
-  // Calculate the next scheduled date based on frequency
-  // const getNextScheduleDate = (startDate, frequency) => {
-  //   let newDate = new Date(startDate)
-
-  //   switch (frequency.toLowerCase()) {
-  //     case 'daily':
-  //       newDate.setDate(newDate.getDate() + 1)
-  //       break
-  //     case 'weekly':
-  //       newDate.setDate(newDate.getDate() + 7)
-  //       break
-  //     case 'fifteen days':
-  //       newDate.setDate(newDate.getDate() + 15)
-  //       break
-  //     case 'monthly':
-  //       newDate.setMonth(newDate.getMonth() + 1)
-  //       break
-  //     case 'quarterly':
-  //       newDate.setMonth(newDate.getMonth() + 3)
-  //       break
-  //     case 'half year':
-  //       newDate.setMonth(newDate.getMonth() + 6)
-  //       break
-  //     case 'yearly':
-  //       newDate.setFullYear(newDate.getFullYear() + 1)
-  //       break
-  //     default:
-  //       throw new Error('Unsupported frequency')
-  //   }
-
-  //   console.log('New Scheduled Date:', newDate)
-  //   return newDate
-  // }
 
   const getNextScheduleDate = (startDate, frequency) => {
     let newDate = new Date(startDate)
@@ -252,6 +213,7 @@ const MyFormComponent = () => {
                 className="form-control col-sm-6"
                 id="AssetName"
                 onChange={handleAssetNameChange}
+                style={{ maxHeight: '50px', overflowY: 'auto' }}
               >
                 <option value="">Select an asset</option>
                 {assetNames.map((name) => (

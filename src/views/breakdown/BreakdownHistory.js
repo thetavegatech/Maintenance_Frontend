@@ -20,6 +20,8 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
+import { format } from 'date-fns'
+import * as XLSX from 'xlsx'
 
 class BreakdownHistory extends React.Component {
   state = {
@@ -149,6 +151,42 @@ class BreakdownHistory extends React.Component {
     this.setState({ mtbf })
   }
 
+  exportToExcel = () => {
+    const { breakdowns } = this.state
+    // const dataToExport = searchQuery ? filteredBreakdowns : breakdowns
+    const dataToExport = breakdowns
+    const exportData = dataToExport.map((item) => ({
+      Date: format(new Date(item.BreakdownStartDate), 'HH:mm:ss dd-MM-yyyy'),
+      MachineName: item.MachineName,
+      BreakdownStartDate: item.BreakdownStartDate,
+      BreakdownType: item.BreakdownType,
+      BreakdownEndDate: item.BreakdownEndDate,
+      Shift: item.Shift,
+      Operations: item.Operations,
+      BreakdownPhenomenons: item.BreakdownPhenomenons,
+      WhyWhyAnalysis: item.WhyWhyAnalysis,
+      OCC: item.OCC,
+      RootCause: item.RootCause,
+      PreventiveAction: item.PreventiveAction,
+      CorrectiveAction: item.CorrectiveAction,
+      TargetDate: item.TargetDate,
+      Responsibility: item.Responsibility,
+      HD: item.HD,
+      Status: item.Status,
+      SpareParts: item.SpareParts,
+      Cost: item.Cost,
+      Location: item.Location,
+      LineName: item.LineName,
+      Remark: item.Remark,
+      // Status: item.Status,
+    }))
+
+    const ws = XLSX.utils.json_to_sheet(exportData)
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, ws, 'ReportData')
+    XLSX.writeFile(wb, 'reportdata.xlsx')
+  }
+
   render() {
     // const { breakdowns, selectedMachine, mttr } = this.state;
     const { breakdowns, selectedMachine, mtbf, mttr, filteredAssets, searchLocation, searchQuery } =
@@ -164,29 +202,39 @@ class BreakdownHistory extends React.Component {
     return (
       <>
         <div className="container" style={{ marginTop: '0px' }}>
-          <label htmlFor="searchTask" style={{ marginLeft: '0%' }}>
-            <span role="img" aria-label="search-icon"></span>
-          </label>
-          <select
-            value={this.searchQuery}
-            onChange={this.handleSearchChange}
-            style={{
-              display: 'flex',
-              marginBottom: '0px',
-              padding: '8px',
-              border: '1px solid',
-              borderRadius: '4px',
-              transition: 'border-color 0.3s ease-in-out',
-              backgroundColor: isHovered ? '#f0f0f0' : 'transparent',
-            }}
-            onMouseEnter={this.handleMouseEnter}
-            onMouseLeave={this.handleMouseLeave}
-          >
-            <option>Search by Plant</option>
-            <option value="Plant 1">Plant 1</option>
-            <option value="Plant 2">Plant 2</option>
-            <option value="Plant 3">Plant 3</option>
-          </select>
+          <div>
+            <label htmlFor="searchTask" style={{ marginLeft: '0%' }}>
+              <span role="img" aria-label="search-icon"></span>
+            </label>
+            <select
+              value={this.searchQuery}
+              onChange={this.handleSearchChange}
+              style={{
+                // display: 'flex',
+                marginBottom: '0px',
+                padding: '8px',
+                border: '1px solid',
+                borderRadius: '4px',
+                transition: 'border-color 0.3s ease-in-out',
+                backgroundColor: isHovered ? '#f0f0f0' : 'transparent',
+              }}
+              onMouseEnter={this.handleMouseEnter}
+              onMouseLeave={this.handleMouseLeave}
+            >
+              <option>Search by Plant</option>
+              <option value="Plant 1">Plant 1</option>
+              <option value="Plant 2">Plant 2</option>
+              <option value="Plant 3">Plant 3</option>
+            </select>
+            <CButton
+              color="info"
+              type="button"
+              style={{ margin: '1rem' }}
+              onClick={this.exportToExcel}
+            >
+              Export to Excel
+            </CButton>
+          </div>
           <CTable
             bordered
             striped

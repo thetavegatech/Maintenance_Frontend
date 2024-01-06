@@ -26,22 +26,20 @@ import {
   LineChart,
   Line,
 } from 'recharts'
+import { Date } from 'core-js'
 
 const WidgetsDropdown = () => {
   const navigate = useNavigate()
   const [breakdownType, setbreakdownType] = useState([])
-
   const [formattedChartData, setFormattedChartData] = useState([])
-
   const [assets, setAssets] = useState([])
   const [totalTasks, setTotalTasks] = useState(0)
-
   const [breakdowns, setBreakdown] = useState([])
   const [totalBreakdown, setTotalBreakdown] = useState(0)
   const [pendingTaskCount, setPendingTaskCount] = useState(0)
   const [completdTasksCount, setcompletdTasksCount] = useState(0)
-
   const [todaysTaskCount, setTodaysTaskCount] = useState(0)
+  const [completedTasksCount, setCompletedTasksCount] = useState(0)
   const today = new Date()
   const formattedToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(
     2,
@@ -119,28 +117,22 @@ const WidgetsDropdown = () => {
         setAssets(fetchedTasks)
         setTotalTasks(fetchedTasks.length)
 
-        // Calculate the count of pending tasks
         const pendingTasks = fetchedTasks.filter((asset) => asset.status === 'Pending')
         setPendingTaskCount(pendingTasks.length)
-        const completedTasks = fetchedTasks.filter((asset) => asset.status === 'Completed')
-        setcompletdTasksCount(completedTasks.length)
 
-        // Check if it's the end of the month
+        const completedTasks = fetchedTasks.filter((asset) => asset.status === 'Completed')
+        setCompletedTasksCount(completedTasks.length)
+
         const currentDate = new Date()
-        const isEndOfMonth =
-          currentDate.getDate() ===
-          new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate()
+        const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
+        const isEndOfMonth = currentDate.getDate() === lastDayOfMonth.getDate()
 
         if (isEndOfMonth && pendingTasks.length > 0) {
-          // Send SMS for pending tasks
-          const formData = {
-            MachineName: 'ExampleMachine', // Replace with actual data
-            BreakdownStartDate: '2023-01-01', // Replace with actual data
-            Shift: 'Morning', // Replace with actual data
-            LineName: 'Production Line', // Replace with actual data
-            Operations: 'Some Operations', // Replace with actual data
-            BreakdownPhenomenons: 'Some Breakdown Phenomenons', // Replace with actual data
-          }
+          const formData = {}
+          const numbers = '7020804148'
+          const message = `Pending tasks: ${pendingTaskCount}. Please check it out.`
+          const encodedMessage = encodeURIComponent(message)
+          sendSMS(formData, numbers, message)
         }
       } catch (error) {
         console.error('Error fetching tasks: ', error)
@@ -150,47 +142,59 @@ const WidgetsDropdown = () => {
     fetchData()
   }, [])
 
-  const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
-  const numbers = '7020804148' // Replace with the phone numbers
-  const data1 = 'pending tasks'
-  const data2 = 'Please visit the concerned department for details.'
-  const sender = 'AAABRD'
+  // const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
+  // const numbers = '7020804148' // Replace with the phone numbers
+  // const data1 = 'pending tasks'
+  // const data2 = 'Please visit the concerned department for details.'
+  // const sender = 'AAABRD'
 
-  const sendSMS = (formData, numbers, sender, pendingTasksCount) => {
-    // Formulate a message with the pending task count
-    const message = encodeURIComponent(
-      'Breakdown For ' +
-        pendingTasksCount +
-        // 'Date of Breakdown Start' +
-        // BreakdownStartDate +
-        ' please visit concerned department Details are ',
-      // BreakdownPhenomenons +
-      // ' - Aurangabad Auto Ancillary',
-    )
+  // const sendSMS = (formData, numbers, sender, pendingTasksCount) => {
+  //   // Formulate a message with the pending task count
+  //   const message = encodeURIComponent(
+  //     'Breakdown For ' + pendingTasksCount + ' please visit concerned department Details are ',
+  //   )
 
-    // Create the API URL
-    const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${7020804148}&message=${message}`
+  //   // Create the API URL
+  //   const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${7020804148}&message=${message}`
 
-    // Use fetch to send the SMS
+  //   // Use fetch to send the SMS
+  //   fetch(url)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log('SMS sent successfully:', data)
+  //       console.log(numbers, data1)
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error sending SMS:', error)
+  //     })
+  // }
+
+  const sendSMS = (formData, numbers, message) => {
+    const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
+    const sender = 'AAABRD'
+    // const message = `Pending tasks: ${pendingTaskCount}. Please check it out.`
+    // const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${numbers}&message=${message}`
+    const template = encodeURIComponent(`Hello your message is `)
+    const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${numbers}&message=${template}`
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
         console.log('SMS sent successfully:', data)
-        console.log(numbers, data1)
+        console.log(numbers, template)
       })
       .catch((error) => {
         console.error('Error sending SMS:', error)
+        console.log(numbers)
       })
   }
 
-  const formData = {} // Replace with actual form data
-  const pendingTasksCount = 3 // Replace with the actual pending tasks count
-  // sendSMS(formData, numbers, sender, pendingTasksCount)
-
   const handleButtonClick = () => {
-    // Call the SMS sending function
-    sendSMS(numbers)
+    const numbers = '7020804148'
+    // const message = `Pending tasks: ${pendingTaskCount}. Please check it out.`
+    // const encodedMessage = encodeURIComponent(message)
+    sendSMS({}, numbers)
   }
+
   useEffect(() => {
     fetch(`https://mms-backend-n2zv.onrender.com/getAllData?nextDate=${formattedToday}`)
       .then((response) => response.json())
@@ -325,7 +329,7 @@ const WidgetsDropdown = () => {
           color="warning"
           value={
             <>
-              {completdTasksCount}
+              {completedTasksCount}
               <span className="fs-6 fw-normal">
                 <CIcon icon={cilArrowTop} />
               </span>
