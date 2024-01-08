@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { useParams } from 'react-router-dom'
 
 const MyFormComponent = () => {
   // Define state variables for form inputs
@@ -34,6 +36,37 @@ const MyFormComponent = () => {
       console.log(err)
     }
   }
+  const { id } = useParams()
+  const uploadImage = (e, id) => {
+    e.preventDefault()
+    axios
+      .put(`https://mms-backend-n2zv.onrender.com/api/assets/${id}`, {
+        // AssetName,
+        // MachineNo,
+        // SrNo,
+        // MachineType,
+        // Make,
+        // Controller,
+        // PowerRatting,
+        // CapecitySpindle,
+        // AxisTravels,
+        // Ranking,
+        // Location,
+        // InstallationDate,
+        // ManufacturingYear,
+        Image,
+      })
+      .then((result) => {
+        console.log(result)
+        // setAssetName('')
+        setImage('')
+
+        // Assuming you have a navigate function or useHistory from react-router-dom
+        // Navigate back to the previous page
+        navigate(-1)
+      })
+      .catch((err) => console.log(err))
+  }
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -59,7 +92,7 @@ const MyFormComponent = () => {
         Image,
         // Image,
       } = formData
-      setImage('')
+      // setImage('')
       console.log('Asset Name:', AssetName)
       console.log('MachineNo:', MachineNo)
       console.log('SrNo:', SrNo)
@@ -82,10 +115,12 @@ const MyFormComponent = () => {
         },
         body: JSON.stringify(formData),
       })
-      navigate(-1)
+      // navigate(-1)
 
       const data = await response.json()
       console.log('Response from server:', data)
+      uploadImage(e, data._id)
+      navigate(-1)
     } catch (error) {
       console.error('Error:', error)
       // navigate(-1)

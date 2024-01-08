@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { CTimePicker } from '@coreui/react'
 import TimePicker from 'react-time-picker'
-import { useDispatch, useSelector } from 'react-redux'
 import 'react-datepicker/dist/react-datepicker.css'
 
 export default function BreakDown() {
@@ -16,11 +15,10 @@ export default function BreakDown() {
   const [isFullTime, setIsFullTime] = useState(false)
   const [selectedTime, setSelectedTime] = useState('12:00')
   const [value, setValue] = useState('')
+  // const [filteredAssetNames, setFilteredAssetNames] = useState([])
   const [filteredAssetNames, setFilteredAssetNames] = useState([])
+  const [filteredMachineNames, setFilteredMachineNames] = useState([])
   const [isDropdownVisible, setIsDropdownVisible] = useState(false)
-
-  const userrole = useSelector((state) => state.auth.userInfo?.role) || ''
-  const username = useSelector((state) => state.auth.userInfo?.name)
 
   useEffect(() => {
     // Fetch user data from the server
@@ -87,22 +85,22 @@ export default function BreakDown() {
     const searchValue = event.target.value
     setFormData({
       ...formData,
-      MachineName: event.target.value,
+      MachineName: searchValue,
     })
-    onSearch(searchValue, assetNames, setFilteredAssetNames)
-    // onSearch(searchValue, machineNames, setFilteredMachineNames)
+
+    // Trigger search for machine names
+    onSearch(searchValue, machineNames, setFilteredMachineNames)
   }
 
   const onSearch = (searchTerm, items, setFilteredItems) => {
     setValue(searchTerm)
 
-    // Filter names based on the search term
-    const filteredItems = items.filter((item) =>
-      item.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
-
-    console.log('Search Term:', searchTerm)
-    console.log('Filtered Machines:', filteredAssetNames)
+    // Check if items is an array before filtering
+    const filteredItems = Array.isArray(items)
+      ? items.filter((item) =>
+          item ? item.toLowerCase().includes(searchTerm.toLowerCase()) : false,
+        )
+      : []
 
     setFilteredItems(filteredItems)
     setIsDropdownVisible(filteredItems.length > 0)
@@ -132,6 +130,21 @@ export default function BreakDown() {
         console.error('Error fetching asset names: ', error)
       })
   }, [])
+
+  // useEffect(() => {
+  //   // Fetch the breakdown data from your API
+  //   fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       // Extract unique machine names from the breakdown data
+  //       const uniqueMachineNames = [...new Set(data.map((item) => item.MachineName))]
+  //       // Set the machineNames state with the unique machine names
+  //       setMachineNames(uniqueMachineNames)
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching breakdown data: ', error)
+  //     })
+  // }, [])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -236,19 +249,18 @@ export default function BreakDown() {
   const data2 = 'test'
   const sender = 'AAABRD'
 
-  const sendSMS = (formData, selectedUsers, username) => {
+  const sendSMS = (formData, selectedUsers) => {
     const { MachineName, BreakdownStartDate, Shift, LineName, Operations, BreakdownPhenomenons } =
       formData
     // Formulate a simple message
     const message = encodeURIComponent(
       'Breakdown For ' +
         MachineName +
+        // 'Date of Breakdown Start' +
+        // BreakdownStartDate +
         ' please visit concerned department Details are ' +
         BreakdownPhenomenons +
-        ' - send by- ' +
-        username +
         ' - Aurangabad Auto Ancillary',
-      // 'by' + username,
     )
 
     const phoneNumbers = usernos.map((user) => user.phoneNumber).join(',')
@@ -275,7 +287,7 @@ export default function BreakDown() {
 
   const handleButtonClick = () => {
     // Call the SMS sending function
-    sendSMS(formData, selectedUsers, username)
+    sendSMS(formData, selectedUsers)
   }
   return (
     <>
@@ -331,14 +343,13 @@ export default function BreakDown() {
               <div style={{ position: 'relative' }}>
                 <input
                   type="text"
-                  value={formData.AssetName}
+                  value={formData.MachineName}
                   className="form-control col-md-6"
                   onChange={onChange}
                 />
                 <button onClick={() => onSearch(value, assetNames, setFilteredAssetNames)}>
                   Search
                 </button>
-
                 {filteredAssetNames.length > 0 && (
                   <div
                     className="dropdown"

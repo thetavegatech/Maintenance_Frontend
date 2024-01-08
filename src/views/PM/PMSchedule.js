@@ -30,7 +30,7 @@ class AssetTable extends React.Component {
 
     // Set the time for 12:00 AM (midnight)
     const twelveAM = new Date()
-    twelveAM.setHours(14, 47, 0, 0)
+    twelveAM.setHours(16, 35, 0, 0)
 
     // Calculate the delay until 12:00 AM
     const delay = twelveAM - new Date()
@@ -129,38 +129,63 @@ class AssetTable extends React.Component {
     }))
   }
 
-  sendSMS = async (selectedno) => {
-    const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU=' // Replace with your Textlocal API key
-    const sender = 'AAAPL' // Replace with your sender name
-    // const selectedno = '7020804148'
-    const message = 'next day PM task schedule'
-    const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${7020804148}&message=${message}`
-    // const message = 'next day PM task schedule'
-    // try {
-    //   const response = await axios.get(url)
-    //   console.log('SMS sent successfully:', response.data)
-    // } catch (error) {
-    //   console.error('Error sending SMS:', error)
-    // }
-    axios
-      .get(url)
-      .then((response) => {
-        console.log('SMS sent successfully:', response.data)
-      })
-      .catch((error) => {
-        console.error('Error sending SMS:', error)
+  // sendSMS = async (selectedno) => {
+  //   const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU=' // Replace with your Textlocal API key
+  //   const sender = 'AAAPL' // Replace with your sender name
+  //   // const selectedno = '7020804148'
+  //   const message = 'next day PM task schedule'
+  //   const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${7020804148}&message=${message}`
+  //   // const message = 'next day PM task schedule'
+  //   // try {
+  //   //   const response = await axios.get(url)
+  //   //   console.log('SMS sent successfully:', response.data)
+  //   // } catch (error) {
+  //   //   console.error('Error sending SMS:', error)
+  //   // }
+  //   axios
+  //     .get(url)
+  //     .then((response) => {
+  //       console.log('SMS sent successfully:', response.data)
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error sending SMS:', error)
 
-        // Log detailed error information
-        if (error.response) {
-          console.error('Response data:', error.response.data)
-          console.error('Response status:', error.response.status)
-          console.error('Response headers:', error.response.headers)
-        } else if (error.request) {
-          console.error('Request made, but no response received:', error.request)
-        } else {
-          console.error('Error setting up the request:', error.message)
-        }
-      })
+  //       // Log detailed error information
+  //       if (error.response) {
+  //         console.error('Response data:', error.response.data)
+  //         console.error('Response status:', error.response.status)
+  //         console.error('Response headers:', error.response.headers)
+  //       } else if (error.request) {
+  //         console.error('Request made, but no response received:', error.request)
+  //       } else {
+  //         console.error('Error setting up the request:', error.message)
+  //       }
+  //     })
+  // }
+
+  sendSMS = async (selectedNo) => {
+    try {
+      const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
+      const sender = 'AAAPL'
+      const message = 'Next day PM task schedule'
+
+      const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${selectedNo}&message=${message}`
+
+      const response = await axios.get(url)
+      console.log('SMS sent successfully:', response.data)
+    } catch (error) {
+      console.error('Error sending SMS:', error)
+
+      if (error.response) {
+        console.error('Response data:', error.response.data)
+        console.error('Response status:', error.response.status)
+        console.error('Response headers:', error.response.headers)
+      } else if (error.request) {
+        console.error('Request made, but no response received:', error.request)
+      } else {
+        console.error('Error setting up the request:', error.message)
+      }
+    }
   }
 
   // updateNextDate() {
@@ -278,7 +303,7 @@ class AssetTable extends React.Component {
       return
     }
 
-    const updatedAssets = assets.map((asset) => {
+    const updatedAssets = assets.map(async (asset) => {
       const nextDate = new Date(asset.nextDate)
 
       if (today >= nextDate) {
@@ -294,28 +319,32 @@ class AssetTable extends React.Component {
             daysToAdd = 1
             break
           case 'weekly':
-            daysToAdd = 7
+            daysToAdd = 8
             break
-          case 'bi-weekly':
-            daysToAdd = 14
+          case 'fifteen days':
+            daysToAdd = 17
             break
           case 'monthly':
-            daysToAdd = 30 // Assuming a month has 30 days, adjust as needed
+            // Assuming a month has 30 days, adjust as needed
+            daysToAdd = 34
             break
           case 'quarterly':
-            daysToAdd = 90 // Assuming a quarter has 90 days, adjust as needed
+            // Assuming a quarter has 90 days, adjust as needed
+            daysToAdd = 104
             break
-          case 'half-year':
-            daysToAdd = 180 // Assuming half a year has 180 days, adjust as needed
+          case 'half year':
+            // Assuming half a year has 180 days, adjust as needed
+            daysToAdd = 208
             break
           case 'yearly':
-            daysToAdd = 365 // Assuming a year has 365 days, adjust as needed
+            // Assuming a year has 365 days, adjust as needed
+            daysToAdd = 417
             break
           default:
             console.error(`Unsupported frequency for task: ${asset.TaskName}`)
             // Handle unsupported frequency by defaulting to "daily"
             frequency = 'daily'
-            daysToAdd = 1
+            daysToAdd = ''
         }
 
         // Set the "Next Date" to today's date if the calculated date is today or later
@@ -334,6 +363,12 @@ class AssetTable extends React.Component {
         // If the task is completed and the next date is beyond today, set status to "Pending"
         if (asset.status === 'Completed' && today < nextDate) {
           asset.status = 'Pending'
+          console.log('Sending SMS...')
+          // Send SMS to specific person
+          const selectedno = '7020804148' // Replace with the recipient's phone number
+          await this.sendSMS(selectedno)
+          console.log('SMS sent!')
+          // this.sendSMS(selectedno)
         }
       }
 
@@ -351,11 +386,9 @@ class AssetTable extends React.Component {
 
         console.log('Next Date updated in the database:', response.data)
 
-        // Send SMS to specific person
-        // const message = 'Next date updated for task ' // Assuming the first asset in the array
-        const selectedno = '7020804148' // Replace with the recipient's phone number
-        await this.sendSMS(selectedno)
-        // console.log(selectedno, message)
+        // // Send SMS to specific person
+        // const selectedno = '7020804148' // Replace with the recipient's phone number
+        // this.sendSMS(selectedno)
       } catch (error) {
         console.error('Error updating Next Date in the database:', error)
         // console.log(selectedno, message)

@@ -30,7 +30,7 @@ class AssetTable extends React.Component {
 
     // Set the time for 12:00 AM (midnight)
     const twelveAM = new Date()
-    twelveAM.setHours(12, 0, 0, 0)
+    twelveAM.setHours(16, 8, 0, 0)
 
     // Calculate the delay until 12:00 AM
     const delay = twelveAM - new Date()
