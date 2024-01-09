@@ -42,6 +42,7 @@ export default function EditForm() {
   const [Image, setImage] = useState('')
   const [startDate, setstartDate] = useState('')
   const [nextDate, setnextDate] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
 
   useEffect(() => {
     fetchData()
@@ -154,9 +155,13 @@ export default function EditForm() {
         setImage('')
         setnextDate('')
 
-        // Assuming you have a navigate function or useHistory from react-router-dom
-        // Navigate back to the previous page
-        navigate(-1)
+        setSuccessMessage('Form submitted successfully!')
+        setTimeout(() => {
+          setSuccessMessage('')
+          // Assuming you have a navigate function or useHistory from react-router-dom
+          // Navigate back to the previous page
+          navigate(-1)
+        }, 5000)
       })
       .catch((err) => console.log(err))
   }
@@ -183,6 +188,12 @@ export default function EditForm() {
           width: '100%',
         }}
       >
+        {/* Display success message if it exists */}
+        {successMessage && (
+          <div className="alert alert-success" role="alert" style={{ marginTop: '10px' }}>
+            {successMessage}
+          </div>
+        )}
         {/* Step 1: Asset Identification */}
         <div>
           <form onSubmit={Update}>

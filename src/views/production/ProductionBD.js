@@ -39,6 +39,7 @@ export default function BreakDown() {
   const [whyWhyAnalysisList, setWhyWhyAnalysisList] = useState([])
   const [formData, setFormData] = useState({})
   //   let status = 'pending'
+  const [successMessage, setSuccessMessage] = useState('')
 
   useEffect(() => {
     fetchData()
@@ -134,6 +135,7 @@ export default function BreakDown() {
         // WhyWhyAnalysis,
         // WhyWhyAnalysis,
         WhyWhyAnalysis: fieldData,
+        whyWhyAnalysisList: fieldData,
         RootCause,
         PreventiveAction,
         CorrectiveAction,
@@ -168,14 +170,21 @@ export default function BreakDown() {
         setCost('')
         setSpareParts('')
         setWhyWhyAnalysis([])
-        setWhyWhyAnalysisList()
+        setWhyWhyAnalysisList([])
+        // setWhyWhyAnalysisList()
         console.log('Form submitted!')
         console.log('whyWhyAnalysisList:', whyWhyAnalysisList)
         // setAttachment('')
 
         // Assuming you have a navigate function or useHistory from react-router-dom
         // Navigate back to the previous page
-        navigate(-1)
+        setSuccessMessage('Form submitted successfully!')
+        setTimeout(() => {
+          setSuccessMessage('')
+          // Assuming you have a navigate function or useHistory from react-router-dom
+          // Navigate back to the previous page
+          navigate(-1)
+        }, 5000)
       })
       .catch((err) => console.log(err))
   }
@@ -309,17 +318,6 @@ export default function BreakDown() {
                   <option value="Production Setting">Production Setting</option>
                 </select>
               </div>
-              {/* <div className="col-md-6">
-                <label htmlFor="occ">Detect OCC:</label>
-                <input
-                  type="text"
-                  required
-                  className="form-control col-sm-6"
-                  name="DetectOCC"
-                  value={DetectOCC}
-                  onChange={(e) => setOCC(e.target.value)}
-                />
-              </div> */}
               <div className="col-md-6">
                 <label htmlFor="spareparts">Spare Parts:</label>
                 <input
@@ -331,17 +329,6 @@ export default function BreakDown() {
                   onChange={(e) => setSpareParts(e.target.value)}
                 />
               </div>
-              {/* <div className="col-md-6">
-                <label htmlFor="cost">Cost:</label>
-                <input
-                  type="text"
-                  required
-                  name="Cost"
-                  className="form-control col-sm-6"
-                  value={Cost}
-                  onChange={(e) => setCost(e.target.value)}
-                />
-              </div> */}
               {/* <div className="col-md-5">
                 <label htmlFor="whyWhy">Why-Why Analysis:</label>
                 <input

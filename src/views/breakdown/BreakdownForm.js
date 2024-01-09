@@ -52,7 +52,7 @@ export default function BreakDown() {
   //   setSelected(_id)
   //   return _id
   // }
-
+  const [successMessage, setSuccessMessage] = useState('')
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     MachineName: '',
@@ -157,6 +157,7 @@ export default function BreakDown() {
       Remark,
       Status = 'open',
     } = formData
+    setSuccessMessage('Form submitted successfully!')
 
     console.log(
       MachineName,
@@ -181,6 +182,9 @@ export default function BreakDown() {
       Remark,
       Status,
     )
+    setTimeout(() => {
+      setSuccessMessage('')
+    }, 5000)
 
     fetch('https://mms-backend-n2zv.onrender.com/saveBreakdown', {
       method: 'POST',
@@ -287,6 +291,12 @@ export default function BreakDown() {
           width: '90%',
         }}
       >
+        {/* Display success message if it exists */}
+        {successMessage && (
+          <div className="alert alert-success" role="alert" style={{ marginTop: '10px' }}>
+            {successMessage}
+          </div>
+        )}
         <form action="" method="post" onSubmit={handleSubmit}>
           <div className="row g-2">
             <div className="col-md-6">

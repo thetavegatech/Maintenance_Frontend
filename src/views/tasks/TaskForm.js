@@ -18,6 +18,7 @@ const MyFormComponent = () => {
   })
   const navigate = useNavigate()
   const [assetNames, setAssetNames] = useState([])
+  const [successMessage, setSuccessMessage] = useState('')
 
   useEffect(() => {
     // Fetch asset names when the component mounts
@@ -67,6 +68,7 @@ const MyFormComponent = () => {
       console.log('Task Name:', TaskName)
       console.log('status', status)
       console.log(formData)
+      setSuccessMessage('Form submitted successfully!')
 
       // ... continue with other fields
 
@@ -94,6 +96,10 @@ const MyFormComponent = () => {
 
       const data = await response.json()
       console.log('Response from server:', data)
+
+      setTimeout(() => {
+        setSuccessMessage('')
+      }, 5000)
     } catch (error) {
       console.error('Error:', error)
     }
@@ -202,6 +208,12 @@ const MyFormComponent = () => {
         width: '90%',
       }}
     >
+      {/* Display success message if it exists */}
+      {successMessage && (
+        <div className="alert alert-success" role="alert" style={{ marginTop: '10px' }}>
+          {successMessage}
+        </div>
+      )}
       {/* <div className="container1" style={{ border: '2px' }}> */}
       <div className="container">
         <form onSubmit={handleSubmit} style={{ marginLeft: '%' }}>
