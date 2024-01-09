@@ -129,10 +129,7 @@ const WidgetsDropdown = () => {
 
         if (isEndOfMonth && pendingTasks.length > 0) {
           const formData = {}
-          const numbers = '7020804148'
-          const message = `Pending tasks: ${pendingTaskCount}. Please check it out.`
-          const encodedMessage = encodeURIComponent(message)
-          sendSMS(formData, numbers, message)
+          sendSMS(formData, numbers)
         }
       } catch (error) {
         console.error('Error fetching tasks: ', error)
@@ -142,57 +139,65 @@ const WidgetsDropdown = () => {
     fetchData()
   }, [])
 
-  // const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
-  // const numbers = '7020804148' // Replace with the phone numbers
-  // const data1 = 'pending tasks'
-  // const data2 = 'Please visit the concerned department for details.'
-  // const sender = 'AAABRD'
+  const [formData, setFormData] = useState({
+    MachineName: '',
+    BreakdownStartDate: '',
+    BreakdownEndDate: '',
+    BreakdownStartTime: '',
+    BreakdownEndTime: '',
+    Shift: '',
+    LineName: '',
+    Operations: '',
+    BreakdownPhenomenons: '',
+    BreakdownType: '',
+    OCC: '',
+    BreakdownTime: '',
+    ActionTaken: '',
+    WhyWhyAnalysis: '',
+    RootCause: '',
+    PermanentAction: '',
+    TargetDate: '',
+    Responsibility: '',
+    HD: '',
+    Remark: '',
+    Status: 'open',
+  })
 
-  // const sendSMS = (formData, numbers, sender, pendingTasksCount) => {
-  //   // Formulate a message with the pending task count
-  //   const message = encodeURIComponent(
-  //     'Breakdown For ' + pendingTasksCount + ' please visit concerned department Details are ',
-  //   )
+  const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
+  const numbers = '7020804148' // Replace with the phone numbers
+  const sender = 'AAAPL'
 
-  //   // Create the API URL
-  //   const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${7020804148}&message=${message}`
+  const sendSMS = (formData, selectedUsers) => {
+    const { MachineName, BreakdownStartDate, Shift, LineName, Operations, BreakdownPhenomenons } =
+      formData
+    // Formulate a simple message
+    const message = encodeURIComponent(
+      'Breakdown For ' +
+        pendingTaskCount +
+        ' please visit concerned department Details are ' +
+        pendingTaskCount +
+        ' - Aurangabad Auto Ancillary',
+    )
 
-  //   // Use fetch to send the SMS
-  //   fetch(url)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log('SMS sent successfully:', data)
-  //       console.log(numbers, data1)
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error sending SMS:', error)
-  //     })
-  // }
+    // Create the API URL
+    const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${numbers}&message=${message}`
 
-  const sendSMS = (formData, numbers, message) => {
-    const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
-    const sender = 'AAABRD'
-    // const message = `Pending tasks: ${pendingTaskCount}. Please check it out.`
-    // const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${numbers}&message=${message}`
-    const template = encodeURIComponent(`Hello your message is `)
-    const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${numbers}&message=${template}`
+    // Use fetch to send the SMS
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
         console.log('SMS sent successfully:', data)
-        console.log(numbers, template)
+        console.log(numbers, message)
       })
       .catch((error) => {
         console.error('Error sending SMS:', error)
-        console.log(numbers)
+        // console.log(selected)
       })
   }
 
   const handleButtonClick = () => {
-    const numbers = '7020804148'
-    // const message = `Pending tasks: ${pendingTaskCount}. Please check it out.`
-    // const encodedMessage = encodeURIComponent(message)
-    sendSMS({}, numbers)
+    // Call the SMS sending function
+    sendSMS(formData, numbers)
   }
 
   useEffect(() => {
@@ -423,7 +428,7 @@ const WidgetsDropdown = () => {
                     fontSize: '16px',
                   }}
                 >
-                  Action
+                  Send SMS
                 </CDropdownItem>
                 {/* <CDropdownItem>Another action</CDropdownItem>
                 <CDropdownItem>Something else here...</CDropdownItem>

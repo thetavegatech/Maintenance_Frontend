@@ -148,7 +148,7 @@ class BDList extends React.Component {
         <div className="container">
           {/* </div> */}
           {/* <div className="table-controls"> */}
-          <div style={{ display: 'flex', marginBottom: '10px', marginLeft: '60% ' }}>
+          <div style={{ display: 'flex', marginBottom: '10px', marginLeft: '50% ' }}>
             <label htmlFor="startDate">Start Date: </label>
             <input
               type="date"

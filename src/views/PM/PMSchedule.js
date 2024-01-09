@@ -30,7 +30,7 @@ class AssetTable extends React.Component {
 
     // Set the time for 12:00 AM (midnight)
     const twelveAM = new Date()
-    twelveAM.setHours(16, 35, 0, 0)
+    twelveAM.setHours(12, 42, 0, 0)
 
     // Calculate the delay until 12:00 AM
     const delay = twelveAM - new Date()
@@ -163,31 +163,6 @@ class AssetTable extends React.Component {
   //     })
   // }
 
-  sendSMS = async (selectedNo) => {
-    try {
-      const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
-      const sender = 'AAAPL'
-      const message = 'Next day PM task schedule'
-
-      const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${selectedNo}&message=${message}`
-
-      const response = await axios.get(url)
-      console.log('SMS sent successfully:', response.data)
-    } catch (error) {
-      console.error('Error sending SMS:', error)
-
-      if (error.response) {
-        console.error('Response data:', error.response.data)
-        console.error('Response status:', error.response.status)
-        console.error('Response headers:', error.response.headers)
-      } else if (error.request) {
-        console.error('Request made, but no response received:', error.request)
-      } else {
-        console.error('Error setting up the request:', error.message)
-      }
-    }
-  }
-
   // updateNextDate() {
   //   const today = new Date()
   //   const { assets } = this.state || {}
@@ -294,6 +269,40 @@ class AssetTable extends React.Component {
   //       })
   //   })
   // }
+  // apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
+  numbers = '7020804148' // Replace with the phone numbers
+  // sender = 'AAAPL'
+
+  sendSMS = (formData, selectedUsers) => {
+    const numbers = '7020804148'
+    const sender = 'AAAPL'
+    const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
+
+    const { nextDate, ScheduledMaintenanceDatesandIntervals } = formData
+    // Formulate a simple message
+    const message = encodeURIComponent(
+      'Breakdown For ' +
+        nextDate +
+        ' please visit concerned department Details are ' +
+        ScheduledMaintenanceDatesandIntervals +
+        ' - Aurangabad Auto Ancillary',
+    )
+
+    // Create the API URL
+    const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${numbers}&message=${message}`
+
+    // Use fetch to send the SMS
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('SMS sent successfully:', data)
+        // console.log(numbers, message)
+      })
+      .catch((error) => {
+        console.error('Error sending SMS:', error)
+        // console.log(selected)
+      })
+  }
 
   updateNextDate = async () => {
     const today = new Date()
@@ -364,11 +373,9 @@ class AssetTable extends React.Component {
         if (asset.status === 'Completed' && today < nextDate) {
           asset.status = 'Pending'
           console.log('Sending SMS...')
-          // Send SMS to specific person
-          const selectedno = '7020804148' // Replace with the recipient's phone number
-          await this.sendSMS(selectedno)
+          // const selectedno = '7020804148'
+          this.sendSMS(this.formData, this.numbers)
           console.log('SMS sent!')
-          // this.sendSMS(selectedno)
         }
       }
 
@@ -385,10 +392,6 @@ class AssetTable extends React.Component {
         })
 
         console.log('Next Date updated in the database:', response.data)
-
-        // // Send SMS to specific person
-        // const selectedno = '7020804148' // Replace with the recipient's phone number
-        // this.sendSMS(selectedno)
       } catch (error) {
         console.error('Error updating Next Date in the database:', error)
         // console.log(selectedno, message)

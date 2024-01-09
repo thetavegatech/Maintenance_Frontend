@@ -131,21 +131,6 @@ export default function BreakDown() {
       })
   }, [])
 
-  // useEffect(() => {
-  //   // Fetch the breakdown data from your API
-  //   fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       // Extract unique machine names from the breakdown data
-  //       const uniqueMachineNames = [...new Set(data.map((item) => item.MachineName))]
-  //       // Set the machineNames state with the unique machine names
-  //       setMachineNames(uniqueMachineNames)
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching breakdown data: ', error)
-  //     })
-  // }, [])
-
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -291,17 +276,6 @@ export default function BreakDown() {
   }
   return (
     <>
-      {/* <div
-        className="container-lg"
-        style={{
-          border: '2px solid #ccc',
-          backgroundColor: 'lightgrey',
-          padding: '20px',
-          borderRadius: '10px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          width: '90%',
-        }}
-      > */}
       <div
         className="container"
         style={{
@@ -315,27 +289,6 @@ export default function BreakDown() {
       >
         <form action="" method="post" onSubmit={handleSubmit}>
           <div className="row g-2">
-            {/* <div className="col-md-6">
-              <label htmlFor="machineName" style={{ marginBottom: '10px', fontSize: '16px' }}>
-                Machine Name:
-              </label>
-              <select
-                className="form-control col-sm-6"
-                required
-                name="MachineName"
-                value={formData.AssetName}
-                onChange={handleChange}
-                style={{ marginBottom: '10px' }}
-              >
-                <option value="">Select a machine</option>
-
-                {assetNames.map((asset, index) => (
-                  <option key={index} value={asset}>
-                    {asset}
-                  </option>
-                ))}
-              </select>
-            </div> */}
             <div className="col-md-6">
               <label htmlFor="assetName" style={{ marginBottom: '10px', fontSize: '16px' }}>
                 Machine Name:
@@ -463,45 +416,6 @@ export default function BreakDown() {
                 value={formData.BreakdownStartTime}
                 onChange={handleChange}
               ></input>
-              {/* <label htmlFor="appt-time">Choose an appointment time: </label> */}
-              {/* <input id="appt-time" type="time" name="appt-time" value="13:30" /> */}
-              {/* <CTimePicker label="Time" locale="en-US" /> */}
-              {/* {isFullTime ? (
-                <select
-                  className="form-control col-sm-6"
-                  value={selectedTime}
-                  onChange={handleChange}
-                >
-                  <option value="" disabled>
-                    Select time
-                  </option>
-                  {timeOptions.map((time) => (
-                    <option key={time} value={time}>
-                      {time}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <input
-                  type="text"
-                  required
-                  className="form-control col-sm-6"
-                  name="BreakdownStartTime"
-                  value={selectedTime}
-                  onChange={() => {}}
-                  placeholder=""
-                />
-              )} */}
-              {/* Add a checkbox or some UI element to toggle between full-time and regular input */}
-              {/* <label>
-                <input
-                  type="checkbox"
-                  checked={isFullTime}
-                  onChange={() => setIsFullTime(!isFullTime)}
-                  style={{ marginTop: '10px' }}
-                />
-                Full Time
-              </label> */}
             </div>
             <div className="col-md-6">
               <label htmlFor="lineName" style={{ marginBottom: '10px' }}>

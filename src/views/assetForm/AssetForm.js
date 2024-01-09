@@ -22,6 +22,7 @@ const MyFormComponent = () => {
     Image: '',
   })
   const navigate = useNavigate()
+  const [successMessage, setSuccessMessage] = useState('')
 
   const [Image, setImage] = useState('')
   function convertToBse64(e) {
@@ -41,19 +42,6 @@ const MyFormComponent = () => {
     e.preventDefault()
     axios
       .put(`https://mms-backend-n2zv.onrender.com/api/assets/${id}`, {
-        // AssetName,
-        // MachineNo,
-        // SrNo,
-        // MachineType,
-        // Make,
-        // Controller,
-        // PowerRatting,
-        // CapecitySpindle,
-        // AxisTravels,
-        // Ranking,
-        // Location,
-        // InstallationDate,
-        // ManufacturingYear,
         Image,
       })
       .then((result) => {
@@ -63,7 +51,7 @@ const MyFormComponent = () => {
 
         // Assuming you have a navigate function or useHistory from react-router-dom
         // Navigate back to the previous page
-        navigate(-1)
+        navigate('/assetTable')
       })
       .catch((err) => console.log(err))
   }
@@ -104,6 +92,7 @@ const MyFormComponent = () => {
       console.log('Image:', Image)
       console.log('InstallationDate:', InstallationDate)
       // ... continue with other fields
+      setSuccessMessage('Form submitted successfully!')
 
       // Your fetch logic here
       const response = await fetch('https://mms-backend-n2zv.onrender.com/api/assets', {
@@ -115,12 +104,16 @@ const MyFormComponent = () => {
         },
         body: JSON.stringify(formData),
       })
-      // navigate(-1)
+      navigate(-1)
 
       const data = await response.json()
       console.log('Response from server:', data)
       uploadImage(e, data._id)
-      navigate(-1)
+      // navigate(-1)
+
+      setTimeout(() => {
+        setSuccessMessage('')
+      }, 5000)
     } catch (error) {
       console.error('Error:', error)
       // navigate(-1)
@@ -140,6 +133,12 @@ const MyFormComponent = () => {
         width: '80%',
       }}
     >
+      {/* Display success message if it exists */}
+      {successMessage && (
+        <div className="alert alert-success" role="alert" style={{ marginTop: '10px' }}>
+          {successMessage}
+        </div>
+      )}
       <form onSubmit={handleSubmit} style={{ margin: '3%' }}>
         <div className="row g-3">
           <div className="col-md-6">
