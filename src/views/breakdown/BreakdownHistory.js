@@ -248,10 +248,10 @@ class BreakdownHistory extends React.Component {
           >
             <CTableHead color="dark">
               <tr>
-                <th style={{ textAlign: 'center' }}>MachineName</th>
-                <th style={{ textAlign: 'center' }}>BreakDownStartDate</th>
+                <th style={{ textAlign: 'center' }}>Machine Name</th>
+                <th style={{ textAlign: 'center' }}>BreakDown Start Date</th>
                 <th style={{ textAlign: 'center' }}>Shift</th>
-                <th style={{ textAlign: 'center' }}>LineName</th>
+                <th style={{ textAlign: 'center' }}>Line Name</th>
                 <th style={{ textAlign: 'center' }}>Location</th>
                 <th style={{ textAlign: 'center' }}>End Date</th>
                 <th style={{ textAlign: 'center' }}>Status</th>

@@ -215,11 +215,11 @@ class BDList extends React.Component {
               <CTableRow>
                 <CTableHeaderCell style={{ textAlign: 'center' }}>Machine Name</CTableHeaderCell>
                 <CTableHeaderCell style={{ textAlign: 'center' }}>
-                  BreakDownStartDate
+                  BreakDown Start Date
                 </CTableHeaderCell>
                 <CTableHeaderCell style={{ textAlign: 'center' }}>Breakdown Type</CTableHeaderCell>
                 <CTableHeaderCell style={{ textAlign: 'center' }}>Location</CTableHeaderCell>
-                <CTableHeaderCell style={{ textAlign: 'center' }}>LineName</CTableHeaderCell>
+                <CTableHeaderCell style={{ textAlign: 'center' }}>Line Name</CTableHeaderCell>
                 <CTableHeaderCell style={{ textAlign: 'center' }}>Remark</CTableHeaderCell>
                 <CTableHeaderCell style={{ textAlign: 'center' }}>Status</CTableHeaderCell>
                 <CTableHeaderCell style={{ textAlign: 'center' }}>Edit</CTableHeaderCell>

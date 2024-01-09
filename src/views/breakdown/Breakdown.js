@@ -178,10 +178,10 @@ class BDList extends React.Component {
               <CTableHead color="dark">
                 <CTableRow>
                   <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
-                    MachineName
+                    Machine Name
                   </CTableHeaderCell>
                   <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
-                    BreakDownStartDate
+                    BreakDown Start Date
                   </CTableHeaderCell>
                   <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
                     Shift
@@ -190,7 +190,7 @@ class BDList extends React.Component {
                     Location
                   </CTableHeaderCell>
                   <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
-                    LineName
+                    Line Name
                   </CTableHeaderCell>
                   <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
                     Operations
