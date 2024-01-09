@@ -292,7 +292,7 @@ export default function EditForm() {
                 type="file"
                 className="form-control col-sm-6"
                 onChange={convertToBse64}
-                accept="*/*"
+                accept="image/*"
               ></input>
             </div>
             <button className="btn btn-primary mb-2" style={{ margin: '10px' }} type="submit">
