@@ -14,9 +14,10 @@ export default function Users() {
   useEffect(() => {
     // Fetch user data from the server
     axios
-      .get('https://mms-backend-n2zv.onrender.com/UserNo')
+      .get('https://mms-backend-n2zv.onrender.com/userInfo')
       .then((response) => {
         setUsers(response.data)
+        console.log(response.data)
       })
       .catch((error) => {
         console.error('Error fetching user data:', error)
@@ -28,7 +29,7 @@ export default function Users() {
     const isConfirmed = window.confirm('Are you sure you want to delete this data?')
     if (isConfirmed) {
       axios
-        .delete(`https://mms-backend-n2zv.onrender.com/UserNo/${id}`)
+        .delete(`https://mms-backend-n2zv.onrender.com/UserInfo/${id}`)
         .then((response) => {
           console.log('User deleted successfully:', response.data)
           // Update the user list after deletion
@@ -54,6 +55,7 @@ export default function Users() {
             <th style={{ textAlign: 'center' }}>Phone Number</th>
             <th style={{ textAlign: 'center' }}>Address</th>
             <th style={{ textAlign: 'center' }}>Email</th>
+            <th style={{ textAlign: 'center' }}>Location</th>
             <th style={{ textAlign: 'center' }}>Edit</th>
             <th style={{ textAlign: 'center' }}>Delete</th>
           </tr>
@@ -65,6 +67,7 @@ export default function Users() {
               <td style={{ textAlign: 'center' }}>{user.phoneNumber}</td>
               <td style={{ textAlign: 'center' }}>{user.address}</td>
               <td style={{ textAlign: 'center' }}>{user.email}</td>
+              <td style={{ textAlign: 'center' }}>{user.Location}</td>
               <td style={{ textAlign: 'center' }}>
                 <NavLink to={`/editUser/${user._id}`} style={{ color: '#000080' }}>
                   <FaEdit />

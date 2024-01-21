@@ -19,6 +19,7 @@ const MyFormComponent = () => {
   const navigate = useNavigate()
   const [assetNames, setAssetNames] = useState([])
   const [successMessage, setSuccessMessage] = useState('')
+  const [file, setFile] = useState(null)
 
   useEffect(() => {
     // Fetch asset names when the component mounts
@@ -125,6 +126,34 @@ const MyFormComponent = () => {
     })
   }
 
+  // JavaScript
+  function uploadFile() {
+    const fileInput = document.getElementById('fileInput')
+    const file = fileInput.files[0]
+
+    const formData = new FormData()
+    formData.append('file', file)
+    fetch('https://mms-backend-n2zv.onrender.com/upload', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        return response.json()
+      })
+      .then((data) => {
+        console.log(data.message)
+      })
+      .catch((error) => {
+        console.error('Error:', error.message)
+      })
+  }
+
   const getNextScheduleDate = (startDate, frequency) => {
     let newDate = new Date(startDate)
 
@@ -194,6 +223,24 @@ const MyFormComponent = () => {
   const handleAssetNameChange = (e) => {
     const selectedAssetName = e.target.value
     setFormData({ ...formData, AssetName: selectedAssetName })
+  }
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0])
+  }
+
+  const handleFileUpload = async () => {
+    try {
+      const formData = new FormData()
+      formData.append('image', file)
+
+      await axios.post('http://localhost:4000/upload', formData)
+
+      // File uploaded successfully
+      console.log('File uploaded')
+    } catch (error) {
+      console.error('Error uploading file', error)
+    }
   }
 
   return (
@@ -302,6 +349,8 @@ const MyFormComponent = () => {
                 onChange={(e) => setFormData({ ...formData, NextScheduledDate: e.target.value })}
               />
             </div>
+            <input type="file" onChange={handleFileChange} />
+            <button onClick={handleFileUpload}>Upload File</button>
             <div className="col-xs-12">
               <button type="submit" className="btn btn-primary">
                 Submit

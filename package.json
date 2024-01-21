@@ -42,6 +42,7 @@
     "chart.js": "^3.9.1",
     "classnames": "^2.3.2",
     "core-js": "^3.31.0",
+    "mongo-image-converter": "^1.0.2",
     "node": "^21.2.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",

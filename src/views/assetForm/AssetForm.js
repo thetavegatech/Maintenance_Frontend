@@ -51,7 +51,7 @@ const MyFormComponent = () => {
 
         // Assuming you have a navigate function or useHistory from react-router-dom
         // Navigate back to the previous page
-        navigate('/assetTable')
+        navigate(-1)
       })
       .catch((err) => console.log(err))
   }

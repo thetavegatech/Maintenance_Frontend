@@ -8,6 +8,8 @@ const UserForm = () => {
     phoneNumber: '',
     email: '',
     address: '', // Assuming you have an address field in your form
+    Location: '',
+    plant: '',
   })
   const navigate = useNavigate()
 
@@ -18,17 +20,62 @@ const UserForm = () => {
     })
   }
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault()
+
+  //   try {
+  //     const response = await axios.post('https://mms-backend-n2zv.onrender.com/UserNo', formData)
+  //     console.log('User created successfully:', response.data)
+  //     console.log('location', Location)
+  //     navigate(-1)
+  //     // You can handle further actions here, such as displaying a success message or redirecting the user.
+  //   } catch (error) {
+  //     console.error('Error creating user:', error.response.data.error)
+  //     // Handle error cases, such as displaying an error message to the user.
+  //   }
+  // }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     try {
-      const response = await axios.post('https://mms-backend-n2zv.onrender.com/UserNo', formData)
-      console.log('User created successfully:', response.data)
+      // Destructure form data from the state
+      const {
+        name,
+        phoneNumber,
+        email,
+        address, // Assuming you have an address field in your form
+        Location,
+        plant,
+      } = formData
+      // setImage('')
+      // const { name, phoneNumber, email, address, Location } = formData
+      console.log('Asset Name:', name)
+      console.log('Form Data:', formData)
+      console.log('MachineNo:', Location)
+      console.log('plant:', plant)
+      // ... continue with other fields
+      // setSuccessMessage('Form submitted successfully!')
+
+      // Your fetch logic here
+      const response = await fetch('https://mms-backend-n2zv.onrender.com/userInfo', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+          Accept: 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify(formData),
+      })
       navigate(-1)
-      // You can handle further actions here, such as displaying a success message or redirecting the user.
+
+      const data = await response.json()
+      console.log('Response from server:', data)
+      // uploadImage(e, data._id)
+      // navigate(-1)
     } catch (error) {
-      console.error('Error creating user:', error.response.data.error)
-      // Handle error cases, such as displaying an error message to the user.
+      console.error('Error:', error)
+      // navigate(-1)
     }
   }
 
@@ -93,6 +140,72 @@ const UserForm = () => {
                 onChange={handleChange}
               />
             </div>
+
+            <div className="col-md-6">
+              <label htmlFor="Location">Location:</label>
+              {/* <input
+                type="text"
+                className="form-control col-sm-6"
+                id="Location"
+                name="Location"
+                value={formData.Location}
+                onChange={handleChange}
+              /> */}
+              <select
+                className="form-control col-sm-6"
+                required
+                // id="assetLocation"
+                name="Location"
+                value={formData.Location}
+                onChange={handleChange}
+              >
+                <option value="">Select an option</option>
+                <option value="Plant 1">Plant 1</option>
+                <option value="Plant 2">Plant 2</option>
+                <option value="Plant 3">Plant 3</option>
+                <option value="Plant 4">Plant 4</option>
+              </select>
+            </div>
+            {/* <div className="col-md-6">
+              <label
+                htmlFor="assetLocation"
+                className="form-label"
+                style={{ marginBottom: '10px' }}
+              >
+                Location:
+              </label>
+              <select
+                className="form-control col-sm-6"
+                required
+                // id="assetLocation"
+                name="Location"
+                value={formData.Location}
+                onChange={handleChange}
+              >
+                <option value="">Select an option</option>
+                <option value="Plant 1">Plant 1</option>
+                <option value="Plant 2">Plant 2</option>
+                <option value="Plant 3">Plant 3</option>
+                <option value="Plant 4">Plant 4</option>
+              </select>
+            </div> */}
+            {/* <div className="col-md-6">
+              <label htmlFor="Location">Location:</label>
+              <select
+                className="form-control col-sm-6"
+                required
+                id="Location"
+                name="Location"
+                value={formData.Location}
+                onChange={handleChange}
+              >
+                <option value="">Select an option</option>
+                <option value="Plant 1">Plant 1</option>
+                <option value="Plant 2">Plant 2</option>
+                <option value="Plant 3">Plant 3</option>
+                <option value="Plant 4">Plant 4</option>
+              </select>
+            </div> */}
 
             <div className="col-xs-12">
               <button type="submit" className="btn btn-primary">

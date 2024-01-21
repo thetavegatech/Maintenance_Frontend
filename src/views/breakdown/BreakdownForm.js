@@ -23,7 +23,7 @@ export default function BreakDown() {
   useEffect(() => {
     // Fetch user data from the server
     axios
-      .get('https://mms-backend-n2zv.onrender.com/UserNo')
+      .get('https://mms-backend-n2zv.onrender.com/UserInfo')
       .then((response) => {
         setUsers(response.data)
       })

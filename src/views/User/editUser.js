@@ -10,6 +10,7 @@ export default function EditUser() {
     address: '',
     email: '',
     phoneNumber: '',
+    Location: '',
   })
   const [address, setAddress] = useState('')
 
@@ -19,9 +20,9 @@ export default function EditUser() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`https://mms-backend-n2zv.onrender.com/UserNo/${id}`)
-      const { name, phoneNumber, address, email } = response.data
-      setUserData({ name, phoneNumber, address, email })
+      const response = await axios.get(`https://mms-backend-n2zv.onrender.com/UserInfo/${id}`)
+      const { name, phoneNumber, address, email, Location } = response.data
+      setUserData({ name, phoneNumber, address, email, Location })
       setAddress(response.data.address)
     } catch (error) {
       console.error('Error fetching data:', error)
@@ -39,13 +40,14 @@ export default function EditUser() {
   const handleUpdate = async (e) => {
     e.preventDefault()
     try {
-      await axios.put(`https://mms-backend-n2zv.onrender.com/UserNo/${id}`, userData)
+      await axios.put(`https://mms-backend-n2zv.onrender.com/UserInfo/${id}`, userData)
       // Clear form data after successful update
       setUserData({
         name: '',
         address: '',
         email: '',
         phoneNumber: '',
+        Location: '',
       })
       // Navigate back to the previous page
       navigate(-1)
@@ -116,6 +118,18 @@ export default function EditUser() {
                 name="email"
                 id="email"
                 value={userData.email}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="col-md-5">
+              <label htmlFor="Location">Location:</label>
+              <input
+                type="text"
+                required
+                className="form-control col-sm-4"
+                name="Location"
+                id="Location"
+                value={userData.Location}
                 onChange={handleInputChange}
               />
             </div>
