@@ -59,7 +59,7 @@ const AppHeader = () => {
         </CHeaderNav>
         <CHeaderNav>
           <CNavItem>
-            <h6>Welcome, {username}</h6>
+            <h6>Welcome, {username} </h6>
             <h6>Role : {userrole}</h6>
             {/* <p>
               <button
@@ -72,13 +72,15 @@ const AppHeader = () => {
               </button>
             </p> */}
             {/* <CNavLink href="#" style={{ fontSize: '25px', color: 'orange' }}>
-              {currentUser.name}
+              {username}
             </CNavLink> */}
           </CNavItem>
         </CHeaderNav>
       </CContainer>
-      {/* <CHeaderDivider /> */}
-      {/* <CContainer fluid><AppBreadcrumb /></CContainer> */}
+      <CHeaderDivider />
+      <CContainer fluid>
+        <AppBreadcrumb />
+      </CContainer>
     </CHeader>
   )
 }
