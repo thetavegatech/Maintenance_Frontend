@@ -22,6 +22,7 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
+import loadingGif from '../assetTable/loader.gif'
 
 class BDList extends React.Component {
   state = {
@@ -33,6 +34,7 @@ class BDList extends React.Component {
     isHovered: false,
     startDate: '',
     endDate: '',
+    loading: true, // New state for loading
   }
 
   handleMouseEnter = () => {
@@ -45,15 +47,6 @@ class BDList extends React.Component {
 
   handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase()
-
-    // Filter assets based on the search query
-    // const filteredAssets = this.state.breakdowns.filter((breakDown) => {
-    // const taskLocationLower = (breakDown.Location || '').toLowerCase()
-    // const taskDescriptionLower = (asset.TaskDescription || '').toLowerCase()
-    // const scheduledMaintenanceLower = (
-    //   asset.ScheduledMaintenanceDatesandIntervals || ''
-    // ).toLowerCase()
-    // const statusLower = (asset.status || '').toLowerCase()
 
     const filteredAssets = this.state.breakdowns.filter((breakDown) => {
       const taskLocationLower = (breakDown.Location || '').toLowerCase()
@@ -92,11 +85,13 @@ class BDList extends React.Component {
       .then((response) => {
         this.setState({
           breakdowns: Array.isArray(response.data) ? response.data : [response.data],
+          loading: false,
         })
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
         alert('Error fetching data')
+        this.setState({ loading: false })
       })
   }
 
@@ -111,7 +106,7 @@ class BDList extends React.Component {
   }
 
   render() {
-    const { breakdowns, filteredAssets, searchLocation, searchQuery } = this.state
+    const { breakdowns, filteredAssets, searchLocation, searchQuery, loading } = this.state
     const openBreakdowns = breakdowns.filter((breakdown) => breakdown.Status === 'open')
     const validatedAssets = breakdowns.filter(
       (breakdowns) => breakdowns.Location && breakdowns.Location.trim() !== '',
@@ -121,21 +116,61 @@ class BDList extends React.Component {
 
     return (
       <>
-        <div style={{ display: 'flex', marginBottom: '10px' }}>
-          <label htmlFor="startDate">Start Date: </label>
+        <div>
+          <label
+            htmlFor="startDate"
+            style={{
+              marginLeft: 'rem',
+              marginRight: '0.2rem',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              whiteSpace: 'nowrap',
+              '@media (max-width: 750px)': {
+                // marginLeft: '3rem',
+                // marginRight: '0.8rem',
+                fontSize: '14px',
+              },
+            }}
+          >
+            From Date:{' '}
+          </label>
           <input
             type="date"
             id="startDate"
             value={this.state.startDate}
             onChange={(e) => this.handleDateChange('startDate', e.target.value)}
-            style={{ marginRight: '10px' }}
+            style={{
+              padding: '6px',
+              borderRadius: '5px',
+              border: '1px solid #ccc',
+              marginRight: '10px',
+              fontSize: '14px',
+            }}
           />
-          <label htmlFor="endDate">End Date: </label>
+          <label
+            htmlFor="endDate"
+            style={{
+              marginRight: '0.2rem',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            To Date:{' '}
+          </label>
           <input
             type="date"
             id="endDate"
             value={this.state.endDate}
             onChange={(e) => this.handleDateChange('endDate', e.target.value)}
+            style={{
+              padding: '6px',
+              borderRadius: '5px',
+              border: '1px solid #ccc',
+              marginRight: '10px',
+              fontSize: '14px',
+              marginBottom: '0.5rem',
+            }}
           />
         </div>
 
@@ -158,10 +193,12 @@ class BDList extends React.Component {
             onMouseEnter={this.handleMouseEnter}
             onMouseLeave={this.handleMouseLeave}
           >
-            <option>Search by Plant</option>
+            {/* <option value="Plant 1">Search by Plant</option> */}
+            <option>Search by Plant </option>
             <option value="Plant 1">Plant 1</option>
             <option value="Plant 2">Plant 2</option>
             <option value="Plant 3">Plant 3</option>
+            {/* <option value="Plant 1, Plant 2, Plant 3">Search </option> */}
           </select>
           <div className="table-responsive-sm">
             <CTable
@@ -204,46 +241,61 @@ class BDList extends React.Component {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {this.state.message && (
-                  <CTableRow>
-                    <CTableDataCell colSpan="8" style={{ textAlign: 'center' }}>
-                      {this.state.message}
-                    </CTableDataCell>
-                  </CTableRow>
+                {loading ? ( // Show loader when loading is true
+                  <tr>
+                    <td colSpan="8" style={{ textAlign: 'center' }}>
+                      {/* Use an image tag for the loading GIF */}
+                      <img src={loadingGif} alt="Loading..." />
+                      <p>Loading...</p>
+                    </td>
+                  </tr>
+                ) : (
+                  <>
+                    {this.state.message && (
+                      <CTableRow>
+                        <CTableDataCell colSpan="8" style={{ textAlign: 'center' }}>
+                          {this.state.message}
+                        </CTableDataCell>
+                      </CTableRow>
+                    )}
+                    {(this.state.searchQuery
+                      ? filteredAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
+                      : validatedAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
+                    ).map((breakdown) => (
+                      <CTableRow key={breakdown._id}>
+                        <CTableDataCell style={{ textAlign: 'center' }}>
+                          {breakdown.MachineName}
+                        </CTableDataCell>
+                        <CTableDataCell style={{ textAlign: 'center' }}>
+                          {breakdown.BreakdownStartDate}
+                        </CTableDataCell>
+                        <CTableDataCell style={{ textAlign: 'center' }}>
+                          {breakdown.Shift}
+                        </CTableDataCell>
+                        <CTableDataCell style={{ textAlign: 'center' }}>
+                          {breakdown.Location}
+                        </CTableDataCell>
+                        <CTableDataCell style={{ textAlign: 'center' }}>
+                          {breakdown.LineName}
+                        </CTableDataCell>
+                        <CTableDataCell style={{ textAlign: 'center' }}>
+                          {breakdown.Operations}
+                        </CTableDataCell>
+                        <CTableDataCell style={{ textAlign: 'center' }}>
+                          {breakdown.Status}
+                        </CTableDataCell>
+                        <CTableDataCell style={{ textAlign: 'center' }}>
+                          <NavLink
+                            to={`/productionBD/${breakdown._id}`}
+                            style={{ color: '#000080' }}
+                          >
+                            <FaEdit />
+                          </NavLink>
+                        </CTableDataCell>
+                      </CTableRow>
+                    ))}
+                  </>
                 )}
-                {(this.state.searchQuery
-                  ? filteredAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
-                  : validatedAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
-                ).map((breakdown) => (
-                  <CTableRow key={breakdown._id}>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      {breakdown.MachineName}
-                    </CTableDataCell>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      {breakdown.BreakdownStartDate}
-                    </CTableDataCell>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      {breakdown.Shift}
-                    </CTableDataCell>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      {breakdown.Location}
-                    </CTableDataCell>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      {breakdown.LineName}
-                    </CTableDataCell>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      {breakdown.Operations}
-                    </CTableDataCell>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      {breakdown.Status}
-                    </CTableDataCell>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      <NavLink to={`/productionBD/${breakdown._id}`} style={{ color: '#000080' }}>
-                        <FaEdit />
-                      </NavLink>
-                    </CTableDataCell>
-                  </CTableRow>
-                ))}
               </CTableBody>
             </CTable>
           </div>

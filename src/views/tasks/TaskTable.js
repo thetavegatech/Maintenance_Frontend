@@ -153,6 +153,155 @@ class AssetTable extends React.Component {
 
   numbers = '7020804148' // Replace with the phone numbers
 
+  // sendSMS = async (formData, selectedUsers) => {
+  //   const numbers = 'phoneNumber'
+  //   const sender = 'AAABRD'
+  //   const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
+
+  //   this.setState({ formData: { nextDate: '', ScheduledMaintenanceDatesandIntervals: '' } })
+  //   const { nextDate, ScheduledMaintenanceDatesandIntervals } = formData
+  //   // Formulate a simple message
+  //   const message = encodeURIComponent(
+  //     'Breakdown For ' +
+  //       nextDate +
+  //       ' please visit concerned department Details are ' +
+  //       ScheduledMaintenanceDatesandIntervals +
+  //       ' - Aurangabad Auto Ancillary',
+  //   )
+
+  //   // Create the API URL
+  //   const url = `https://api.textlocal.in/send/?apikey=${apiKey}&sender=${sender}&numbers=${phoneNumbers}&message=${message}`
+
+  //   // Use fetch to send the SMS
+  //   fetch(url)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log('SMS sent successfully:', data)
+  //       // console.log(numbers, message)
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error sending SMS:', error)
+  //       // console.log(selected)
+  //     })
+  // }
+
+  // updateNextDate = async () => {
+  //   const today = new Date()
+  //   const { assets } = this.state || {}
+  //   const updatedIds = [] // Array to store the IDs of updated assets
+
+  //   if (!assets) {
+  //     return
+  //   }
+
+  //   const updatedAssets = await Promise.all(
+  //     assets.map(async (asset) => {
+  //       const nextDate = new Date(asset.nextDate)
+
+  //       if (today >= nextDate) {
+  //         let frequency = asset.ScheduledMaintenanceDatesandIntervals
+  //           ? asset.ScheduledMaintenanceDatesandIntervals.toLowerCase()
+  //           : 'daily' // Default to "daily" if frequency is undefined
+
+  //         let daysToAdd = 1 // Default to adding 1 day
+
+  //         // Determine the number of days to add based on the frequency
+  //         switch (frequency) {
+  //           case 'daily':
+  //             daysToAdd = 1
+  //             break
+  //           case 'weekly':
+  //             daysToAdd = 8
+  //             break
+  //           case 'fifteen days':
+  //             daysToAdd = 17
+  //             break
+  //           case 'monthly':
+  //             // Assuming a month has 30 days, adjust as needed
+  //             daysToAdd = 34
+  //             break
+  //           case 'quarterly':
+  //             // Assuming a quarter has 90 days, adjust as needed
+  //             daysToAdd = 104
+  //             break
+  //           case 'half year':
+  //             // Assuming half a year has 180 days, adjust as needed
+  //             daysToAdd = 208
+  //             break
+  //           case 'yearly':
+  //             // Assuming a year has 365 days, adjust as needed
+  //             daysToAdd = 417
+  //             break
+  //           default:
+  //             console.error(`Unsupported frequency for task: ${asset.TaskName}`)
+  //             // Handle unsupported frequency by defaulting to "daily"
+  //             frequency = 'daily'
+  //             daysToAdd = ''
+  //         }
+
+  //         // Set the "Next Date" to today's date if the calculated date is today or later
+  //         nextDate.setDate(nextDate.getDate() + daysToAdd)
+
+  //         // If the calculated next date is a Sunday, skip it
+  //         while (nextDate.getDay() === 0) {
+  //           nextDate.setDate(nextDate.getDate() + 1)
+  //         }
+
+  //         asset.nextDate = nextDate.toISOString().split('T')[0]
+
+  //         // Check if the next date has changed
+  //         if (asset.nextDate !== nextDate.toISOString().split('T')[0]) {
+  //           updatedIds.push(asset.id) // Store the ID of the updated asset
+  //         }
+
+  //         // Update status to "Pending"
+  //         asset.status = 'Pending'
+
+  //         // If the task is completed and the next date is beyond today, set status to "Pending"
+  //         if (asset.status === 'Completed' && today < nextDate) {
+  //           asset.status = 'Pending'
+  //           console.log('Sending SMS...')
+  //           // const selectedno = '7020804148'
+  //           await this.sendSMS(asset, this.numbers)
+  //           console.log('SMS sent!')
+  //           console.log(this.numbers)
+  //         }
+  //       }
+
+  //       return asset
+  //     }),
+  //   )
+
+  //   // Make a separate API request to get details of updated assets by ID
+  //   try {
+  //     const idDetailsResponse = await axios.get(
+  //       'https://mms-backend-n2zv.onrender.com/getAllData',
+  //       { params: { ids: updatedIds.join(',') } }, // Pass the array of updated IDs as a comma-separated string
+  //     )
+
+  //     console.log('Updated Assets Details:', idDetailsResponse.data)
+  //   } catch (error) {
+  //     console.error('Error fetching updated assets details:', error)
+  //   }
+
+  //   const updatedAssetsArray = await Promise.all(updatedAssets)
+
+  //   this.setState({ assets: updatedAssets }, async () => {
+  //     // After updating the state, send the updated data to the backend API
+  //     try {
+  //       const response = await axios.put('https://mms-backend-n2zv.onrender.com/updateRecords', {
+  //         assets: updatedAssetsArray,
+  //       })
+
+  //       console.log('Next Date updated in the database:', response.data)
+  //     } catch (error) {
+  //       console.error('Error updating Next Date in the database:', error)
+  //       // console.log(selectedno, message)
+  //     }
+  //     await this.sendSMS(updatedAssets, this.numbers)
+  //   })
+  // }
+
   sendSMS = async (userInfo, phoneNumbers, nextDate, scheduledMaintenance) => {
     const sender = 'AAABRD'
     const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='

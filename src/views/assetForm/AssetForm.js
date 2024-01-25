@@ -42,6 +42,19 @@ const MyFormComponent = () => {
     e.preventDefault()
     axios
       .put(`https://mms-backend-n2zv.onrender.com/api/assets/${id}`, {
+        // AssetName,
+        // MachineNo,
+        // SrNo,
+        // MachineType,
+        // Make,
+        // Controller,
+        // PowerRatting,
+        // CapecitySpindle,
+        // AxisTravels,
+        // Ranking,
+        // Location,
+        // InstallationDate,
+        // ManufacturingYear,
         Image,
       })
       .then((result) => {

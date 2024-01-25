@@ -5,6 +5,7 @@ import axios from 'axios'
 import { CTimePicker } from '@coreui/react'
 import TimePicker from 'react-time-picker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { useDispatch, useSelector } from 'react-redux'
 
 export default function BreakDown() {
   const [usernos, setUsers] = useState([])
@@ -232,13 +233,16 @@ export default function BreakDown() {
     })
   }
 
+  const userrole = useSelector((state) => state.auth.userInfo?.role) || ''
+  const username = useSelector((state) => state.auth.userInfo?.name)
+
   const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
   const numbers = '7020804148' // Replace with the phone numbers
   const data1 = 'test'
   const data2 = 'test'
   const sender = 'AAABRD'
 
-  const sendSMS = (formData, selectedUsers) => {
+  const sendSMS = (formData, selectedUsers, loggedInUsername) => {
     const { MachineName, BreakdownStartDate, Shift, LineName, Operations, BreakdownPhenomenons } =
       formData
     // Formulate a simple message
@@ -248,7 +252,7 @@ export default function BreakDown() {
         // 'Date of Breakdown Start' +
         // BreakdownStartDate +
         ' please visit concerned department Details are ' +
-        BreakdownPhenomenons +
+        loggedInUsername +
         ' - Aurangabad Auto Ancillary',
     )
 
@@ -276,7 +280,7 @@ export default function BreakDown() {
 
   const handleButtonClick = () => {
     // Call the SMS sending function
-    sendSMS(formData, selectedUsers)
+    sendSMS(formData, selectedUsers, username)
   }
   return (
     <>

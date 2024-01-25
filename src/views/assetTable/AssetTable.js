@@ -5,6 +5,7 @@ import dlt from '../assetTable/delete.png'
 import { CTable, CTableHead, CButton, CInputGroup, CFormControl } from '@coreui/react'
 import { MdDelete } from 'react-icons/md'
 import { FaEdit } from 'react-icons/fa'
+import loadingGif from '../assetTable/loader.gif'
 
 class AssetTable extends React.Component {
   state = {
@@ -13,6 +14,7 @@ class AssetTable extends React.Component {
     searchLocation: '', // New state for the search term
     message: '',
     searchQuery: '',
+    loading: true, // New state for loading
   }
 
   componentDidMount() {
@@ -21,11 +23,15 @@ class AssetTable extends React.Component {
       .then((response) => {
         // If the response is an array, simply set it to assets.
         // If it's an object, place it in an array as you've shown.
-        this.setState({ assets: Array.isArray(response.data) ? response.data : [response.data] })
+        this.setState({
+          assets: Array.isArray(response.data) ? response.data : [response.data],
+          loading: false,
+        })
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
         alert('Error fetching data')
+        this.setState({ loading: false })
       })
   }
 
@@ -103,7 +109,7 @@ class AssetTable extends React.Component {
   render() {
     // const { assets } = this.state // Destructuring assets from state for ease of access
 
-    const { assets, filteredAssets, searchLocation, searchQuery } = this.state
+    const { assets, filteredAssets, searchLocation, searchQuery, loading } = this.state
     const { isClicked } = this.state
     // Filter assets to include only rows with all values filled
     const validatedAssets = assets.filter(
@@ -163,44 +169,60 @@ class AssetTable extends React.Component {
               </tr>
             </CTableHead>
             <tbody>
-              {this.state.message && (
+              {loading ? ( // Show loader when loading is true
                 <tr>
-                  <td
-                    colSpan="8"
-                    style={{ textAlign: 'center', fontStyle: 'italic', color: 'red' }}
-                  >
-                    {this.state.message}
+                  <td colSpan="8" style={{ textAlign: 'center' }}>
+                    {/* Use an image tag for the loading GIF */}
+                    <img src={loadingGif} alt="Loading..." />
+                    <p>Loading...</p>
                   </td>
                 </tr>
+              ) : (
+                <>
+                  {this.state.message && (
+                    <tr>
+                      <td
+                        colSpan="8"
+                        style={{
+                          textAlign: 'center',
+                          fontStyle: 'italic',
+                          color: 'red',
+                        }}
+                      >
+                        {this.state.message}
+                      </td>
+                    </tr>
+                  )}
+                  {(this.state.searchQuery ? filteredAssets : validatedAssets).map((asset) => (
+                    <tr key={asset._id}>
+                      <td style={{ textAlign: 'center' }}>{asset.SrNo}</td>
+                      <td style={{ textAlign: 'center' }}>{asset.AssetName}</td>
+                      <td style={{ textAlign: 'center' }}>{asset.MachineType}</td>
+                      <td style={{ textAlign: 'center' }}>{asset.Location}</td>
+                      <td style={{ textAlign: 'center' }}>
+                        <NavLink to={`/editasset/${asset._id}`} style={{ color: '#000080' }}>
+                          <FaEdit />
+                        </NavLink>
+                      </td>
+                      <td style={{ textAlign: 'center' }}>
+                        <button
+                          className="btn"
+                          onClick={() => this.deleteData(asset._id)}
+                          style={{ color: 'red' }}
+                        >
+                          {/* <img src={dlt} alt="" width={30} height={30} /> */}
+                          <MdDelete />
+                        </button>
+                      </td>
+                      <td style={{ textAlign: 'center' }}>
+                        <NavLink to={`/assetRecord/${asset._id}`}>
+                          <img src={asset.Image} height={50} width={50} />
+                        </NavLink>
+                      </td>
+                    </tr>
+                  ))}
+                </>
               )}
-              {(this.state.searchQuery ? filteredAssets : validatedAssets).map((asset) => (
-                <tr key={asset._id}>
-                  <td style={{ textAlign: 'center' }}>{asset.SrNo}</td>
-                  <td style={{ textAlign: 'center' }}>{asset.AssetName}</td>
-                  <td style={{ textAlign: 'center' }}>{asset.MachineType}</td>
-                  <td style={{ textAlign: 'center' }}>{asset.Location}</td>
-                  <td style={{ textAlign: 'center' }}>
-                    <NavLink to={`/editasset/${asset._id}`} style={{ color: '#000080' }}>
-                      <FaEdit />
-                    </NavLink>
-                  </td>
-                  <td style={{ textAlign: 'center' }}>
-                    <button
-                      className="btn"
-                      onClick={() => this.deleteData(asset._id)}
-                      style={{ color: 'red' }}
-                    >
-                      {/* <img src={dlt} alt="" width={30} height={30} /> */}
-                      <MdDelete />
-                    </button>
-                  </td>
-                  <td style={{ textAlign: 'center' }}>
-                    <NavLink to={`/assetRecord/${asset._id}`}>
-                      <img src={asset.Image} height={50} width={50} />
-                    </NavLink>
-                  </td>
-                </tr>
-              ))}
             </tbody>
           </CTable>
         </div>

@@ -152,6 +152,7 @@ export default function BreakDown() {
         whyWhyAnalysisList,
       })
       .then((result) => {
+        setSuccessMessage('Form submitted successfully!')
         console.log(formData)
         setMachineName('')
         setBreakdownStartDate('')
@@ -206,6 +207,11 @@ export default function BreakDown() {
             width: '90%',
           }}
         >
+          {successMessage && (
+            <div className="alert alert-success" role="alert" style={{ marginTop: '10px' }}>
+              {successMessage}
+            </div>
+          )}
           <form method="post" onSubmit={Update}>
             {/* Add Breakdown Detail Fields */}
             {/* <h3>Add Breakdown Detail</h3> */}
@@ -394,7 +400,7 @@ export default function BreakDown() {
               <div className="col-md-6">
                 <label htmlFor="cost">Cost:</label>
                 <input
-                  type="text"
+                  type="number"
                   required
                   name="Cost"
                   className="form-control col-sm-6"

@@ -6,9 +6,11 @@ import dlt from '../User/delete.png'
 import { CTable, CTableHead, CButton } from '@coreui/react'
 import { FaEdit } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
+import loadingGif from '../assetTable/loader.gif'
 
 export default function Users() {
   const [usernos, setUsers] = useState([])
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -17,10 +19,12 @@ export default function Users() {
       .get('https://mms-backend-n2zv.onrender.com/userInfo')
       .then((response) => {
         setUsers(response.data)
+        setLoading(false)
         console.log(response.data)
       })
       .catch((error) => {
         console.error('Error fetching user data:', error)
+        setLoading(false)
       })
   }, [])
 
@@ -48,45 +52,52 @@ export default function Users() {
           Add New
         </CButton>
       </NavLink>
-      <CTable bordered striped hover responsive>
-        <CTableHead color="dark">
-          <tr>
-            <th style={{ textAlign: 'center' }}>Name</th>
-            <th style={{ textAlign: 'center' }}>Phone Number</th>
-            <th style={{ textAlign: 'center' }}>Address</th>
-            <th style={{ textAlign: 'center' }}>Email</th>
-            <th style={{ textAlign: 'center' }}>Location</th>
-            <th style={{ textAlign: 'center' }}>Edit</th>
-            <th style={{ textAlign: 'center' }}>Delete</th>
-          </tr>
-        </CTableHead>
-        <tbody>
-          {usernos.map((user) => (
-            <tr key={user.phoneNumber}>
-              <td style={{ textAlign: 'center' }}>{user.name}</td>
-              <td style={{ textAlign: 'center' }}>{user.phoneNumber}</td>
-              <td style={{ textAlign: 'center' }}>{user.address}</td>
-              <td style={{ textAlign: 'center' }}>{user.email}</td>
-              <td style={{ textAlign: 'center' }}>{user.Location}</td>
-              <td style={{ textAlign: 'center' }}>
-                <NavLink to={`/editUser/${user._id}`} style={{ color: '#000080' }}>
-                  <FaEdit />
-                </NavLink>
-              </td>
-              <td style={{ textAlign: 'center' }}>
-                <button
-                  className="btn"
-                  onClick={() => deleteData(user._id)}
-                  style={{ color: 'red' }}
-                >
-                  <MdDelete />
-                  {/* <img src={dlt} alt="" width={30} height={25} /> */}
-                </button>
-              </td>
+      {loading ? (
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <img src={loadingGif} alt="Loading..." />
+          <p>Loading...</p>
+        </div>
+      ) : (
+        <CTable bordered striped hover responsive>
+          <CTableHead color="dark">
+            <tr>
+              <th style={{ textAlign: 'center' }}>Name</th>
+              <th style={{ textAlign: 'center' }}>Phone Number</th>
+              <th style={{ textAlign: 'center' }}>Address</th>
+              <th style={{ textAlign: 'center' }}>Email</th>
+              <th style={{ textAlign: 'center' }}>Location</th>
+              <th style={{ textAlign: 'center' }}>Edit</th>
+              <th style={{ textAlign: 'center' }}>Delete</th>
             </tr>
-          ))}
-        </tbody>
-      </CTable>
+          </CTableHead>
+          <tbody>
+            {usernos.map((user) => (
+              <tr key={user.phoneNumber}>
+                <td style={{ textAlign: 'center' }}>{user.name}</td>
+                <td style={{ textAlign: 'center' }}>{user.phoneNumber}</td>
+                <td style={{ textAlign: 'center' }}>{user.address}</td>
+                <td style={{ textAlign: 'center' }}>{user.email}</td>
+                <td style={{ textAlign: 'center' }}>{user.Location}</td>
+                <td style={{ textAlign: 'center' }}>
+                  <NavLink to={`/editUser/${user._id}`} style={{ color: '#000080' }}>
+                    <FaEdit />
+                  </NavLink>
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  <button
+                    className="btn"
+                    onClick={() => deleteData(user._id)}
+                    style={{ color: 'red' }}
+                  >
+                    <MdDelete />
+                    {/* <img src={dlt} alt="" width={30} height={25} /> */}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </CTable>
+      )}
     </div>
   )
 }
