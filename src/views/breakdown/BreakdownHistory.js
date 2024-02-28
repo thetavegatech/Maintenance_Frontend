@@ -64,7 +64,7 @@ class BreakdownHistory extends React.Component {
 
     this.setState({
       filteredAssets,
-      // searchLocation: e.target.value,
+      searchLocation: e.target.value,
       searchQuery: query,
     })
   }
@@ -152,11 +152,17 @@ class BreakdownHistory extends React.Component {
   }
 
   exportToExcel = () => {
-    const { breakdowns } = this.state
+    const { breakdowns, searchLocation } = this.state
+
+    // Filter data based on the selected plant
+    const filteredData = searchLocation
+      ? breakdowns.filter((breakdown) => breakdown.Location === searchLocation)
+      : breakdowns
     // const dataToExport = searchQuery ? filteredBreakdowns : breakdowns
     const dataToExport = breakdowns
-    const exportData = dataToExport.map((item) => ({
-      Date: format(new Date(item.BreakdownStartDate), 'HH:mm:ss dd-MM-yyyy'),
+    // const exportData = dataToExport.map((item) => ({
+    const exportData = filteredData.map((item) => ({
+      Date: format(new Date(item.BreakdownStartDate), 'dd-MM-yyyy HH:mm:ss'),
       MachineName: item.MachineName,
       BreakdownStartDate: item.BreakdownStartDate,
       BreakdownType: item.BreakdownType,
@@ -165,7 +171,7 @@ class BreakdownHistory extends React.Component {
       Operations: item.Operations,
       BreakdownPhenomenons: item.BreakdownPhenomenons,
       WhyWhyAnalysis: item.WhyWhyAnalysis,
-      OCC: item.OCC,
+      // OCC: item.OCC,
       RootCause: item.RootCause,
       PreventiveAction: item.PreventiveAction,
       CorrectiveAction: item.CorrectiveAction,
@@ -248,8 +254,9 @@ class BreakdownHistory extends React.Component {
           >
             <CTableHead color="dark">
               <tr>
-                <th style={{ textAlign: 'center' }}>Machine Name</th>
+                <th style={{ textAlign: 'center' }}>Machine Code</th>
                 <th style={{ textAlign: 'center' }}>BreakDown Start Date</th>
+                <th style={{ textAlign: 'center' }}>BreakDown End Date</th>
                 <th style={{ textAlign: 'center' }}>Shift</th>
                 <th style={{ textAlign: 'center' }}>Line Name</th>
                 <th style={{ textAlign: 'center' }}>Location</th>
@@ -274,6 +281,7 @@ class BreakdownHistory extends React.Component {
                 <tr key={breakdown._id}>
                   <td style={{ textAlign: 'center' }}>{breakdown.MachineName}</td>
                   <td style={{ textAlign: 'center' }}>{breakdown.BreakdownStartDate}</td>
+                  <td style={{ textAlign: 'center' }}>{breakdown.BreakdownEndDate}</td>
                   <td style={{ textAlign: 'center' }}>{breakdown.Shift}</td>
                   <td style={{ textAlign: 'center' }}>{breakdown.LineName}</td>
                   <td style={{ textAlign: 'center' }}>{breakdown.Location}</td>
@@ -391,7 +399,7 @@ class BreakdownHistory extends React.Component {
                 </button> */}
                 <CButton
                   color="info"
-                  onClick={this.calculateMTBF}
+                  onClick={this.calculateMTTR}
                   // shape="rounded-pill"
                   className="mb-2"
                   marginLeft="20px"

@@ -5,6 +5,8 @@ import axios from 'axios'
 import { CTimePicker } from '@coreui/react'
 import TimePicker from 'react-time-picker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { useDispatch, useSelector } from 'react-redux'
+import Select from 'react-select'
 
 export default function BreakDown() {
   const [usernos, setUsers] = useState([])
@@ -23,7 +25,7 @@ export default function BreakDown() {
   useEffect(() => {
     // Fetch user data from the server
     axios
-      .get('https://mms-backend-n2zv.onrender.com/UserNo')
+      .get('https://mms-backend-n2zv.onrender.com/UserInfo')
       .then((response) => {
         setUsers(response.data)
       })
@@ -232,13 +234,16 @@ export default function BreakDown() {
     })
   }
 
+  const userrole = useSelector((state) => state.auth.userInfo?.role) || ''
+  const username = useSelector((state) => state.auth.userInfo?.name)
+
   const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
   const numbers = '7020804148' // Replace with the phone numbers
   const data1 = 'test'
   const data2 = 'test'
   const sender = 'AAABRD'
 
-  const sendSMS = (formData, selectedUsers) => {
+  const sendSMS = (formData, selectedUsers, loggedInUsername) => {
     const { MachineName, BreakdownStartDate, Shift, LineName, Operations, BreakdownPhenomenons } =
       formData
     // Formulate a simple message
@@ -248,7 +253,7 @@ export default function BreakDown() {
         // 'Date of Breakdown Start' +
         // BreakdownStartDate +
         ' please visit concerned department Details are ' +
-        BreakdownPhenomenons +
+        loggedInUsername +
         ' - Aurangabad Auto Ancillary',
     )
 
@@ -276,7 +281,7 @@ export default function BreakDown() {
 
   const handleButtonClick = () => {
     // Call the SMS sending function
-    sendSMS(formData, selectedUsers)
+    sendSMS(formData, selectedUsers, username)
   }
   return (
     <>
@@ -300,68 +305,27 @@ export default function BreakDown() {
         <form action="" method="post" onSubmit={handleSubmit}>
           <div className="row g-2">
             <div className="col-md-6">
-              <label htmlFor="assetName" style={{ marginBottom: '10px', fontSize: '16px' }}>
+              <label htmlFor="machineName" style={{ marginBottom: '10px', fontSize: '16px' }}>
                 Machine Name:
               </label>
-              <div style={{ position: 'relative' }}>
-                <input
-                  type="text"
-                  value={formData.MachineName}
-                  className="form-control col-md-6"
-                  onChange={onChange}
-                />
-                <button onClick={() => onSearch(value, assetNames, setFilteredAssetNames)}>
-                  Search
-                </button>
-                {filteredAssetNames.length > 0 && (
-                  <div
-                    className="dropdown"
-                    style={{
-                      position: 'absolute',
-                      top: '100%',
-                      left: 0,
-                      width: '100%',
-                      border: '1px solid #ccc',
-                      borderRadius: '4px',
-                      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                      backgroundColor: '#fff',
-                      zIndex: 1,
-                    }}
-                  >
-                    {isDropdownVisible && (
-                      <div
-                        className="dropdown"
-                        style={{
-                          position: 'absolute',
-                          top: '100%',
-                          left: 0,
-                          width: '100%',
-                          border: '1px solid #ccc',
-                          borderRadius: '4px',
-                          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                          backgroundColor: '#fff',
-                          zIndex: 1,
-                        }}
-                      >
-                        {filteredAssetNames.map((item, index) => (
-                          <div
-                            key={index}
-                            onClick={() => handleOptionSelect(item)}
-                            className="dropdown-row"
-                            style={{
-                              cursor: 'pointer',
-                              padding: '10px',
-                              borderBottom: '1px solid #eee',
-                            }}
-                          >
-                            {item}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
+              <Select
+                className="form-control col-sm-6"
+                required
+                name="MachineName"
+                value={assetNames.find((asset) => asset === formData.AssetName)}
+                onChange={(selectedOption) =>
+                  handleChange({ target: { name: 'MachineName', value: selectedOption.value } })
+                }
+                options={assetNames.map((asset) => ({ label: asset, value: asset }))}
+                isSearchable
+                placeholder="Select a machine"
+                styles={{
+                  control: (provided) => ({
+                    ...provided,
+                    marginBottom: '10px',
+                  }),
+                }}
+              />
             </div>
             <div className="col-md-6">
               <label

@@ -14,11 +14,27 @@ const MyFormComponent = () => {
     TaskDescription: '',
     startDate: '',
     nextDate: '',
+    Location: '',
     status: 'Pending',
   })
   const navigate = useNavigate()
   const [assetNames, setAssetNames] = useState([])
   const [successMessage, setSuccessMessage] = useState('')
+  const [file, setFile] = useState(null)
+
+  const [Image, setImage] = useState('')
+  function convertToBse64(e) {
+    console.log(e)
+    let reader = new FileReader()
+    reader.readAsDataURL(e.target.files[0])
+    reader.onload = () => {
+      console.log(reader.result) // base64encoded string
+      setImage(reader.result)
+    }
+    reader.onerror = (err) => {
+      console.log(err)
+    }
+  }
 
   useEffect(() => {
     // Fetch asset names when the component mounts
@@ -41,15 +57,8 @@ const MyFormComponent = () => {
       // Destructure form data from the state
       const {
         AssetName,
-        Description,
-        AssetCategory,
         Location,
-        ManufacturersName,
-        ManufacturersAddress,
-        ManufacturersContactNo,
-        ManufacturersEmail,
         ScheduledMaintenanceDatesandIntervals,
-        PMDetails,
         StartDateofMaintenance,
         NextScheduledDate,
         TaskName,
@@ -58,13 +67,7 @@ const MyFormComponent = () => {
       } = formData
 
       console.log('Asset Name:', AssetName)
-      console.log('Description:', Description)
-      console.log('Asset Category:', AssetCategory)
       console.log('Location:', Location)
-      console.log('Manufacturers Name:', ManufacturersName)
-      console.log('Manufacturers Address:', ManufacturersAddress)
-      console.log('Manufacturers Contact No:', ManufacturersContactNo)
-      console.log('Manufacturers Email:', ManufacturersEmail)
       console.log('Task Name:', TaskName)
       console.log('status', status)
       console.log(formData)
@@ -83,7 +86,7 @@ const MyFormComponent = () => {
         body: JSON.stringify({
           AssetName,
           ScheduledMaintenanceDatesandIntervals,
-          // PMDetails,
+          Location,
           TaskName,
           TaskDescription,
           startDate: StartDateofMaintenance,
@@ -123,6 +126,35 @@ const MyFormComponent = () => {
       ScheduledMaintenanceDatesandIntervals: frequency,
       NextScheduledDate: nextDate.toISOString().split('T')[0],
     })
+  }
+
+  // JavaScript
+  function uploadFile() {
+    const fileInput = document.getElementById('fileInput')
+    const file = fileInput.files[0]
+
+    const formData = new FormData()
+    formData.append('file', file)
+
+    fetch('https://mms-backend-n2zv.onrender.com/upload', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        return response.json()
+      })
+      .then((data) => {
+        console.log(data.message)
+      })
+      .catch((error) => {
+        console.error('Error:', error.message)
+      })
   }
 
   const getNextScheduleDate = (startDate, frequency) => {
@@ -196,6 +228,24 @@ const MyFormComponent = () => {
     setFormData({ ...formData, AssetName: selectedAssetName })
   }
 
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0])
+  }
+
+  const handleFileUpload = async () => {
+    try {
+      const formData = new FormData()
+      formData.append('image', file)
+
+      await axios.post('http://localhost:3000/upload', formData)
+
+      // File uploaded successfully
+      console.log('File uploaded')
+    } catch (error) {
+      console.error('Error uploading file', error)
+    }
+  }
+
   return (
     <div
       className="container-lg"
@@ -233,6 +283,22 @@ const MyFormComponent = () => {
                     {name}
                   </option>
                 ))}
+              </select>
+            </div>
+            <div className="col-md-5">
+              <label htmlFor="Location">Location:</label>
+              <select
+                className="form-control col-sm-6"
+                required
+                id="Location"
+                name="Location"
+                onChange={(e) => setFormData({ ...formData, Location: e.target.value })}
+              >
+                <option value="">Select an option</option>
+                <option value="Plant 1">Plant 1</option>
+                <option value="Plant 2">Plant 2</option>
+                <option value="Plant 3">Plant 3</option>
+                <option value="Plant 4">Plant 4</option>
               </select>
             </div>
             <div className="col-md-5">
@@ -301,6 +367,16 @@ const MyFormComponent = () => {
                 readOnly // to make it non-editable
                 onChange={(e) => setFormData({ ...formData, NextScheduledDate: e.target.value })}
               />
+            </div>
+            <div className="col-md-5">
+              <label htmlFor="attachment">Attachment:</label>
+              <input
+                type="file"
+                id="Image"
+                name="Image"
+                className="form-control col-sm-6"
+                onChange={convertToBse64}
+              ></input>
             </div>
             <div className="col-xs-12">
               <button type="submit" className="btn btn-primary">

@@ -27,6 +27,9 @@ const AssetRecord = React.lazy(() => import('./views/assetTable/AssetRecord'))
 const TaskRecord = React.lazy(() => import('./views/tasks/TaskRecord'))
 const PMSchedule = React.lazy(() => import('./views/PM/PMSchedule'))
 const EditPM = React.lazy(() => import('./views/PM/EditPM'))
+const Table = React.lazy(() => import('./views/assetTable/Table'))
+const EditTable = React.lazy(() => import('./views/assetTable/EditTable'))
+// const Assetsubtable = React.lazy(() => import('./views/assetTable/Assetsubtable.js'))
 
 // Base
 
@@ -86,6 +89,9 @@ const routes = [
   { path: '/taskRecord/:id', name: 'taskRecord', element: TaskRecord },
   { path: '/pmSchedule', name: 'pmSchedule', element: PMSchedule },
   { path: '/editPM/:id', name: 'editPM', element: EditPM },
+  // { path: '/assetsubtabled', name: 'assetsubtable', element: Assetsubtable },
+  { path: '/table', name: 'table', element: Table },
+  { path: '/edittable/:assetId/maintenance/:setId', name: 'edittable', element: EditTable },
 ]
 
 export default routes

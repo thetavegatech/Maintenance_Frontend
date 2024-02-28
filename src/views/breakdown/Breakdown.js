@@ -103,6 +103,19 @@ class BDList extends React.Component {
   handleLocationChange = (event) => {
     this.setState({ selectedLocation: event.target.value })
   }
+  formatDate = (dateString) => {
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' }
+    return new Intl.DateTimeFormat('en-GB', options).format(new Date(dateString))
+  }
+  formatTime = (dateString) => {
+    const options = {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    }
+
+    return new Intl.DateTimeFormat('en-GB', options).format(new Date(dateString))
+  }
 
   handleDateChange = (field, value) => {
     this.setState({
@@ -121,25 +134,62 @@ class BDList extends React.Component {
 
     return (
       <>
-        <div style={{ display: 'flex', marginBottom: '10px' }}>
-          <label htmlFor="startDate">Start Date: </label>
+        <div style={{ display: '', marginBottom: 'px' }}>
+          <label
+            htmlFor="startDate"
+            style={{
+              marginLeft: 'rem',
+              marginRight: '0.2rem',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              whiteSpace: 'nowrap',
+              '@media (max-width: 750px)': {
+                // marginLeft: '3rem',
+                // marginRight: '0.8rem',
+                fontSize: '14px',
+              },
+            }}
+          >
+            From Date:{' '}
+          </label>
           <input
             type="date"
             id="startDate"
             value={this.state.startDate}
             onChange={(e) => this.handleDateChange('startDate', e.target.value)}
-            style={{ marginRight: '10px' }}
+            style={{
+              padding: '6px',
+              borderRadius: '5px',
+              border: '1px solid #ccc',
+              marginRight: '10px',
+              fontSize: '14px',
+            }}
           />
-          <label htmlFor="endDate">End Date: </label>
+          <label
+            htmlFor="endDate"
+            style={{
+              marginRight: '0.2rem',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            To Date:{' '}
+          </label>
           <input
             type="date"
             id="endDate"
             value={this.state.endDate}
             onChange={(e) => this.handleDateChange('endDate', e.target.value)}
+            style={{
+              padding: '6px',
+              borderRadius: '5px',
+              border: '1px solid #ccc',
+              marginRight: '10px',
+              fontSize: '14px',
+              marginBottom: '0.5rem',
+            }}
           />
-        </div>
-
-        <div className="container">
           <label htmlFor="searchTask" style={{ marginLeft: '0%' }}>
             <span role="img" aria-label="search-icon"></span>
           </label>
@@ -163,6 +213,9 @@ class BDList extends React.Component {
             <option value="Plant 2">Plant 2</option>
             <option value="Plant 3">Plant 3</option>
           </select>
+        </div>
+
+        <div className="container">
           <div className="table-responsive-sm">
             <CTable
               bordered
@@ -178,10 +231,13 @@ class BDList extends React.Component {
               <CTableHead color="dark">
                 <CTableRow>
                   <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
-                    Machine Name
+                    Machine Code
                   </CTableHeaderCell>
                   <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
                     BreakDown Start Date
+                  </CTableHeaderCell>
+                  <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
+                    BreakDown Start Time
                   </CTableHeaderCell>
                   <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
                     Shift
@@ -220,7 +276,11 @@ class BDList extends React.Component {
                       {breakdown.MachineName}
                     </CTableDataCell>
                     <CTableDataCell style={{ textAlign: 'center' }}>
+                      {/* {this.formatDate(breakdown.Date)} */}
                       {breakdown.BreakdownStartDate}
+                    </CTableDataCell>
+                    <CTableDataCell style={{ textAlign: 'center' }}>
+                      {this.formatTime(breakdown.Date)}
                     </CTableDataCell>
                     <CTableDataCell style={{ textAlign: 'center' }}>
                       {breakdown.Shift}

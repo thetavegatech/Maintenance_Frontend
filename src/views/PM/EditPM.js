@@ -43,6 +43,28 @@ export default function EditForm() {
   const [startDate, setstartDate] = useState('')
   const [nextDate, setnextDate] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
+  const [file, setFile] = useState(null)
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0])
+  }
+
+  const handleUpload = async () => {
+    const formData = new FormData()
+    formData.append('image', file)
+
+    try {
+      await axios.post('https://mms-backend-n2zv.onrender.com/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+
+      console.log('File uploaded successfully')
+    } catch (error) {
+      console.error('Error uploading file', error)
+    }
+  }
 
   useEffect(() => {
     fetchData()
@@ -103,6 +125,27 @@ export default function EditForm() {
     }
   }
 
+  // JavaScript
+  function uploadFile() {
+    const fileInput = document.getElementById('fileInput')
+    const file = fileInput.files[0]
+
+    const formData = new FormData()
+    formData.append('file', file)
+
+    fetch('https://mms-backend-n2zv.onrender.com/upload', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.message)
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+      })
+  }
+
   const Update = (e) => {
     e.preventDefault()
     axios
@@ -155,13 +198,9 @@ export default function EditForm() {
         setImage('')
         setnextDate('')
 
-        setSuccessMessage('Form submitted successfully!')
-        setTimeout(() => {
-          setSuccessMessage('')
-          // Assuming you have a navigate function or useHistory from react-router-dom
-          // Navigate back to the previous page
-          navigate(-1)
-        }, 5000)
+        // Assuming you have a navigate function or useHistory from react-router-dom
+        // Navigate back to the previous page
+        navigate(-1)
       })
       .catch((err) => console.log(err))
   }
@@ -188,12 +227,6 @@ export default function EditForm() {
           width: '100%',
         }}
       >
-        {/* Display success message if it exists */}
-        {successMessage && (
-          <div className="alert alert-success" role="alert" style={{ marginTop: '10px' }}>
-            {successMessage}
-          </div>
-        )}
         {/* Step 1: Asset Identification */}
         <div>
           <form onSubmit={Update}>
@@ -292,7 +325,6 @@ export default function EditForm() {
                 type="file"
                 className="form-control col-sm-6"
                 onChange={convertToBse64}
-                accept="image/*"
               ></input>
             </div>
             <button className="btn btn-primary mb-2" style={{ margin: '10px' }} type="submit">

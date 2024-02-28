@@ -150,13 +150,30 @@ class AssetTable extends React.Component {
             value={this.searchQuery}
             onChange={this.handleSearchChange}
           />
+          <NavLink to="/table">
+            <CButton
+              color="info"
+              // shape="rounded-pill"
+              className="mb-2"
+              style={{ marginTop: '5px' }}
+            >
+              Asset Schedule
+            </CButton>
+
+            {/* <CInputGroup className="mb-3"> */}
+            {/* </CInputGroup> */}
+          </NavLink>
           <CTable bordered striped hover responsive>
             <CTableHead color="dark">
               <tr>
                 <th style={{ textAlign: 'center' }}>Sr No</th>
-                <th style={{ textAlign: 'center' }}>Machine Name</th>
+                <th style={{ textAlign: 'center' }}>Machine Code</th>
                 <th style={{ textAlign: 'center' }}>Machine Type</th>
                 <th style={{ textAlign: 'center' }}>Location</th>
+                {/* <th style={{ textAlign: 'center' }}>CMD</th> */}
+                {/* <th style={{ textAlign: 'center' }}>CMDFrequency</th> */}
+                {/* <th style={{ textAlign: 'center' }}>TMD</th> */}
+                {/* <th style={{ textAlign: 'center' }}>TMDFrequency</th> */}
                 <th style={{ textAlign: 'center' }}>Edit</th>
                 <th style={{ textAlign: 'center' }}>Delete</th>
                 <th>Images</th>
@@ -179,6 +196,10 @@ class AssetTable extends React.Component {
                   <td style={{ textAlign: 'center' }}>{asset.AssetName}</td>
                   <td style={{ textAlign: 'center' }}>{asset.MachineType}</td>
                   <td style={{ textAlign: 'center' }}>{asset.Location}</td>
+                  {/* <td style={{ textAlign: 'center' }}>{asset.CMD}</td>
+                  <td style={{ textAlign: 'center' }}>{asset.CMDFrequency}</td>
+                  <td style={{ textAlign: 'center' }}>{asset.TMD}</td>
+                  <td style={{ textAlign: 'center' }}>{asset.TMDFrequency}</td> */}
                   <td style={{ textAlign: 'center' }}>
                     <NavLink to={`/editasset/${asset._id}`} style={{ color: '#000080' }}>
                       <FaEdit />

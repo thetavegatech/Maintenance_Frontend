@@ -31,6 +31,7 @@ export default function BreakDown() {
   const [HD, setHD] = useState('')
   const [Remark, setRemark] = useState('')
   const [Status, setStatus] = useState('')
+  const [AttendedBy, setAttendedBy] = useState('')
   //   let status = 'pending'
 
   useEffect(() => {
@@ -38,11 +39,10 @@ export default function BreakDown() {
   }, [])
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        `https://mms-backend-n2zv.onrender.com/getBreakdownDataId/${id}`,
-      )
+      const response = await axios.get(`http://localhost:5000/getBreakdownDataId/${id}`)
       console.log(response)
       setMachineName(response.data.MachineName)
+      setAttendedBy(response.data.AttendedBy)
       setBreakdownStartDate(response.data.BreakdownStartDate)
       setBreakdownEndDate(response.data.BreakdownEndDate)
       setBreakdownStartTime(response.data.BreakdownStartTime)
@@ -75,8 +75,9 @@ export default function BreakDown() {
   const Update = (e) => {
     e.preventDefault()
     axios
-      .put(`https://mms-backend-n2zv.onrender.com/updateBreakdownRecord/${id}`, {
+      .put(`http://localhost:5000/updateBreakdownRecord/${id}`, {
         MachineName,
+        AttendedBy,
         BreakdownStartDate,
         BreakdownEndDate,
         BreakdownStartTime,
@@ -104,6 +105,7 @@ export default function BreakDown() {
       .then((result) => {
         console.log(result)
         setMachineName('')
+        setAttendedBy('')
         setBreakdownStartDate('')
         setBreakdownEndDate('')
         setBreakdownStartTime('')
@@ -144,7 +146,7 @@ export default function BreakDown() {
             {/* <h3>Add Breakdown Detail</h3> */}
             <div className="row g-3">
               <div className="col-md-4">
-                <label htmlFor="machineName">Machine Name:</label>
+                <label htmlFor="machineName">Machine Code:</label>
                 <input
                   type="text"
                   className="form-control col-sm-6"
@@ -359,6 +361,17 @@ export default function BreakDown() {
                   name="Responsibility"
                   value={Responsibility}
                   onChange={(e) => setResponsibility(e.target.value)}
+                />
+              </div>
+              <div className="col-md-4">
+                <label htmlFor="responsibility">Attended By:</label>
+                <input
+                  disabled
+                  type="text"
+                  className="form-control col-sm-6"
+                  name="AttendedBy"
+                  value={AttendedBy}
+                  onChange={(e) => setAttendedBy(e.target.value)}
                 />
               </div>
               <div className="col-md-4">

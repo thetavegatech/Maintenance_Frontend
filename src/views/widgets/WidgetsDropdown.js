@@ -165,18 +165,21 @@ const WidgetsDropdown = () => {
 
   const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
   const numbers = '7020804148' // Replace with the phone numbers
-  const sender = 'AAAPL'
+  const sender = 'AAABRD'
 
   const sendSMS = (formData, selectedUsers) => {
     const { MachineName, BreakdownStartDate, Shift, LineName, Operations, BreakdownPhenomenons } =
       formData
     // Formulate a simple message
+    // const message = encodeURIComponent(
+    //   'Breakdown For ' +
+    //     pendingTaskCount +
+    //     ' please visit concerned department Details are ' +
+    //     pendingTaskCount +
+    //     ' - Aurangabad Auto Ancillary',
+    // )
     const message = encodeURIComponent(
-      'Breakdown For ' +
-        pendingTaskCount +
-        ' please visit concerned department Details are ' +
-        pendingTaskCount +
-        ' - Aurangabad Auto Ancillary',
+      `Breakdown For ${pendingTaskCount} pending tasks. please visit concerned department Details are ${pendingTaskCount} - Aurangabad Auto Ancillary`,
     )
 
     // Create the API URL

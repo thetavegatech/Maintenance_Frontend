@@ -7,6 +7,10 @@ const MyFormComponent = () => {
   // Define state variables for form inputs
   const [formData, setFormData] = useState({
     AssetName: '',
+    CMD: '',
+    TMD: '',
+    TMDFrequency: '',
+    CMDFrequency: '',
     MachineNo: '',
     SrNo: '',
     MachineType: '',
@@ -20,7 +24,16 @@ const MyFormComponent = () => {
     Location: '',
     ManufacturingYear: '',
     Image: '',
+    maintenanceData: [],
+    // maintenanceData: [
+    //   { CMD: 'CMD', TMD: '', CMDFrequency: '', TMDFrequency: '' },
+    //   { CMD: '1', TMD: '', CMDFrequency: '', TMDFrequency: '' },
+    //   // Add more maintenance sets as needed...
+    // ],
   })
+
+  const [maintenanceData, setMaintenanceData] = useState([])
+
   const navigate = useNavigate()
   const [successMessage, setSuccessMessage] = useState('')
 
@@ -37,11 +50,61 @@ const MyFormComponent = () => {
       console.log(err)
     }
   }
+
+  const updateMaintenanceData = (index, field, value) => {
+    const updatedMaintenanceData = [...maintenanceData]
+    updatedMaintenanceData[index] = {
+      ...updatedMaintenanceData[index],
+      [field]: value,
+    }
+    setMaintenanceData(updatedMaintenanceData)
+  }
+
+  const handleMaintenanceChange = (index, field, value) => {
+    const updatedMaintenanceData = [...formData.maintenanceData]
+
+    if (index >= 0 && index < updatedMaintenanceData.length) {
+      updatedMaintenanceData[index][field] = value
+      setFormData({ ...formData, maintenanceData: updatedMaintenanceData })
+    } else {
+      console.error('Invalid index:', index)
+    }
+  }
+
+  const addMaintenanceSet = () => {
+    setFormData({
+      ...formData,
+      maintenanceData: [
+        ...formData.maintenanceData,
+        { CMD: '', TMD: '', CMDFrequency: '', TMDFrequency: '' },
+      ],
+    })
+  }
+
+  const removeMaintenanceSet = (index) => {
+    const updatedMaintenanceData = [...maintenanceData]
+    updatedMaintenanceData.splice(index, 1)
+    setMaintenanceData(updatedMaintenanceData)
+  }
+
   const { id } = useParams()
   const uploadImage = (e, id) => {
     e.preventDefault()
     axios
-      .put(`https://mms-backend-n2zv.onrender.com/api/assets/${id}`, {
+      .put(`http://localhost:5000/api/assets/${id}`, {
+        // AssetName,
+        // MachineNo,
+        // SrNo,
+        // MachineType,
+        // Make,
+        // Controller,
+        // PowerRatting,
+        // CapecitySpindle,
+        // AxisTravels,
+        // Ranking,
+        // Location,
+        // InstallationDate,
+        // ManufacturingYear,
         Image,
       })
       .then((result) => {
@@ -51,7 +114,7 @@ const MyFormComponent = () => {
 
         // Assuming you have a navigate function or useHistory from react-router-dom
         // Navigate back to the previous page
-        navigate('/assetTable')
+        // navigate(-1)
       })
       .catch((err) => console.log(err))
   }
@@ -64,6 +127,10 @@ const MyFormComponent = () => {
       // Destructure form data from the state
       const {
         AssetName,
+        // CMD,
+        // TMD,
+        // CMDFrequency,
+        // TMDFrequency,
         MachineNo,
         SrNo,
         MachineType,
@@ -78,10 +145,21 @@ const MyFormComponent = () => {
         InstallationDate,
         ManufacturingYear,
         Image,
+        maintenanceData: maintenanceData,
         // Image,
       } = formData
+
+      // const dataToSend = {
+      //   AssetName,
+      //   // ... (other fields)
+      //   Image,
+      //   maintenanceData: maintenanceData, // Include maintenanceData in formData
+      // }
+      console.log(maintenanceData)
       // setImage('')
-      console.log('Asset Name:', AssetName)
+      console.log('Asset Name:', AssetName, maintenanceData)
+      // console.log('CMD:', CMD, CMDFrequency)
+      // console.log('TMD:', TMD, TMDFrequency)
       console.log('MachineNo:', MachineNo)
       console.log('SrNo:', SrNo)
       console.log('Location:', Location)
@@ -95,7 +173,7 @@ const MyFormComponent = () => {
       setSuccessMessage('Form submitted successfully!')
 
       // Your fetch logic here
-      const response = await fetch('https://mms-backend-n2zv.onrender.com/api/assets', {
+      const response = await fetch('http://localhost:5000/api/assets', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
@@ -108,6 +186,7 @@ const MyFormComponent = () => {
 
       const data = await response.json()
       console.log('Response from server:', data)
+      // console.log(CMD, TMD)
       uploadImage(e, data._id)
       // navigate(-1)
 
@@ -143,7 +222,7 @@ const MyFormComponent = () => {
         <div className="row g-3">
           <div className="col-md-6">
             <label htmlFor="assetName" style={{ marginBottom: '10px' }}>
-              Machine Name:
+              Machine Code:
             </label>
             <input
               required
@@ -174,7 +253,7 @@ const MyFormComponent = () => {
             </label>
             <input
               required
-              type="number"
+              type="string"
               className="form-control col-sm-6"
               id="srno"
               onChange={(e) => setFormData({ ...formData, SrNo: e.target.value })}
@@ -284,11 +363,11 @@ const MyFormComponent = () => {
               onChange={(e) => setFormData({ ...formData, Ranking: e.target.value })}
             >
               <option value="">Select an option</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+              {/* <option value="5">5</option> */}
             </select>
           </div>
           <div className="col-md-6">
@@ -318,7 +397,9 @@ const MyFormComponent = () => {
             />
           </div>
           <div className="col-md-6">
-            <label htmlFor="attachment">Attachment:</label>
+            <label htmlFor="attachment" style={{ marginBottom: '10px' }}>
+              Attachment:
+            </label>
             <input
               type="file"
               id="Image"
@@ -327,6 +408,110 @@ const MyFormComponent = () => {
               onChange={convertToBse64}
             ></input>
           </div>
+
+          {/* Maintenance sets */}
+          <div style={{ marginTop: '20px' }}>
+            <h5>Maintenance Sets</h5>
+            {formData.maintenanceData.map((set, index) => (
+              <div key={index}>
+                {/* ... (your existing code) */}
+                <div className="row g-3">
+                  <div className="col-md-6">
+                    <label htmlFor={`cmd${index}`} style={{ marginBottom: '10px' }}>
+                      CBM:
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      className="form-control col-sm-6"
+                      id={`cmd${index}`}
+                      value={set.CMD}
+                      onChange={(e) => handleMaintenanceChange(index, 'CMD', e.target.value)}
+                    />
+                  </div>
+                  {/* <div className="col-md-6">
+                    <label htmlFor={`tmd${index}`} style={{ marginBottom: '10px' }}>
+                      TBM:
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      className="form-control col-sm-6"
+                      id={`tmd${index}`}
+                      value={set.TMD}
+                      onChange={(e) => handleMaintenanceChange(index, 'TMD', e.target.value)}
+                    />
+                  </div> */}
+                  <div className="col-md-6">
+                    <label htmlFor={`cmdFrequency${index}`} style={{ marginBottom: '10px' }}>
+                      CBM Frequency:
+                    </label>
+                    <select
+                      className="form-control col-sm-6"
+                      required
+                      id={`cmdFrequency${index}`}
+                      value={set.CMDFrequency}
+                      onChange={(e) =>
+                        handleMaintenanceChange(index, 'CMDFrequency', e.target.value)
+                      }
+                    >
+                      <option value="">Select Frequency</option>
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="fifteen Days">Fifteen Days</option>
+                      <option value="monthly">Monthly</option>
+                      <option value="quarterly">Quarterly</option>
+                      <option value="half Year">Half Year</option>
+                      <option value="yearly">Yearly</option>
+                      {/* ... (your existing code for options) */}
+                    </select>
+                  </div>
+                  <div className="col-md-6">
+                    <label htmlFor={`tmd${index}`} style={{ marginBottom: '10px' }}>
+                      TBM:
+                    </label>
+                    <input
+                      // required
+                      type="text"
+                      className="form-control col-sm-6"
+                      id={`tmd${index}`}
+                      value={set.TMD}
+                      onChange={(e) => handleMaintenanceChange(index, 'TMD', e.target.value)}
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <label htmlFor={`tmdFrequency${index}`} style={{ marginBottom: '10px' }}>
+                      TBM Frequency:
+                    </label>
+                    <select
+                      className="form-control col-sm-6"
+                      // required
+                      id={`tmdFrequency${index}`}
+                      value={set.TMDFrequency}
+                      onChange={(e) =>
+                        handleMaintenanceChange(index, 'TMDFrequency', e.target.value)
+                      }
+                    >
+                      <option value="">Select Frequency</option>
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="fifteen Days">Fifteen Days</option>
+                      <option value="monthly">Monthly</option>
+                      <option value="quarterly">Quarterly</option>
+                      <option value="half Year">Half Year</option>
+                      <option value="yearly">Yearly</option>
+                      {/* ... (your existing code for options) */}
+                    </select>
+                  </div>
+                  {/* ... (your existing code) */}
+                </div>
+              </div>
+            ))}
+            <button type="button" className="btn btn-primary" onClick={addMaintenanceSet}>
+              Add Maintenance Set
+            </button>
+          </div>
+
           <div className="col-xs-12">
             <button
               type="submit"
