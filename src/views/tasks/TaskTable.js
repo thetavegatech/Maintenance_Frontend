@@ -310,7 +310,11 @@ class AssetTable extends React.Component {
         for (const location of updatedLocations) {
           try {
             const userInfoResponse = await axios.get(
+<<<<<<< HEAD
               `https://mms-backend-n2zv.onrender.com/UserInfoByLocation/${location}`,
+=======
+              `http://localhost:5000/UserInfoByLocation/${location}`,
+>>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
             )
 
             const userInfo = userInfoResponse.data

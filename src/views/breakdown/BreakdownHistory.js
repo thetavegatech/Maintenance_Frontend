@@ -22,6 +22,7 @@ import {
 } from '@coreui/react'
 import { format } from 'date-fns'
 import * as XLSX from 'xlsx'
+import loadingGif from '../assetTable/loader.gif'
 
 class BreakdownHistory extends React.Component {
   state = {
@@ -34,6 +35,7 @@ class BreakdownHistory extends React.Component {
     message: '',
     searchQuery: '',
     isHovered: false,
+    loading: true, // New state for loading
   }
 
   handleMouseEnter = () => {
@@ -81,11 +83,13 @@ class BreakdownHistory extends React.Component {
       .then((response) => {
         this.setState({
           breakdowns: Array.isArray(response.data) ? response.data : [response.data],
+          loading: false,
         })
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
         alert('Error fetching data')
+        this.setState({ loading: false })
       })
   }
 
@@ -195,8 +199,16 @@ class BreakdownHistory extends React.Component {
 
   render() {
     // const { breakdowns, selectedMachine, mttr } = this.state;
-    const { breakdowns, selectedMachine, mtbf, mttr, filteredAssets, searchLocation, searchQuery } =
-      this.state
+    const {
+      breakdowns,
+      selectedMachine,
+      mtbf,
+      mttr,
+      filteredAssets,
+      searchLocation,
+      searchQuery,
+      loading,
+    } = this.state
     const openBreakdowns = breakdowns.filter((breakdown) => breakdown.Status === 'close')
 
     const validatedAssets = breakdowns.filter(
@@ -267,13 +279,50 @@ class BreakdownHistory extends React.Component {
               </tr>
             </CTableHead>
             <tbody>
-              {this.state.message && (
+              {loading ? ( // Show loader when loading is true
                 <tr>
                   <td colSpan="8" style={{ textAlign: 'center' }}>
-                    {this.state.message}
+                    {/* Use an image tag for the loading GIF */}
+                    <img src={loadingGif} alt="Loading..." />
+                    <p>Loading...</p>
                   </td>
                 </tr>
+              ) : (
+                <>
+                  {this.state.message && (
+                    <tr>
+                      <td colSpan="11" style={{ textAlign: 'center' }}>
+                        {this.state.message}
+                      </td>
+                    </tr>
+                  )}
+                  {(this.state.searchQuery
+                    ? filteredAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
+                    : validatedAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
+                  ).map((breakdown) => (
+                    <tr key={breakdown._id}>
+                      <td style={{ textAlign: 'center' }}>{breakdown.MachineName}</td>
+                      <td style={{ textAlign: 'center' }}>{breakdown.BreakdownStartDate}</td>
+                      <td style={{ textAlign: 'center' }}>{breakdown.Shift}</td>
+                      <td style={{ textAlign: 'center' }}>{breakdown.LineName}</td>
+                      <td style={{ textAlign: 'center' }}>{breakdown.Location}</td>
+                      <td style={{ textAlign: 'center' }}>{breakdown.BreakdownEndDate}</td>
+                      <td style={{ textAlign: 'center' }}>{breakdown.Status}</td>
+                      <td style={{ textAlign: 'center' }}>
+                        <NavLink to={`/pbdStatus/${breakdown._id}`} style={{ color: '#000080' }}>
+                          <FaEdit />
+                        </NavLink>
+                      </td>
+                      <td style={{ textAlign: 'center' }}>
+                        <NavLink to={`/breakDownRecord/${breakdown._id}`}>
+                          <img src={breakdown.Image} height={50} width={50} />
+                        </NavLink>
+                      </td>
+                    </tr>
+                  ))}
+                </>
               )}
+<<<<<<< HEAD
               {(this.state.searchQuery
                 ? filteredAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
                 : validatedAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
@@ -299,6 +348,8 @@ class BreakdownHistory extends React.Component {
                   </td>
                 </tr>
               ))}
+=======
+>>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
             </tbody>
           </CTable>
 

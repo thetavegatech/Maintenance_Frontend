@@ -76,7 +76,7 @@ const AppSidebar = () => {
           alt="Before Logo"
           style={{ marginRight: '20px', height: '45px', marginLeft: '-10%' }}
         />
-        <h4 style={{ fontSize: '25px', color: 'orange' }}>Thetavega Tech</h4>
+        <h4 style={{ fontSize: '25px', color: 'orange' }}>A A A P L</h4>
       </CSidebarBrand>
       <CSidebarNav>
         {(() => {

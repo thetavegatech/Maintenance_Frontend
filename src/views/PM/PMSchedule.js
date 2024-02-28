@@ -5,7 +5,11 @@ import dlt from '../assetTable/delete.png'
 import { CTable, CButton, CTableHead } from '@coreui/react'
 import { FaEdit } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
+<<<<<<< HEAD
 // import loadingGif from '../assetTable/loader.gif'
+=======
+import loadingGif from '../assetTable/loader.gif'
+>>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
 
 class AssetTable extends React.Component {
   state = {
@@ -136,7 +140,11 @@ class AssetTable extends React.Component {
 
   getAssetLocations = async () => {
     try {
+<<<<<<< HEAD
       const response = await fetch('https://mms-backend-n2zv.onrender.com/locations')
+=======
+      const response = await fetch('http://localhost:5000/locations')
+>>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`)
       }
@@ -310,7 +318,11 @@ class AssetTable extends React.Component {
         for (const location of updatedLocations) {
           try {
             const userInfoResponse = await axios.get(
+<<<<<<< HEAD
               `https://mms-backend-n2zv.onrender.com/UserInfoByLocation/${location}`,
+=======
+              `http://localhost:5000/UserInfoByLocation/${location}`,
+>>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
             )
 
             const userInfo = userInfoResponse.data
@@ -426,7 +438,11 @@ class AssetTable extends React.Component {
               <tr>
                 <td colSpan="11" style={{ textAlign: 'center' }}>
                   {/* Use an image tag for the loading GIF */}
+<<<<<<< HEAD
                   <img alt="Loading..." />
+=======
+                  <img src={loadingGif} alt="Loading..." />
+>>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
                   <p>Loading...</p>
                 </td>
               </tr>

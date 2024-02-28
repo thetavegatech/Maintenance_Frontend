@@ -6,7 +6,11 @@ import dlt from '../User/delete.png'
 import { CTable, CTableHead, CButton } from '@coreui/react'
 import { FaEdit } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
+<<<<<<< HEAD
 // import loadingGif from '../assetTable/loader.gif'
+=======
+import loadingGif from '../assetTable/loader.gif'
+>>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
 
 export default function Users() {
   const [usernos, setUsers] = useState([])
@@ -54,7 +58,11 @@ export default function Users() {
       </NavLink>
       {loading ? (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
+<<<<<<< HEAD
           <img alt="Loading..." />
+=======
+          <img src={loadingGif} alt="Loading..." />
+>>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
           <p>Loading...</p>
         </div>
       ) : (

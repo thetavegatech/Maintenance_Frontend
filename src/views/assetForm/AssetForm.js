@@ -91,7 +91,11 @@ const MyFormComponent = () => {
   const uploadImage = (e, id) => {
     e.preventDefault()
     axios
+<<<<<<< HEAD
       .put(`http://localhost:5000/api/assets/${id}`, {
+=======
+      .put(`https://mms-backend-n2zv.onrender.com/api/assets/${id}`, {
+>>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
         // AssetName,
         // MachineNo,
         // SrNo,
@@ -114,7 +118,11 @@ const MyFormComponent = () => {
 
         // Assuming you have a navigate function or useHistory from react-router-dom
         // Navigate back to the previous page
+<<<<<<< HEAD
         // navigate(-1)
+=======
+        navigate(-1)
+>>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
       })
       .catch((err) => console.log(err))
   }

@@ -278,7 +278,7 @@ export default function BreakDown() {
               <div className="col-md-4">
                 <label htmlFor="whyWhy">Why-Why Analysis:</label>
                 <input
-                  type="text"
+                  type="textarea"
                   disabled
                   className="form-control col-sm-6"
                   name="WhyWhyAnalysis"
