@@ -5,6 +5,7 @@ import dlt from '../assetTable/delete.png'
 import { CTable, CTableHead, CButton, CInputGroup, CFormControl } from '@coreui/react'
 import { MdDelete } from 'react-icons/md'
 import { FaEdit } from 'react-icons/fa'
+import { CContainer, CSpinner } from '@coreui/react'
 
 class AssetTable extends React.Component {
   state = {
@@ -13,6 +14,7 @@ class AssetTable extends React.Component {
     searchLocation: '', // New state for the search term
     message: '',
     searchQuery: '',
+    loading: true,
   }
 
   componentDidMount() {
@@ -21,10 +23,17 @@ class AssetTable extends React.Component {
       .then((response) => {
         // If the response is an array, simply set it to assets.
         // If it's an object, place it in an array as you've shown.
-        this.setState({ assets: Array.isArray(response.data) ? response.data : [response.data] })
+        this.setState({
+          assets: Array.isArray(response.data) ? response.data : [response.data],
+          loading: false,
+        })
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
+        this.setState({
+          loading: false, // Set loading to false in case of an error
+          message: 'Error fetching data. Please try again.',
+        })
         alert('Error fetching data')
       })
   }
@@ -103,7 +112,7 @@ class AssetTable extends React.Component {
   render() {
     // const { assets } = this.state // Destructuring assets from state for ease of access
 
-    const { assets, filteredAssets, searchLocation, searchQuery } = this.state
+    const { assets, filteredAssets, searchLocation, searchQuery, loading } = this.state
     const { isClicked } = this.state
     // Filter assets to include only rows with all values filled
     const validatedAssets = assets.filter(
@@ -224,6 +233,13 @@ class AssetTable extends React.Component {
               ))}
             </tbody>
           </CTable>
+          {loading && (
+            <div className="loader-container">
+              {/* <div className="loader">Loading...</div> */}
+              <CSpinner color="primary" />
+              <div className="loader">Loading...</div>
+            </div>
+          )}
         </div>
       </>
     )

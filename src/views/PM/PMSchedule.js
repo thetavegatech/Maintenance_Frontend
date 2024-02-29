@@ -5,6 +5,7 @@ import dlt from '../assetTable/delete.png'
 import { CTable, CButton, CTableHead } from '@coreui/react'
 import { FaEdit } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
+import { CContainer, CSpinner } from '@coreui/react'
 
 class AssetTable extends React.Component {
   state = {
@@ -12,6 +13,7 @@ class AssetTable extends React.Component {
     filteredAssets: [],
     searchQuery: '',
     formData: {},
+    loading: true,
     // isHovered: false,
   }
 
@@ -366,7 +368,7 @@ class AssetTable extends React.Component {
   }
 
   render() {
-    const { assets, filteredAssets, message, searchQuery } = this.state
+    const { assets, filteredAssets, message, searchQuery, loading } = this.state
 
     // Apply filter for non-empty "Task Name" to both assets and filteredAssets
     const filteredDefaultAssets = assets.filter(
@@ -470,6 +472,13 @@ class AssetTable extends React.Component {
             ))}
           </tbody>
         </CTable>
+        {loading && (
+          <div className="loader-container">
+            {/* <div className="loader">Loading...</div> */}
+            <CSpinner color="primary" />
+            <div className="loader">Loading...</div>
+          </div>
+        )}
       </div>
     )
   }

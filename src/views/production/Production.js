@@ -1,6 +1,7 @@
 import React from 'react'
 import { format } from 'date-fns'
 import * as XLSX from 'xlsx'
+import { CContainer, CSpinner } from '@coreui/react'
 
 // import BDList from './BDList';
 import axios from 'axios'
@@ -26,6 +27,7 @@ class BDList extends React.Component {
     isHovered: false,
     startDate: '',
     endDate: '',
+    loading: true,
   }
 
   handleMouseEnter = () => {
@@ -84,6 +86,7 @@ class BDList extends React.Component {
       .then((response) => {
         this.setState({
           breakdowns: Array.isArray(response.data) ? response.data : [response.data],
+          loading: false,
         })
       })
       .catch((error) => {
@@ -134,7 +137,7 @@ class BDList extends React.Component {
 
   render() {
     // const { breakdowns, selectedLocation } = this.state
-    const { breakdowns, filteredAssets, searchLocation, searchQuery } = this.state
+    const { breakdowns, filteredAssets, searchLocation, searchQuery, loading } = this.state
     const openBreakdowns = breakdowns.filter((breakdown) => breakdown.Status === 'pending')
 
     const validatedAssets = breakdowns.filter(
@@ -397,14 +400,13 @@ class BDList extends React.Component {
               ))}
             </CTableBody>
           </CTable>
-          {/* <CButton
-            color="info"
-            type="button"
-            style={{ margin: '1rem', backgroundColor: 'grey' }}
-            onClick={this.exportToExcel}
-          >
-            Export to Excel
-          </CButton> */}
+          {loading && (
+            <div className="loader-container">
+              {/* <div className="loader">Loading...</div> */}
+              <CSpinner color="primary" />
+              <div className="loader">Loading...</div>
+            </div>
+          )}
         </div>
       </>
     )

@@ -3,6 +3,7 @@ import React from 'react'
 import axios from 'axios'
 import { FaEdit } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
+import { CContainer, CSpinner } from '@coreui/react'
 import { CInput } from '@coreui/react'
 import {
   CAvatar,
@@ -33,6 +34,7 @@ class BDList extends React.Component {
     isHovered: false,
     startDate: '',
     endDate: '',
+    loading: true,
   }
 
   handleMouseEnter = () => {
@@ -92,6 +94,7 @@ class BDList extends React.Component {
       .then((response) => {
         this.setState({
           breakdowns: Array.isArray(response.data) ? response.data : [response.data],
+          loading: false,
         })
       })
       .catch((error) => {
@@ -124,7 +127,7 @@ class BDList extends React.Component {
   }
 
   render() {
-    const { breakdowns, filteredAssets, searchLocation, searchQuery } = this.state
+    const { breakdowns, filteredAssets, searchLocation, searchQuery, loading } = this.state
     const openBreakdowns = breakdowns.filter((breakdown) => breakdown.Status === 'open')
     const validatedAssets = breakdowns.filter(
       (breakdowns) => breakdowns.Location && breakdowns.Location.trim() !== '',
@@ -308,6 +311,13 @@ class BDList extends React.Component {
                 ))}
               </CTableBody>
             </CTable>
+            {loading && (
+              <div className="loader-container">
+                {/* <div className="loader">Loading...</div> */}
+                <CSpinner color="primary" />
+                <div className="loader">Loading...</div>
+              </div>
+            )}
           </div>
         </div>
       </>

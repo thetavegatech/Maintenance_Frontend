@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import { NavLink } from 'react-router-dom'
 import { FaEdit } from 'react-icons/fa'
+import { CContainer, CSpinner } from '@coreui/react'
 import {
   CAvatar,
   CButton,
@@ -34,6 +35,7 @@ class BreakdownHistory extends React.Component {
     message: '',
     searchQuery: '',
     isHovered: false,
+    loading: true,
   }
 
   handleMouseEnter = () => {
@@ -81,6 +83,7 @@ class BreakdownHistory extends React.Component {
       .then((response) => {
         this.setState({
           breakdowns: Array.isArray(response.data) ? response.data : [response.data],
+          loading: false,
         })
       })
       .catch((error) => {
@@ -195,7 +198,7 @@ class BreakdownHistory extends React.Component {
 
   render() {
     // const { breakdowns, selectedMachine, mttr } = this.state;
-    const { breakdowns, selectedMachine, mtbf, mttr, filteredAssets, searchLocation, searchQuery } =
+    const { breakdowns, selectedMachine, mtbf, mttr, filteredAssets, searchLocation, loading } =
       this.state
     const openBreakdowns = breakdowns.filter((breakdown) => breakdown.Status === 'close')
 
@@ -303,6 +306,13 @@ class BreakdownHistory extends React.Component {
               ))}
             </tbody>
           </CTable>
+          {loading && (
+            <div className="loader-container">
+              {/* <div className="loader">Loading...</div> */}
+              <CSpinner color="primary" />
+              <div className="loader">Loading...</div>
+            </div>
+          )}
 
           <div
             className="container"

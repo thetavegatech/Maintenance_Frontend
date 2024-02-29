@@ -6,6 +6,7 @@ import { CTable, CTableHead, CButton, CInputGroup, CFormControl } from '@coreui/
 import { MdDelete, MdEdit } from 'react-icons/md'
 import PropTypes from 'prop-types'
 import { FaEdit } from 'react-icons/fa'
+import { CContainer, CSpinner } from '@coreui/react'
 
 class Table extends React.Component {
   state = {
@@ -14,6 +15,7 @@ class Table extends React.Component {
     searchLocation: '', // New state for the search term
     message: '',
     searchQuery: '',
+    loading: true,
   }
 
   componentDidMount() {
@@ -22,6 +24,7 @@ class Table extends React.Component {
       .then((response) => {
         this.setState({
           assets: Array.isArray(response.data) ? response.data : [response.data],
+          loading: false,
         })
 
         console.log('Assets:', this.state.assets)
@@ -112,7 +115,7 @@ class Table extends React.Component {
   render() {
     // const { assets } = this.state // Destructuring assets from state for ease of access
 
-    const { assets, searchQuery } = this.state
+    const { assets, searchQuery, loading } = this.state
     const filteredAssets = this.state.filteredAssets || []
 
     return (
@@ -228,6 +231,13 @@ class Table extends React.Component {
                   ))}
             </tbody>
           </CTable>
+          {loading && (
+            <div className="loader-container">
+              {/* <div className="loader">Loading...</div> */}
+              <CSpinner color="primary" />
+              <div className="loader">Loading...</div>
+            </div>
+          )}
         </div>
       </>
     )
