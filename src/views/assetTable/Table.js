@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { NavLink } from 'react-router-dom'
-// import dlt from '../assetTable/delete.png'
+import dlt from '../assetTable/delete.png'
 import { CTable, CTableHead, CButton, CInputGroup, CFormControl } from '@coreui/react'
 import { MdDelete, MdEdit } from 'react-icons/md'
 import PropTypes from 'prop-types'

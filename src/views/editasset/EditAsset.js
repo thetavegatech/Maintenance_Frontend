@@ -21,6 +21,11 @@ export default function EditForm() {
   const [Ranking, setRanking] = useState('')
   const [InstallationDate, setInstallationDate] = useState('')
   const [ManufacturingYear, setManufacturingYear] = useState('')
+  const [CMD, setCMD] = useState('')
+  const [TMD, setTMD] = useState('')
+  const [TMDFrequency, setTMDFrequency] = useState('')
+  const [CMDFrequency, setCMDFrequency] = useState('')
+  const [maintenanceData, setmaintenanceDatay] = useState('')
 
   const [StartDateofMaintenance, setStartDateofMaintenance] = useState('') // assuming you need this
   // const [ScheduledMaintenanceDatesandIntervals, setScheduledMaintenanceDatesandIntervals] = useState('');
@@ -157,7 +162,7 @@ export default function EditForm() {
             <div className="row g-2">
               <div className="col-md-5">
                 <label htmlFor="assetName" style={{ marginBottom: '10px' }}>
-                  Asset Name:
+                  Machine Code:
                 </label>
                 <input
                   type="text"
@@ -367,6 +372,36 @@ export default function EditForm() {
                 onChange={(e) => setManufacturingYear(e.target.value)}
               />
             </div>
+            {/* <div className="col-md-5">
+              <label htmlFor="CMD" style={{ marginBottom: '10px' }}>
+                CBM:
+              </label>
+              <input
+                required
+                type="string"
+                className="form-control col-sm-4"
+                id="CMD"
+                defaultValue={''}
+                name="CMD"
+                value={CMD}
+                onChange={(e) => setCMD(e.target.value)}
+              />
+            </div>
+            <div className="col-md-5">
+              <label htmlFor="TMD" style={{ marginBottom: '10px' }}>
+                TBM:
+              </label>
+              <input
+                required
+                type="string"
+                className="form-control col-sm-4"
+                id="TMD"
+                defaultValue={''}
+                name="TMD"
+                value={TMD}
+                onChange={(e) => setTMD(e.target.value)}
+              />
+            </div> */}
             <div className="col-md-5">
               <label htmlFor="attachment">Attachment:</label>
               <input

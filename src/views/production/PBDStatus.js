@@ -39,7 +39,9 @@ export default function BreakDown() {
   }, [])
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/getBreakdownDataId/${id}`)
+      const response = await axios.get(
+        `https://mms-backend-n2zv.onrender.com/getBreakdownDataId/${id}`,
+      )
       console.log(response)
       setMachineName(response.data.MachineName)
       setAttendedBy(response.data.AttendedBy)
@@ -75,7 +77,7 @@ export default function BreakDown() {
   const Update = (e) => {
     e.preventDefault()
     axios
-      .put(`http://localhost:5000/updateBreakdownRecord/${id}`, {
+      .put(`https://mms-backend-n2zv.onrender.com/updateBreakdownRecord/${id}`, {
         MachineName,
         AttendedBy,
         BreakdownStartDate,
@@ -278,7 +280,7 @@ export default function BreakDown() {
               <div className="col-md-4">
                 <label htmlFor="whyWhy">Why-Why Analysis:</label>
                 <input
-                  type="textarea"
+                  type="text"
                   disabled
                   className="form-control col-sm-6"
                   name="WhyWhyAnalysis"

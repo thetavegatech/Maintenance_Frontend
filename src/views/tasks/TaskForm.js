@@ -14,8 +14,8 @@ const MyFormComponent = () => {
     TaskDescription: '',
     startDate: '',
     nextDate: '',
-    Location: '',
     status: 'Pending',
+    Location: '',
   })
   const navigate = useNavigate()
   const [assetNames, setAssetNames] = useState([])
@@ -57,8 +57,15 @@ const MyFormComponent = () => {
       // Destructure form data from the state
       const {
         AssetName,
+        Description,
+        AssetCategory,
         Location,
+        ManufacturersName,
+        ManufacturersAddress,
+        ManufacturersContactNo,
+        ManufacturersEmail,
         ScheduledMaintenanceDatesandIntervals,
+        PMDetails,
         StartDateofMaintenance,
         NextScheduledDate,
         TaskName,
@@ -67,7 +74,13 @@ const MyFormComponent = () => {
       } = formData
 
       console.log('Asset Name:', AssetName)
+      console.log('Description:', Description)
+      console.log('Asset Category:', AssetCategory)
       console.log('Location:', Location)
+      console.log('Manufacturers Name:', ManufacturersName)
+      console.log('Manufacturers Address:', ManufacturersAddress)
+      console.log('Manufacturers Contact No:', ManufacturersContactNo)
+      console.log('Manufacturers Email:', ManufacturersEmail)
       console.log('Task Name:', TaskName)
       console.log('status', status)
       console.log(formData)
@@ -237,7 +250,7 @@ const MyFormComponent = () => {
       const formData = new FormData()
       formData.append('image', file)
 
-      await axios.post('http://localhost:3000/upload', formData)
+      await axios.post('https://mms-backend-n2zv.onrender.com/upload', formData)
 
       // File uploaded successfully
       console.log('File uploaded')
@@ -269,7 +282,7 @@ const MyFormComponent = () => {
         <form onSubmit={handleSubmit} style={{ marginLeft: '%' }}>
           <div className="row g-3">
             <div className="col-md-5">
-              <label htmlFor="assetName">Asset Name:</label>
+              <label htmlFor="assetName">Machine Code:</label>
               <select
                 required
                 className="form-control col-sm-6"
@@ -295,10 +308,11 @@ const MyFormComponent = () => {
                 onChange={(e) => setFormData({ ...formData, Location: e.target.value })}
               >
                 <option value="">Select an option</option>
-                <option value="Plant 1">Plant 1</option>
-                <option value="Plant 2">Plant 2</option>
-                <option value="Plant 3">Plant 3</option>
-                <option value="Plant 4">Plant 4</option>
+                <option value="AAAPL-27">AAAPL-27</option>
+                <option value="AAAPL-29">AAAPL-29</option>
+                <option value="AAAPL- 89">AAAPL- 89</option>
+                <option value="DPAPL - 236">DPAPL - 236</option>
+                <option value=" DPAPL- GN"> DPAPL- GN</option>
               </select>
             </div>
             <div className="col-md-5">
@@ -312,9 +326,7 @@ const MyFormComponent = () => {
               />
             </div>
             <div className="col-md-5">
-              <label htmlFor="description" className="form-label">
-                Task Description:
-              </label>
+              <label htmlFor="description">Task Description:</label>
               <input
                 className="form-control col-sm-6"
                 required

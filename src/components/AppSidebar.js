@@ -67,14 +67,14 @@ const AppSidebar = () => {
     >
       <CSidebarBrand className="d-md-none">
         <img src={logo} className="logo1" alt="Before Logo" style={{ height: '45px' }} />
-        <h4 style={{ fontSize: '25px', color: 'orange' }}>Thetavega Tech</h4>
+        <h4 style={{ fontSize: '25px', color: 'orange' }}>AAAPL</h4>
       </CSidebarBrand>
       <CSidebarBrand className="d-none d-md-flex">
         <img
           src={logo}
           className="logo1"
           alt="Before Logo"
-          style={{ marginRight: '20px', height: '45px', marginLeft: '-10%' }}
+          style={{ marginRight: '30px', height: '45px', marginLeft: '-35%' }}
         />
         <h4 style={{ fontSize: '25px', color: 'orange' }}>A A A P L</h4>
       </CSidebarBrand>

@@ -24,7 +24,7 @@ const BreakDownRecord = () => {
 
   return (
     <div>
-      <img src={imageData} height="50%" width="40%" />
+      <img src={imageData} height="50%" width="100%" />
     </div>
   )
 }

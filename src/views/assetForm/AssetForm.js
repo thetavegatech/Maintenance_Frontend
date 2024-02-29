@@ -91,11 +91,7 @@ const MyFormComponent = () => {
   const uploadImage = (e, id) => {
     e.preventDefault()
     axios
-<<<<<<< HEAD
-      .put(`http://localhost:5000/api/assets/${id}`, {
-=======
       .put(`https://mms-backend-n2zv.onrender.com/api/assets/${id}`, {
->>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
         // AssetName,
         // MachineNo,
         // SrNo,
@@ -118,11 +114,7 @@ const MyFormComponent = () => {
 
         // Assuming you have a navigate function or useHistory from react-router-dom
         // Navigate back to the previous page
-<<<<<<< HEAD
         // navigate(-1)
-=======
-        navigate(-1)
->>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
       })
       .catch((err) => console.log(err))
   }
@@ -181,7 +173,7 @@ const MyFormComponent = () => {
       setSuccessMessage('Form submitted successfully!')
 
       // Your fetch logic here
-      const response = await fetch('http://localhost:5000/api/assets', {
+      const response = await fetch('https://mms-backend-n2zv.onrender.com/api/assets', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
@@ -352,10 +344,11 @@ const MyFormComponent = () => {
               onChange={(e) => setFormData({ ...formData, Location: e.target.value })}
             >
               <option value="">Select an option</option>
-              <option value="Plant 1">Plant 1</option>
-              <option value="Plant 2">Plant 2</option>
-              <option value="Plant 3">Plant 3</option>
-              <option value="Plant 4">Plant 4</option>
+              <option value="AAAPL-27">AAAPL-27</option>
+              <option value="AAAPL-29">AAAPL-29</option>
+              <option value="AAAPL- 89">AAAPL- 89</option>
+              <option value="DPAPL - 236">DPAPL - 236</option>
+              <option value=" DPAPL- GN"> DPAPL- GN</option>
             </select>
           </div>
           <div className="col-md-6">

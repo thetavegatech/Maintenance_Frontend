@@ -272,10 +272,9 @@ export default function EditForm() {
             <div className="form-group">
               <label htmlFor="startDate">Next Date :</label>
               <input
-                type="text" // Change input type to text
+                type="text"
                 className="form-control"
                 id="nextDate"
-                // style={{ width: '80%' }}
                 name="nextDate"
                 value={nextDate}
                 onChange={(e) => setnextDate(e.target.value)}

@@ -5,9 +5,8 @@ import axios from 'axios'
 import { CTimePicker } from '@coreui/react'
 import TimePicker from 'react-time-picker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { useDispatch, useSelector } from 'react-redux'
 import Select from 'react-select'
-
+import { useDispatch, useSelector } from 'react-redux'
 export default function BreakDown() {
   const [usernos, setUsers] = useState([])
   const [selectedUserId, setSelectedUserId] = useState('')
@@ -17,10 +16,10 @@ export default function BreakDown() {
   const [isFullTime, setIsFullTime] = useState(false)
   const [selectedTime, setSelectedTime] = useState('12:00')
   const [value, setValue] = useState('')
-  // const [filteredAssetNames, setFilteredAssetNames] = useState([])
   const [filteredAssetNames, setFilteredAssetNames] = useState([])
   const [filteredMachineNames, setFilteredMachineNames] = useState([])
   const [isDropdownVisible, setIsDropdownVisible] = useState(false)
+  const username = useSelector((state) => state.auth.userInfo?.name)
 
   useEffect(() => {
     // Fetch user data from the server
@@ -58,9 +57,9 @@ export default function BreakDown() {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     MachineName: '',
-    BreakdownStartDate: '',
+    BreakdownStartDate: new Date().toISOString().split('T')[0],
     BreakdownEndDate: '',
-    BreakdownStartTime: '',
+    BreakdownStartTime: new Date().toLocaleTimeString('en-US', { hour12: false }),
     BreakdownEndTime: '',
     Shift: '',
     LineName: '',
@@ -234,32 +233,37 @@ export default function BreakDown() {
     })
   }
 
-  const userrole = useSelector((state) => state.auth.userInfo?.role) || ''
-  const username = useSelector((state) => state.auth.userInfo?.name)
-
   const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
   const numbers = '7020804148' // Replace with the phone numbers
   const data1 = 'test'
-  const data2 = 'test'
+  const data2 = { username }
   const sender = 'AAABRD'
 
   const sendSMS = (formData, selectedUsers, loggedInUsername) => {
-    const { MachineName, BreakdownStartDate, Shift, LineName, Operations, BreakdownPhenomenons } =
-      formData
+    const {
+      MachineName,
+      BreakdownStartDate,
+      Shift,
+      LineName,
+      Operations,
+      BreakdownPhenomenons,
+      username,
+    } = formData
     // Formulate a simple message
     const message = encodeURIComponent(
       'Breakdown For ' +
         MachineName +
-        // 'Date of Breakdown Start' +
-        // BreakdownStartDate +
         ' please visit concerned department Details are ' +
         loggedInUsername +
         ' - Aurangabad Auto Ancillary',
     )
 
+    // const message = encodeURIComponent(
+    //   `Breakdown For ${MachineName} please visit concerned department Details are ${username} - Aurangabad Auto Ancillary`,
+    // )
+
     const phoneNumbers = usernos.map((user) => user.phoneNumber).join(',')
-    // console.log(selected)
-    // console.log(selectedUserNumbers.join(','))
+
     const selectedno = selectedUserNumbers.join(',')
     // console.log(selectedno)
 
@@ -306,7 +310,7 @@ export default function BreakDown() {
           <div className="row g-2">
             <div className="col-md-6">
               <label htmlFor="machineName" style={{ marginBottom: '10px', fontSize: '16px' }}>
-                Machine Name:
+                Machine Code:
               </label>
               <Select
                 className="form-control col-sm-6"
@@ -327,6 +331,7 @@ export default function BreakDown() {
                 }}
               />
             </div>
+
             <div className="col-md-6">
               <label
                 htmlFor="assetLocation"
@@ -344,10 +349,11 @@ export default function BreakDown() {
                 onChange={handleChange}
               >
                 <option value="">Select an option</option>
-                <option value="Plant 1">Plant 1</option>
-                <option value="Plant 2">Plant 2</option>
-                <option value="Plant 3">Plant 3</option>
-                <option value="Plant 4">Plant 4</option>
+                <option value="AAAPL-27">AAAPL-27</option>
+                <option value="AAAPL-29">AAAPL-29</option>
+                <option value="AAAPL- 89">AAAPL- 89</option>
+                <option value="DPAPL - 236">DPAPL - 236</option>
+                <option value=" DPAPL- GN"> DPAPL- GN</option>
               </select>
             </div>
             <div className="col-md-6">
@@ -356,7 +362,7 @@ export default function BreakDown() {
               </label>
               <input
                 type="date"
-                required
+                disabled
                 className="form-control col-sm-6"
                 name="BreakdownStartDate"
                 value={formData.BreakdownStartDate}
@@ -384,6 +390,7 @@ export default function BreakDown() {
               </label>
               <input
                 type="time"
+                disabled
                 id="breakdownStartTime"
                 className="form-control col-sm-6"
                 name="BreakdownStartTime"

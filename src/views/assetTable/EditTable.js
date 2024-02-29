@@ -77,7 +77,7 @@ export default function EditForm() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/assets/${assetId}/maintenance/${setId}`,
+        `https://mms-backend-n2zv.onrender.com/assets/${assetId}/maintenance/${setId}`,
       )
       console.log(response)
 
@@ -97,7 +97,7 @@ export default function EditForm() {
   const Update = (e) => {
     e.preventDefault()
     axios
-      .put(`http://localhost:5000/assets/${assetId}/maintenance/${setId}`, {
+      .put(`https://mms-backend-n2zv.onrender.com/assets/${assetId}/maintenance/${setId}`, {
         AssetName,
         MachineNo,
         SrNo,

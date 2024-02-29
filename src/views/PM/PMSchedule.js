@@ -5,11 +5,6 @@ import dlt from '../assetTable/delete.png'
 import { CTable, CButton, CTableHead } from '@coreui/react'
 import { FaEdit } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
-<<<<<<< HEAD
-// import loadingGif from '../assetTable/loader.gif'
-=======
-import loadingGif from '../assetTable/loader.gif'
->>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
 
 class AssetTable extends React.Component {
   state = {
@@ -17,7 +12,7 @@ class AssetTable extends React.Component {
     filteredAssets: [],
     searchQuery: '',
     formData: {},
-    loading: true, // New state for loading
+    // isHovered: false,
   }
 
   handleMouseEnter = () => {
@@ -37,7 +32,7 @@ class AssetTable extends React.Component {
 
     // Set the time for 12:00 AM (midnight)
     const twelveAM = new Date()
-    twelveAM.setHours(11, 2, 0, 0)
+    twelveAM.setHours(17, 1, 0, 0)
 
     // Calculate the delay until 12:00 AM
     const delay = twelveAM - new Date()
@@ -71,12 +66,11 @@ class AssetTable extends React.Component {
           return asset
         })
 
-        this.setState({ assets: fetchedAssets, loading: false })
+        this.setState({ assets: fetchedAssets })
       })
       .catch((error) => {
         console.error('Error fetching data:', error)
         alert('Error fetching data')
-        this.setState({ loading: false })
       })
   }
 
@@ -140,11 +134,7 @@ class AssetTable extends React.Component {
 
   getAssetLocations = async () => {
     try {
-<<<<<<< HEAD
       const response = await fetch('https://mms-backend-n2zv.onrender.com/locations')
-=======
-      const response = await fetch('http://localhost:5000/locations')
->>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`)
       }
@@ -288,7 +278,9 @@ class AssetTable extends React.Component {
       if (updatedIds.length > 0) {
         const idDetailsResponse = await axios.get(
           'https://mms-backend-n2zv.onrender.com/getAllData',
-          { params: { ids: updatedIds } },
+          {
+            params: { ids: updatedIds },
+          },
         )
 
         console.log('Updated Assets Details:', idDetailsResponse.data)
@@ -318,11 +310,7 @@ class AssetTable extends React.Component {
         for (const location of updatedLocations) {
           try {
             const userInfoResponse = await axios.get(
-<<<<<<< HEAD
               `https://mms-backend-n2zv.onrender.com/UserInfoByLocation/${location}`,
-=======
-              `http://localhost:5000/UserInfoByLocation/${location}`,
->>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
             )
 
             const userInfo = userInfoResponse.data
@@ -378,7 +366,7 @@ class AssetTable extends React.Component {
   }
 
   render() {
-    const { assets, filteredAssets, message, searchQuery, loading } = this.state
+    const { assets, filteredAssets, message, searchQuery } = this.state
 
     // Apply filter for non-empty "Task Name" to both assets and filteredAssets
     const filteredDefaultAssets = assets.filter(
@@ -420,7 +408,7 @@ class AssetTable extends React.Component {
         <CTable bordered striped hover responsive>
           <CTableHead color="dark">
             <tr>
-              <th style={{ textAlign: 'center' }}>Asset Name</th>
+              <th style={{ textAlign: 'center' }}>Machine Code</th>
               <th style={{ textAlign: 'center' }}>Location</th>
               <th style={{ textAlign: 'center' }}>Task Name</th>
               <th style={{ textAlign: 'center' }}>Task Description</th>
@@ -434,71 +422,52 @@ class AssetTable extends React.Component {
             </tr>
           </CTableHead>
           <tbody>
-            {loading ? ( // Show loader when loading is true
+            {message && (
               <tr>
-                <td colSpan="11" style={{ textAlign: 'center' }}>
-                  {/* Use an image tag for the loading GIF */}
-<<<<<<< HEAD
-                  <img alt="Loading..." />
-=======
-                  <img src={loadingGif} alt="Loading..." />
->>>>>>> 949afd1a54e6fbc893a9449452ba44e3c42ced7f
-                  <p>Loading...</p>
+                <td colSpan="8" style={{ textAlign: 'center', fontStyle: 'italic', color: 'red' }}>
+                  {message}
                 </td>
               </tr>
-            ) : (
-              <>
-                {message && (
-                  <tr>
-                    <td
-                      colSpan="8"
-                      style={{ textAlign: 'center', fontStyle: 'italic', color: 'red' }}
-                    >
-                      {message}
-                    </td>
-                  </tr>
-                )}
-                {(searchQuery ? filteredAssets : filteredDefaultAssets).map((asset) => (
-                  <tr key={asset._id}>
-                    <td style={{ textAlign: 'center' }}>{asset.AssetName}</td>
-                    <td style={{ textAlign: 'center' }}>{asset.Location}</td>
-                    <td style={{ textAlign: 'center' }}>{asset.TaskName}</td>
-                    <td style={{ textAlign: 'center' }}>{asset.TaskDescription}</td>
-                    <td style={{ textAlign: 'center' }}>
-                      {asset.ScheduledMaintenanceDatesandIntervals}
-                    </td>
-                    <td style={{ textAlign: 'center' }}>
-                      {new Date(asset.startDate).toISOString().split('T')[0]}
-                    </td>
-                    <td style={{ textAlign: 'center' }}>
-                      {new Date(asset.nextDate).toISOString().split('T')[0]}
-                    </td>
-                    <td style={{ textAlign: 'center' }}>{asset.status}</td>
-                    <td style={{ textAlign: 'center' }}>
-                      <NavLink to={`/editPM/${asset._id}`} style={{ color: '#000080' }}>
-                        <FaEdit />
-                      </NavLink>
-                    </td>
-
-                    <td style={{ textAlign: 'center' }}>
-                      <button
-                        className="btn"
-                        onClick={() => this.deleteData(asset._id)}
-                        style={{ color: 'red' }}
-                      >
-                        {/* <img src={dlt} alt="" width={30} height={30} /> */}
-                        <MdDelete />
-                      </button>
-                    </td>
-                    <td style={{ textAlign: 'center' }}>
-                      <NavLink to={`/taskRecord/${asset._id}`}>
-                        <img src={asset.Image} height={50} width={50} />
-                      </NavLink>
-                    </td>
-                  </tr>
-                ))}
-              </>
             )}
+            {(searchQuery ? filteredAssets : filteredDefaultAssets).map((asset) => (
+              <tr key={asset._id}>
+                <td style={{ textAlign: 'center' }}>{asset.AssetName}</td>
+                <td style={{ textAlign: 'center' }}>{asset.Location}</td>
+                <td style={{ textAlign: 'center' }}>{asset.TaskName}</td>
+                <td style={{ textAlign: 'center' }}>{asset.TaskDescription}</td>
+                <td style={{ textAlign: 'center' }}>
+                  {asset.ScheduledMaintenanceDatesandIntervals}
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  {new Date(asset.startDate).toISOString().split('T')[0]}
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  {new Date(asset.nextDate).toISOString().split('T')[0]}
+                </td>
+                <td style={{ textAlign: 'center' }}>{asset.status}</td>
+                <td style={{ textAlign: 'center' }}>
+                  <NavLink to={`/editPM/${asset._id}`} style={{ color: '#000080' }}>
+                    <FaEdit />
+                  </NavLink>
+                </td>
+
+                <td style={{ textAlign: 'center' }}>
+                  <button
+                    className="btn"
+                    onClick={() => this.deleteData(asset._id)}
+                    style={{ color: 'red' }}
+                  >
+                    {/* <img src={dlt} alt="" width={30} height={30} /> */}
+                    <MdDelete />
+                  </button>
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  <NavLink to={`/taskRecord/${asset._id}`}>
+                    <img src={asset.Image} height={50} width={50} />
+                  </NavLink>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </CTable>
       </div>
