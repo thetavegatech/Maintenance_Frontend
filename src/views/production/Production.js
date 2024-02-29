@@ -100,39 +100,50 @@ class BDList extends React.Component {
   }
 
   exportToExcel = () => {
-    const { breakdowns } = this.state
+    // const { breakdowns, searchLocation } = this.state
+    const { filteredAssets } = this.state
     // const dataToExport = searchQuery ? filteredBreakdowns : breakdowns
-    const dataToExport = breakdowns
-    const exportData = dataToExport.map((item) => ({
-      Date: format(new Date(item.BreakdownStartDate), 'HH:mm:ss dd-MM-yyyy'),
-      MachineName: item.MachineName,
-      BreakdownStartDate: item.BreakdownStartDate,
-      BreakdownType: item.BreakdownType,
-      BreakdownEndDate: item.BreakdownEndDate,
-      Shift: item.Shift,
-      Operations: item.Operations,
-      BreakdownPhenomenons: item.BreakdownPhenomenons,
-      WhyWhyAnalysis: item.WhyWhyAnalysis,
-      OCC: item.OCC,
-      RootCause: item.RootCause,
-      PreventiveAction: item.PreventiveAction,
-      CorrectiveAction: item.CorrectiveAction,
-      TargetDate: item.TargetDate,
-      Responsibility: item.Responsibility,
-      HD: item.HD,
-      Status: item.Status,
-      SpareParts: item.SpareParts,
-      Cost: item.Cost,
-      Location: item.Location,
-      LineName: item.LineName,
-      Remark: item.Remark,
-      // Status: item.Status,
-    }))
 
-    const ws = XLSX.utils.json_to_sheet(exportData)
-    const wb = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(wb, ws, 'ReportData')
-    XLSX.writeFile(wb, 'reportdata.xlsx')
+    // Filter data based on the selected plant
+    // const filteredData = searchLocation
+    //   ? breakdowns.filter((breakdown) => breakdown.Location === searchLocation)
+    //   : breakdowns
+
+    // const dataToExport = breakdowns
+    // const exportData = dataToExport.map((item) => ({
+    if (filteredAssets && filteredAssets.length > 0) {
+      const exportData = filteredAssets.map((item) => ({
+        Date: format(new Date(item.BreakdownStartDate), 'HH:mm:ss dd-MM-yyyy'),
+        MachineName: item.MachineName,
+        BreakdownStartDate: item.BreakdownStartDate,
+        BreakdownType: item.BreakdownType,
+        BreakdownEndDate: item.BreakdownEndDate,
+        Shift: item.Shift,
+        Operations: item.Operations,
+        BreakdownPhenomenons: item.BreakdownPhenomenons,
+        WhyWhyAnalysis: item.WhyWhyAnalysis,
+        // OCC: item.OCC,
+        RootCause: item.RootCause,
+        PreventiveAction: item.PreventiveAction,
+        CorrectiveAction: item.CorrectiveAction,
+        TargetDate: item.TargetDate,
+        Responsibility: item.Responsibility,
+        AttendedBy: item.AttendedBy,
+        // HD: item.HD,
+        Status: item.Status,
+        SpareParts: item.SpareParts,
+        Cost: item.Cost,
+        Location: item.Location,
+        LineName: item.LineName,
+        Remark: item.Remark,
+        // Status: item.Status,
+      }))
+
+      const ws = XLSX.utils.json_to_sheet(exportData)
+      const wb = XLSX.utils.book_new()
+      XLSX.utils.book_append_sheet(wb, ws, 'ReportData')
+      XLSX.writeFile(wb, 'reportdata.xlsx')
+    }
   }
 
   render() {
