@@ -113,11 +113,11 @@ import { cilMenu } from '@coreui/icons'
 import { AppBreadcrumb } from './index'
 import { useLogoutMutation } from 'src/slices/usersApiSlice'
 import { logout } from '../slices/authSlice'
-// import { QrReader } from 'react-qr-reader'
-// import QrScanner from '../views/QrScanner'
+import QrScanner from '../views/QrScanner'
 
 const AppHeader = () => {
   const [isQrScannerOpen, setIsQrScannerOpen] = useState(false)
+  const [qrModal, setQrModal] = useState()
   const [scanResult, setScanResult] = useState('')
   const sidebarShow = useSelector((state) => state.custom.sidebarShow)
   const userrole = useSelector((state) => state.auth.userInfo?.role) || ''
@@ -140,13 +140,13 @@ const AppHeader = () => {
     }
   }
 
-  // const handleScan = (data) => {
-  //   if (data) {
-  //     console.log('QR Code Data:', data)
-  //     setScanResult(data.text)
-  //     setQrModal(false)
-  //   }
-  // }
+  const handleScan = (data) => {
+    if (data) {
+      console.log('QR Code Data:', data)
+      setScanResult(data.text)
+      setQrModal(false)
+    }
+  }
 
   const handleError = (error) => {
     console.error('QR Scanner Error:', error)
@@ -192,7 +192,7 @@ const AppHeader = () => {
       <CContainer fluid>
         <AppBreadcrumb />
       </CContainer>
-      {/* {isQrScannerOpen && <QrScanner onClose={toggleQrScanner} />} */}
+      {isQrScannerOpen && <QrScanner onClose={toggleQrScanner} />}
       {/* <CModal show={qrModal} onClose={() => setQrModal(true)} size="lg">
         <CModalHeader closeButton>
           <CModalTitle>Scan QR Code</CModalTitle>
