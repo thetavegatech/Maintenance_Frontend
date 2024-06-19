@@ -223,9 +223,54 @@ const MyFormComponent = () => {
     return newDate
   }
 
-  const handleAssetNameChange = (e) => {
+  const handleChange = async (e) => {
+    const { name, value } = e.target
+    let updatedFormData = {
+      ...formData,
+      [name]: value,
+    }
+
+    if (name === 'assetName') {
+      try {
+        const response = await axios.get(
+          `https://backendmaintenx.onrender.com/api/locations/${value}`,
+        )
+        if (response.data && response.data.Location) {
+          updatedFormData = {
+            ...updatedFormData,
+            Location: response.data.Location,
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching location:', error)
+      }
+    }
+
+    setFormData(updatedFormData)
+  }
+
+  const handleAssetNameChange = async (e) => {
     const selectedAssetName = e.target.value
-    setFormData({ ...formData, AssetName: selectedAssetName })
+    let updatedFormData = {
+      ...formData,
+      AssetName: selectedAssetName,
+    }
+
+    try {
+      const response = await axios.get(
+        `https://backendmaintenx.onrender.com/api/locations/${selectedAssetName}`,
+      )
+      if (response.data && response.data.Location) {
+        updatedFormData = {
+          ...updatedFormData,
+          Location: response.data.Location,
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching location:', error)
+    }
+
+    setFormData(updatedFormData)
   }
 
   const handleFileChange = (e) => {
@@ -269,15 +314,15 @@ const MyFormComponent = () => {
         <form onSubmit={handleSubmit} style={{ marginLeft: '%' }}>
           <div className="row g-3">
             <div className="col-md-5">
-              <label htmlFor="assetName">Asset Name:</label>
+              <label>Asset Name:</label>
               <select
-                required
+                name="assetName"
                 className="form-control col-sm-6"
-                id="AssetName"
+                value={formData.AssetName}
                 onChange={handleAssetNameChange}
-                style={{ maxHeight: '50px', overflowY: 'auto' }}
+                required
               >
-                <option value="">Select an asset</option>
+                <option value="">Select Asset</option>
                 {assetNames.map((name) => (
                   <option key={name} value={name}>
                     {name}
@@ -285,9 +330,26 @@ const MyFormComponent = () => {
                 ))}
               </select>
             </div>
+            {/* <div className="form-group">
+              <label>Asset Name:</label>
+              <select
+                name="assetName"
+                className="form-control col-sm-6"
+                value={formData.AssetName}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Asset</option>
+                {assetNames.map((name) => (
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </div> */}
             <div className="col-md-5">
               <label htmlFor="Location">Location:</label>
-              <select
+              {/* <select
                 className="form-control col-sm-6"
                 required
                 id="Location"
@@ -299,7 +361,16 @@ const MyFormComponent = () => {
                 <option value="Plant 2">Plant 2</option>
                 <option value="Plant 3">Plant 3</option>
                 <option value="Plant 4">Plant 4</option>
-              </select>
+              </select> */}
+              <input
+                type="text"
+                name="location"
+                className="form-control"
+                value={formData.Location}
+                onChange={(e) => setFormData({ ...formData, Location: e.target.value })}
+                readOnly
+                required
+              />
             </div>
             <div className="col-md-5">
               <label htmlFor="taskName">Task Name:</label>

@@ -24,7 +24,8 @@ const Register = () => {
     email: '',
     password: '',
     mobileNo: '',
-    userRoll: '',
+    role: '',
+    plant: '',
   })
   const [registrationSuccess, setRegistrationSuccess] = useState(false)
 
@@ -42,7 +43,8 @@ const Register = () => {
         email: formData.email,
         password: formData.password,
         mobileNO: formData.mobileNo,
-        role: formData.userRoll,
+        role: formData.role,
+        plant: formData.plant,
       })
 
       if (response.status === 201) {
@@ -130,10 +132,40 @@ const Register = () => {
                     <CInputGroupText>
                       <CIcon icon={cilUser} />
                     </CInputGroupText>
+                    {/* <CFormInput
+                      name="plant"
+                      type="text"
+                      placeholder="Select Plant"
+                      autoComplete="tel"
+                      value={formData.plant}
+                      onChange={handleChange}
+                      required
+                    /> */}
                     <select
-                      name="userRoll"
                       className="form-select"
-                      value={formData.userRoll}
+                      // required
+                      id="plant"
+                      name="plant"
+                      value={formData.plant}
+                      onChange={handleChange}
+                    >
+                      <option value="">Select an option</option>
+                      <option value="Plant 1">Plant 1</option>
+                      <option value="Plant 2">Plant 2</option>
+                      <option value="Plant 3">Plant 3</option>
+                      <option value="Plant 4">Plant 4</option>
+                    </select>
+                  </CInputGroup>
+
+                  <CInputGroup className="mb-3">
+                    <CInputGroupText>
+                      <CIcon icon={cilUser} />
+                    </CInputGroupText>
+                    <select
+                      id="role"
+                      name="role"
+                      className="form-select"
+                      value={formData.role}
                       onChange={handleChange}
                       required
                     >
@@ -141,6 +173,7 @@ const Register = () => {
                       <option value="admin">Admin</option>
                       <option value="production">Production</option>
                       <option value="maintenance">Maintenance</option>
+                      <option value="PremativeMaintenance">Premative Maintenance</option>
                     </select>
                   </CInputGroup>
 
@@ -166,3 +199,4 @@ const Register = () => {
 }
 
 export default Register
+// is it possible to add multile location when i register user

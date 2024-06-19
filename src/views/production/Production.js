@@ -261,11 +261,10 @@ class BDList extends React.Component {
               onMouseLeave={this.handleMouseLeave}
             >
               <option>Search by Plant</option>
-              <option value="AAAPL-27">AAAPL-27</option>
-              <option value="AAAPL-29">AAAPL-29</option>
-              <option value="AAAPL- 89">AAAPL- 89</option>
-              <option value="DPAPL - 236">DPAPL - 236</option>
-              <option value=" DPAPL- GN"> DPAPL- GN</option>
+              <option value="Plant 1">Plant 1</option>
+              <option value="Plant 2">Plant 2 </option>
+              <option value="Plant 3">Plant 3</option>
+              <option value="Plant 4">Plant 4</option>
             </select>
           </div>
           <div className="table-container">

@@ -198,13 +198,22 @@ const AppSidebar = () => {
                 </CNavItem>
                 {/* <CNavItem
                   component={NavLink}
-                  to="/users"
                   style={navItemStyles}
                   activeStyle={activeNavItemStyles}
+                  to="/users"
                 >
                   <CIcon customClassName="nav-icon" icon={cilNotes} />
                   Users
                 </CNavItem> */}
+                <CNavItem
+                  component={NavLink}
+                  style={navItemStyles}
+                  activeStyle={activeNavItemStyles}
+                  to="/registeruser"
+                >
+                  <CIcon customClassName="nav-icon" icon={cilNotes} />
+                  Registered Users
+                </CNavItem>
               </>
             )
           } else if (userrole === 'production') {

@@ -23,7 +23,7 @@ export default function Users() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/userInfo')
+      .get('http://localhost:4000/userInfo')
       .then((response) => {
         setUsers(response.data)
         setLoading(false)
@@ -38,7 +38,7 @@ export default function Users() {
     const isConfirmed = window.confirm('Are you sure you want to delete this data?')
     if (isConfirmed) {
       axios
-        .delete(`http://localhost:5000/UserInfo/${id}`)
+        .delete(`http://localhost:4000/UserInfo/${id}`)
         .then((response) => {
           setUsers(usernos.filter((user) => user._id !== id))
         })
