@@ -26,7 +26,7 @@ const Inventory = () => {
   useEffect(() => {
     const fetchAssetDetails = async () => {
       try {
-        const response = await axios.get(`http://192.168.1.3:4000/api/assets/${id}`)
+        const response = await axios.get(`https://backendmaintenx.onrender.com/api/assets/${id}`)
         setAssetDetails(response.data)
         setLoading(false)
       } catch (error) {
@@ -42,7 +42,7 @@ const Inventory = () => {
     const fetchPmData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.1.3:4000/api/pm?assetName=${assetDetails.AssetName}`,
+          `https://backendmaintenx.onrender.com/api/pm?assetName=${assetDetails.AssetName}`,
         )
         setPmData(response.data)
         setLoading(false)
@@ -58,7 +58,9 @@ const Inventory = () => {
   useEffect(() => {
     if (assetDetails.AssetName) {
       axios
-        .get(`http://192.168.1.3:4000/api/breakdown?assetName=${assetDetails.AssetName}`)
+        .get(
+          `https://backendmaintenx.onrender.com/api/breakdown?assetName=${assetDetails.AssetName}`,
+        )
         .then((response) => {
           setSlittingData(response.data)
         })
@@ -267,7 +269,7 @@ const PMData = ({ assetName, pmData }) => {
     const isConfirmed = window.confirm('Are you sure you want to delete this data?')
     if (isConfirmed) {
       axios
-        .delete(`http://192.168.1.3:4000/api/pm/${id}`)
+        .delete(`https://backendmaintenx.onrender.com/api/pm/${id}`)
         .then((response) => {
           console.log('Data deleted:', response.data)
 
@@ -509,7 +511,7 @@ const Breakdown = ({ assetName }) => {
       setSuccessMessage('')
     }, 5000)
 
-    fetch('http://192.168.1.3:4000/api/breakdown', {
+    fetch('https://backendmaintenx.onrender.com/api/breakdown', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
