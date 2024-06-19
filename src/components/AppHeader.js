@@ -113,8 +113,8 @@ import { cilMenu } from '@coreui/icons'
 import { AppBreadcrumb } from './index'
 import { useLogoutMutation } from 'src/slices/usersApiSlice'
 import { logout } from '../slices/authSlice'
-import { QrReader } from 'react-qr-reader'
-import QrScanner from '../views/QrScanner'
+// import { QrReader } from 'react-qr-reader'
+// import QrScanner from '../views/QrScanner'
 
 const AppHeader = () => {
   const [isQrScannerOpen, setIsQrScannerOpen] = useState(false)
@@ -192,7 +192,7 @@ const AppHeader = () => {
       <CContainer fluid>
         <AppBreadcrumb />
       </CContainer>
-      {isQrScannerOpen && <QrScanner onClose={toggleQrScanner} />}
+      {/* {isQrScannerOpen && <QrScanner onClose={toggleQrScanner} />} */}
       {/* <CModal show={qrModal} onClose={() => setQrModal(true)} size="lg">
         <CModalHeader closeButton>
           <CModalTitle>Scan QR Code</CModalTitle>

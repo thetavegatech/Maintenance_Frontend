@@ -7,7 +7,7 @@ import { FaEdit } from 'react-icons/fa'
 import './asset.css'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
-import { Grid } from '@material-ui/core'
+// import { Grid } from '@material-ui/core'
 
 const AssetTable = () => {
   const [assets, setAssets] = useState([])
