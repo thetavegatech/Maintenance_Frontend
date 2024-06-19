@@ -70,30 +70,6 @@ const Inventory = () => {
     }
   }, [assetDetails.AssetName])
 
-  const [formData, setFormData] = useState({
-    MachineName: '',
-    BreakdownStartDate: '',
-    BreakdownEndDate: '',
-    BreakdownStartTime: '',
-    BreakdownEndTime: '',
-    Shift: '',
-    LineName: '',
-    Operations: '',
-    BreakdownPhenomenons: '',
-    BreakdownType: '',
-    OCC: '',
-    BreakdownTime: '',
-    ActionTaken: '',
-    WhyWhyAnalysis: '',
-    RootCause: '',
-    PermanentAction: '',
-    TargetDate: '',
-    Responsibility: '',
-    HD: '',
-    Remark: '',
-    Status: 'open',
-  })
-
   return (
     <>
       <CNav
@@ -116,57 +92,56 @@ const Inventory = () => {
             Asset Data
           </CNavLink>
         </CNavItem>
-        {/* {loggedInUserrole === 'maintenance' ||
-          (loggedInUserrole === 'admin' && ( */}
-        <CNavItem role="presentation">
-          <CNavLink
-            active={activeKey === 2}
-            component="button"
-            role="tab"
-            aria-controls="profile-tab-pane"
-            aria-selected={activeKey === 2}
-            onClick={() => setActiveKey(2)}
-            style={{ marginLeft: '1rem' }}
-            className="custom-tab-link"
-          >
-            Breakdown Data
-          </CNavLink>
-        </CNavItem>
-        {/* ))} */}
-        {/* {loggedInUserrole === 'maintenance' ||
-          (loggedInUserrole === 'admin' && ( */}
-        <CNavItem role="presentation">
-          <CNavLink
-            active={activeKey === 3}
-            component="button"
-            role="tab"
-            aria-controls="contact-tab-pane"
-            aria-selected={activeKey === 3}
-            onClick={() => setActiveKey(3)}
-            style={{ marginLeft: '1rem' }}
-            className="custom-tab-link"
-          >
-            PM Data
-          </CNavLink>
-        </CNavItem>
-        {/* ))} */}
+        {(loggedInUserrole === 'maintenance' || loggedInUserrole === 'admin') && (
+          <CNavItem role="presentation">
+            <CNavLink
+              active={activeKey === 2}
+              component="button"
+              role="tab"
+              aria-controls="profile-tab-pane"
+              aria-selected={activeKey === 2}
+              onClick={() => setActiveKey(2)}
+              style={{ marginLeft: '1rem' }}
+              className="custom-tab-link"
+            >
+              Breakdown Data
+            </CNavLink>
+          </CNavItem>
+        )}
         {/* {loggedInUserrole === 'production' ||
           (loggedInUserrole === 'admin' && ( */}
-        <CNavItem role="presentation">
-          <CNavLink
-            active={activeKey === 4}
-            component="button"
-            role="tab"
-            aria-controls="contact-tab-pane"
-            aria-selected={activeKey === 4}
-            onClick={() => setActiveKey(4)}
-            style={{ marginLeft: '1rem' }}
-            className="custom-tab-link"
-          >
-            Raise Breakdown
-          </CNavLink>
-        </CNavItem>
-        {/* ))} */}
+        {(loggedInUserrole === 'maintenance' || loggedInUserrole === 'admin') && (
+          <CNavItem role="presentation">
+            <CNavLink
+              active={activeKey === 3}
+              component="button"
+              role="tab"
+              aria-controls="contact-tab-pane"
+              aria-selected={activeKey === 3}
+              onClick={() => setActiveKey(3)}
+              style={{ marginLeft: '1rem' }}
+              className="custom-tab-link"
+            >
+              PM Data
+            </CNavLink>
+          </CNavItem>
+        )}
+        {(loggedInUserrole === 'production' || loggedInUserrole === 'admin') && (
+          <CNavItem role="presentation">
+            <CNavLink
+              active={activeKey === 4}
+              component="button"
+              role="tab"
+              aria-controls="contact-tab-pane"
+              aria-selected={activeKey === 4}
+              onClick={() => setActiveKey(4)}
+              style={{ marginLeft: '1rem' }}
+              className="custom-tab-link"
+            >
+              Raise Breakdown
+            </CNavLink>
+          </CNavItem>
+        )}
       </CNav>
       <CTabContent>
         <CTabPane role="tabpanel" aria-labelledby="home-tab-pane" visible={activeKey === 1}>
