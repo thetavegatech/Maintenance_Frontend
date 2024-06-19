@@ -21,11 +21,6 @@ export default function EditForm() {
   const [Ranking, setRanking] = useState('')
   const [InstallationDate, setInstallationDate] = useState('')
   const [ManufacturingYear, setManufacturingYear] = useState('')
-  const [CMD, setCMD] = useState('')
-  const [TMD, setTMD] = useState('')
-  const [TMDFrequency, setTMDFrequency] = useState('')
-  const [CMDFrequency, setCMDFrequency] = useState('')
-  const [maintenanceData, setmaintenanceDatay] = useState('')
 
   const [StartDateofMaintenance, setStartDateofMaintenance] = useState('') // assuming you need this
   // const [ScheduledMaintenanceDatesandIntervals, setScheduledMaintenanceDatesandIntervals] = useState('');
@@ -91,7 +86,7 @@ export default function EditForm() {
   }, [])
   const fetchData = async () => {
     try {
-      const response = await axios.get(`https://mms-backend-n2zv.onrender.com/api/assets/${id}`)
+      const response = await axios.get(`https://backendmaintenx.onrender.com/api/assets/${id}`)
       console.log(response)
       setAssetName(response.data.AssetName)
       setMachineNo(response.data.MachineNo)
@@ -115,7 +110,7 @@ export default function EditForm() {
   const Update = (e) => {
     e.preventDefault()
     axios
-      .put(`https://mms-backend-n2zv.onrender.com/api/assets/${id}`, {
+      .put(`https://backendmaintenx.onrender.com/api/assets/${id}`, {
         AssetName,
         MachineNo,
         SrNo,
@@ -160,14 +155,14 @@ export default function EditForm() {
         <div>
           <form onSubmit={Update}>
             <div className="row g-2">
-              <div className="col-md-5">
+              <div className="col-md-6">
                 <label htmlFor="assetName" style={{ marginBottom: '10px' }}>
-                  Machine Code:
+                  Asset Name:
                 </label>
                 <input
                   type="text"
                   required
-                  className="form-control col-sm-4"
+                  className="form-control col-sm-6"
                   name="AssetName"
                   id="assetName"
                   style={{ marginBottom: '10px' }}
@@ -176,7 +171,7 @@ export default function EditForm() {
                   onChange={(e) => setAssetName(e.target.value)}
                 />
               </div>
-              <div className="col-md-5">
+              <div className="col-md-6">
                 <label htmlFor="MachineNo" style={{ marginBottom: '10px' }}>
                   MachineNo:
                 </label>
@@ -184,7 +179,7 @@ export default function EditForm() {
                   type="text"
                   required
                   style={{ marginBottom: '10px' }}
-                  className="form-control col-sm-4"
+                  className="form-control col-sm-5"
                   id="MachineNo"
                   name="MachineNo"
                   value={MachineNo}
@@ -196,7 +191,7 @@ export default function EditForm() {
         </div>
         <form onSubmit={Update}>
           <div className="row g-2">
-            <div className="col-md-5">
+            <div className="col-md-6">
               <label htmlFor="SrNo" style={{ marginBottom: '10px' }}>
                 SrNo:
               </label>
@@ -211,7 +206,7 @@ export default function EditForm() {
               />
               {/* </input> */}
             </div>
-            <div className="col-md-5">
+            <div className="col-md-6">
               <label htmlFor="MachineType" style={{ marginBottom: '10px' }}>
                 MachineType:
               </label>
@@ -226,7 +221,7 @@ export default function EditForm() {
                 onChange={(e) => setMachineType(e.target.value)}
               />
             </div>
-            <div className="col-md-5">
+            {/* <div className="col-md-6">
               <label htmlFor="Make" style={{ marginBottom: '10px' }}>
                 Make:
               </label>
@@ -240,8 +235,8 @@ export default function EditForm() {
                 value={Make}
                 onChange={(e) => setMake(e.target.value)}
               />
-            </div>
-            <div className="col-md-5">
+            </div> */}
+            <div className="col-md-6">
               <label htmlFor="assetLocation" className="form-label">
                 Location:
               </label>
@@ -266,7 +261,7 @@ export default function EditForm() {
                 onChange={(e) => setDetailsofMaintenanceActivities(e.target.value)}
               />
             </div> */}
-            <div className="col-md-5">
+            <div className="col-md-6">
               <label htmlFor="Controller" style={{ marginBottom: '10px' }}>
                 Controller:
               </label>
@@ -281,7 +276,7 @@ export default function EditForm() {
                 onChange={(e) => setController(e.target.value)}
               />
             </div>
-            <div className="col-md-5">
+            <div className="col-md-6">
               <label htmlFor="PowerRatting" style={{ marginBottom: '10px' }}>
                 PowerRatting:
               </label>
@@ -296,7 +291,7 @@ export default function EditForm() {
                 onChange={(e) => setPowerRatting(e.target.value)}
               />
             </div>
-            <div className="col-md-5">
+            <div className="col-md-6">
               <label htmlFor="CapecitySpindle" style={{ marginBottom: '10px' }}>
                 CapecitySpindle:
               </label>
@@ -311,7 +306,7 @@ export default function EditForm() {
                 onChange={(e) => setCapecitySpindle(e.target.value)}
               />
             </div>
-            <div className="col-md-5">
+            <div className="col-md-6">
               <label htmlFor="AxisTravels" style={{ marginBottom: '10px' }}>
                 AxisTravels:
               </label>
@@ -326,7 +321,7 @@ export default function EditForm() {
                 onChange={(e) => setAxisTravels(e.target.value)}
               />
             </div>
-            <div className="col-md-5">
+            <div className="col-md-6">
               <label htmlFor="Ranking" style={{ marginBottom: '10px' }}>
                 Ranking:
               </label>
@@ -341,7 +336,7 @@ export default function EditForm() {
                 onChange={(e) => setRanking(e.target.value)}
               />
             </div>
-            <div className="col-md-5">
+            <div className="col-md-6">
               <label htmlFor="InstallationDate" style={{ marginBottom: '10px' }}>
                 InstallationDate:
               </label>
@@ -357,7 +352,7 @@ export default function EditForm() {
                 onChange={(e) => setInstallationDate(e.target.value)}
               />
             </div>
-            <div className="col-md-5">
+            <div className="col-md-6">
               <label htmlFor="manufacturingyear" style={{ marginBottom: '10px' }}>
                 Manufacturing Year:
               </label>
@@ -372,37 +367,7 @@ export default function EditForm() {
                 onChange={(e) => setManufacturingYear(e.target.value)}
               />
             </div>
-            {/* <div className="col-md-5">
-              <label htmlFor="CMD" style={{ marginBottom: '10px' }}>
-                CBM:
-              </label>
-              <input
-                required
-                type="string"
-                className="form-control col-sm-4"
-                id="CMD"
-                defaultValue={''}
-                name="CMD"
-                value={CMD}
-                onChange={(e) => setCMD(e.target.value)}
-              />
-            </div>
-            <div className="col-md-5">
-              <label htmlFor="TMD" style={{ marginBottom: '10px' }}>
-                TBM:
-              </label>
-              <input
-                required
-                type="string"
-                className="form-control col-sm-4"
-                id="TMD"
-                defaultValue={''}
-                name="TMD"
-                value={TMD}
-                onChange={(e) => setTMD(e.target.value)}
-              />
-            </div> */}
-            <div className="col-md-5">
+            <div className="col-md-6">
               <label htmlFor="attachment">Attachment:</label>
               <input
                 type="file"

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-// import './Breakdown.css'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { CTimePicker } from '@coreui/react'
 import TimePicker from 'react-time-picker'
-import 'react-datepicker/dist/react-datepicker.css'
 import Select from 'react-select'
+import 'react-datepicker/dist/react-datepicker.css'
 import { useDispatch, useSelector } from 'react-redux'
+
 export default function BreakDown() {
   const [usernos, setUsers] = useState([])
   const [selectedUserId, setSelectedUserId] = useState('')
@@ -16,15 +16,15 @@ export default function BreakDown() {
   const [isFullTime, setIsFullTime] = useState(false)
   const [selectedTime, setSelectedTime] = useState('12:00')
   const [value, setValue] = useState('')
+  // const [filteredAssetNames, setFilteredAssetNames] = useState([])
   const [filteredAssetNames, setFilteredAssetNames] = useState([])
   const [filteredMachineNames, setFilteredMachineNames] = useState([])
   const [isDropdownVisible, setIsDropdownVisible] = useState(false)
-  const username = useSelector((state) => state.auth.userInfo?.name)
 
   useEffect(() => {
     // Fetch user data from the server
     axios
-      .get('https://mms-backend-n2zv.onrender.com/UserInfo')
+      .get('http://192.168.1.3:5000/UserInfo')
       .then((response) => {
         setUsers(response.data)
       })
@@ -36,16 +36,37 @@ export default function BreakDown() {
   const [selectedUserNumbers, setSelectedUserNumbers] = useState([])
 
   const handleUserSelect = (selectedValue) => {
-    // Check if the user is already selected
     if (selectedUserNumbers.includes(selectedValue)) {
-      // If selected, remove from the array
       setSelectedUserNumbers((prevSelected) =>
         prevSelected.filter((userNumber) => userNumber !== selectedValue),
       )
     } else {
-      // If not selected, add to the array
       setSelectedUserNumbers((prevSelected) => [...prevSelected, selectedValue])
     }
+  }
+
+  const handleOptionSelect = async (selectedValue) => {
+    // handleChange({ target: { name: 'MachineName', value: selectedOption.value } })
+    const machineName = selectedValue.value
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      MachineName: machineName,
+    }))
+
+    try {
+      const response = await axios.get(
+        `https://backendmaintenx.onrender.com/api/locations/${machineName}`,
+      )
+      const location = response.data.Location
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        Location: location,
+      }))
+    } catch (error) {
+      console.error('Error fetching location:', error)
+    }
+
+    setIsDropdownVisible(false)
   }
 
   // const handleUserSelect = (_id) => {
@@ -57,9 +78,9 @@ export default function BreakDown() {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     MachineName: '',
-    BreakdownStartDate: new Date().toISOString().split('T')[0],
+    BreakdownStartDate: '',
     BreakdownEndDate: '',
-    BreakdownStartTime: new Date().toLocaleTimeString('en-US', { hour12: false }),
+    BreakdownStartTime: '',
     BreakdownEndTime: '',
     Shift: '',
     LineName: '',
@@ -107,19 +128,19 @@ export default function BreakDown() {
     setIsDropdownVisible(filteredItems.length > 0)
   }
 
-  const handleOptionSelect = (selectedValue) => {
-    setFormData({
-      ...formData,
-      AssetName: selectedValue,
-      MachineName: selectedValue,
-    })
+  // const handleOptionSelect = (selectedValue) => {
+  //   setFormData({
+  //     ...formData,
+  //     AssetName: selectedValue,
+  //     MachineName: selectedValue,
+  //   })
 
-    setIsDropdownVisible(false) // Hide the dropdown after selecting an option
-  }
+  //   setIsDropdownVisible(false) // Hide the dropdown after selecting an option
+  // }
 
   useEffect(() => {
-    // Fetch asset names from 'http://localhost:5000/getAllData'
-    fetch('https://mms-backend-n2zv.onrender.com/api/assets')
+    // Fetch asset names from 'http://192.168.1.16:5000/getAllData'
+    fetch('https://backendmaintenx.onrender.com/api/assets')
       .then((res) => res.json())
       .then((data) => {
         // Extract unique asset names from the data
@@ -187,7 +208,7 @@ export default function BreakDown() {
       setSuccessMessage('')
     }, 5000)
 
-    fetch('https://mms-backend-n2zv.onrender.com/saveBreakdown', {
+    fetch('https://backendmaintenx.onrender.com/api/breakdown', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
@@ -233,37 +254,32 @@ export default function BreakDown() {
     })
   }
 
+  const userrole = useSelector((state) => state.auth.userInfo?.role) || ''
+  const username = useSelector((state) => state.auth.userInfo?.name)
+
   const apiKey = 'NDE1MDY2NGM2Mzc3NTI0ZjQzNmE1YTM5NDY0YzZlNzU='
-  const numbers = '7020804148' // Replace with the phone numbers
+  const numbers = '6020804148' // Replace with the phone numbers
   const data1 = 'test'
-  const data2 = { username }
+  const data2 = 'test'
   const sender = 'AAABRD'
 
   const sendSMS = (formData, selectedUsers, loggedInUsername) => {
-    const {
-      MachineName,
-      BreakdownStartDate,
-      Shift,
-      LineName,
-      Operations,
-      BreakdownPhenomenons,
-      username,
-    } = formData
+    const { MachineName, BreakdownStartDate, Shift, LineName, Operations, BreakdownPhenomenons } =
+      formData
     // Formulate a simple message
     const message = encodeURIComponent(
       'Breakdown For ' +
         MachineName +
+        // 'Date of Breakdown Start' +
+        // BreakdownStartDate +
         ' please visit concerned department Details are ' +
         loggedInUsername +
         ' - Aurangabad Auto Ancillary',
     )
 
-    // const message = encodeURIComponent(
-    //   `Breakdown For ${MachineName} please visit concerned department Details are ${username} - Aurangabad Auto Ancillary`,
-    // )
-
     const phoneNumbers = usernos.map((user) => user.phoneNumber).join(',')
-
+    // console.log(selected)
+    // console.log(selectedUserNumbers.join(','))
     const selectedno = selectedUserNumbers.join(',')
     // console.log(selectedno)
 
@@ -297,7 +313,7 @@ export default function BreakDown() {
           padding: '20px',
           borderRadius: '10px',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          width: '90%',
+          width: '95%',
         }}
       >
         {/* Display success message if it exists */}
@@ -310,16 +326,17 @@ export default function BreakDown() {
           <div className="row g-2">
             <div className="col-md-6">
               <label htmlFor="machineName" style={{ marginBottom: '10px', fontSize: '16px' }}>
-                Machine Code:
+                Machine Name:
               </label>
               <Select
                 className="form-control col-sm-6"
                 required
                 name="MachineName"
                 value={assetNames.find((asset) => asset === formData.AssetName)}
-                onChange={(selectedOption) =>
-                  handleChange({ target: { name: 'MachineName', value: selectedOption.value } })
-                }
+                // onChange={(selectedOption) =>
+                //   handleChange({ target: { name: 'MachineName', value: selectedOption.value } })
+                // }
+                onChange={handleOptionSelect}
                 options={assetNames.map((asset) => ({ label: asset, value: asset }))}
                 isSearchable
                 placeholder="Select a machine"
@@ -331,8 +348,20 @@ export default function BreakDown() {
                 }}
               />
             </div>
-
             <div className="col-md-6">
+              <label htmlFor="Location" className="form-label" style={{ marginBottom: '10px' }}>
+                Location:
+              </label>
+              <input
+                type="text"
+                className="form-control col-sm-6"
+                name="Location"
+                value={formData.Location}
+                readOnly
+                required
+              />
+            </div>
+            {/* <div className="col-md-6">
               <label
                 htmlFor="assetLocation"
                 className="form-label"
@@ -349,20 +378,19 @@ export default function BreakDown() {
                 onChange={handleChange}
               >
                 <option value="">Select an option</option>
-                <option value="AAAPL-27">AAAPL-27</option>
-                <option value="AAAPL-29">AAAPL-29</option>
-                <option value="AAAPL- 89">AAAPL- 89</option>
-                <option value="DPAPL - 236">DPAPL - 236</option>
-                <option value=" DPAPL- GN"> DPAPL- GN</option>
+                <option value="Plant 1">Plant 1</option>
+                <option value="Plant 2">Plant 2</option>
+                <option value="Plant 3">Plant 3</option>
+                <option value="Plant 4">Plant 4</option>
               </select>
-            </div>
+            </div> */}
             <div className="col-md-6">
               <label htmlFor="breakdownDate" style={{ marginBottom: '10px' }}>
                 Breakdown Start Date:
               </label>
               <input
                 type="date"
-                disabled
+                required
                 className="form-control col-sm-6"
                 name="BreakdownStartDate"
                 value={formData.BreakdownStartDate}
@@ -390,7 +418,6 @@ export default function BreakDown() {
               </label>
               <input
                 type="time"
-                disabled
                 id="breakdownStartTime"
                 className="form-control col-sm-6"
                 name="BreakdownStartTime"
@@ -440,7 +467,7 @@ export default function BreakDown() {
                 placeholder=""
               />
             </div>
-            <div className="row lg-2">
+            {/* <div className="row lg-2">
               <div className="col-md-6" style={{ marginTop: '2vh', overflowY: 'auto' }}>
                 <label style={{ marginBottom: '10px' }}>Select users:</label>
                 <div className="row">
@@ -463,7 +490,6 @@ export default function BreakDown() {
                           </label>
                         </div>
                       </div>
-                      {/* Insert a new row after every two users */}
                       {index % 2 !== 0 && <div className="w-100"></div>}
                     </React.Fragment>
                   ))}
@@ -498,6 +524,21 @@ export default function BreakDown() {
                   Submit
                 </button>
               </div>
+            </div> */}
+            <div className="col-xs-12">
+              <button
+                type="submit"
+                onClick={handleButtonClick}
+                className="btn btn-primary"
+                style={{
+                  marginTop: '20px',
+                  fontSize: '16px',
+                  backgroundColor: '#3448db',
+                  marginBottom: '10px',
+                }}
+              >
+                Submit
+              </button>
             </div>
             {/* </div> */}
           </div>

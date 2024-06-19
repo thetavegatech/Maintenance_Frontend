@@ -11,7 +11,7 @@ const TaskRecord = () => {
 
     // Fetching data based on the breakdown ID
     axios
-      .get(`https://mms-backend-n2zv.onrender.com/getId/${id}`)
+      .get(`http://localhost:5000/getId/${id}`)
       .then((response) => {
         // Assuming the API response has an 'Image' property
         setImageData(response.data.Image)
@@ -24,7 +24,7 @@ const TaskRecord = () => {
 
   return (
     <div>
-      <img src={imageData} height="50%" width="100%" />
+      <img src={imageData} height="50%" width="40%" />
     </div>
   )
 }

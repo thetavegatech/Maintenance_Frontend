@@ -33,49 +33,18 @@ const Login = () => {
 
   useEffect(() => {
     if (userInfo) {
-      // Assuming userInfo contains a 'role' field
-      const initialRoute = determineInitialRoute(userInfo.role)
-      navigate(initialRoute)
+      navigate('/dashboard')
     }
   }, [navigate, userInfo])
 
-  const determineInitialRoute = (userRole) => {
-    switch (userRole) {
-      case 'admin':
-        return '/dashboard'
-      case 'production':
-        return '/production'
-      case 'maintenance':
-        return '/breakdown'
-      default:
-        return '/'
-    }
-  }
-
-  // useEffect(() => {
-  //   if (userInfo) {
-  //     navigate('/dashboard')
-  //   }
-  // }, [navigate, userInfo])
-
-  // const handleLogin = async (e) => {
-  //   e.preventDefault()
-  //   try {
-  //     const res = await login({ email, password }).unwrap()
-  //     dispatch(setCredentials({ ...res }))
-  //     navigate('/')
-  //   } catch (err) {
-  //     console.log(err?.data?.massage || err.error)
-  //     setError('Invalid email or password. Please try again.')
-  //   }
-  // }
   const handleLogin = async (e) => {
     e.preventDefault()
     try {
       const res = await login({ email, password }).unwrap()
       dispatch(setCredentials({ ...res }))
+      navigate('/dashboard')
     } catch (err) {
-      console.log(err?.data?.message || err.error)
+      console.log(err?.data?.massage || err.error)
       setError('Invalid email or password. Please try again.')
     }
   }

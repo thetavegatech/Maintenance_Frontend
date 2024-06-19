@@ -95,7 +95,7 @@ class AssetTable extends React.Component {
     const isConfirmed = window.confirm('Are you sure you want to delete this data?')
     if (isConfirmed) {
       axios
-        .delete(`https://mms-backend-n2zv.onrender.com/deleteRecord/${id}`)
+        .delete(`http://localhost:5000/deleteRecord/${id}`)
         .then((response) => {
           console.log('Data deleted:', response.data)
 
@@ -134,7 +134,7 @@ class AssetTable extends React.Component {
 
   getAssetLocations = async () => {
     try {
-      const response = await fetch('https://mms-backend-n2zv.onrender.com/locations')
+      const response = await fetch('http://localhost:5000/locations')
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`)
       }
@@ -278,12 +278,9 @@ class AssetTable extends React.Component {
     // Make a separate API request to get details of updated assets by ID
     try {
       if (updatedIds.length > 0) {
-        const idDetailsResponse = await axios.get(
-          'https://mms-backend-n2zv.onrender.com/getAllData',
-          {
-            params: { ids: updatedIds },
-          },
-        )
+        const idDetailsResponse = await axios.get('http://localhost:5000/getAllData', {
+          params: { ids: updatedIds },
+        })
 
         console.log('Updated Assets Details:', idDetailsResponse.data)
       } else {
@@ -298,7 +295,7 @@ class AssetTable extends React.Component {
     // Update the state and get the updated IDs
     this.setState({ assets: updatedAssetsArray }, async () => {
       try {
-        const response = await axios.put('https://mms-backend-n2zv.onrender.com/updateRecords', {
+        const response = await axios.put('http://localhost:5000/updateRecords', {
           assets: updatedAssetsArray,
         })
 
@@ -312,7 +309,7 @@ class AssetTable extends React.Component {
         for (const location of updatedLocations) {
           try {
             const userInfoResponse = await axios.get(
-              `https://mms-backend-n2zv.onrender.com/UserInfoByLocation/${location}`,
+              `http://localhost:5000/UserInfoByLocation/${location}`,
             )
 
             const userInfo = userInfoResponse.data
@@ -410,7 +407,7 @@ class AssetTable extends React.Component {
         <CTable bordered striped hover responsive>
           <CTableHead color="dark">
             <tr>
-              <th style={{ textAlign: 'center' }}>Machine Code</th>
+              <th style={{ textAlign: 'center' }}>Asset Name</th>
               <th style={{ textAlign: 'center' }}>Location</th>
               <th style={{ textAlign: 'center' }}>Task Name</th>
               <th style={{ textAlign: 'center' }}>Task Description</th>

@@ -142,7 +142,7 @@ const Dashboard = () => {
   // }, [])
 
   useEffect(() => {
-    fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
+    fetch('https://backendmaintenx.onrender.com/api/breakdown')
       .then((response) => response.json())
       .then((fetchedBreakdowns) => {
         const aggregatedByLineName = aggregateDataByLineName(fetchedBreakdowns)
@@ -173,7 +173,7 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-    fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
+    fetch('https://backendmaintenx.onrender.com/api/breakdown')
       .then((response) => response.json())
       .then((fetchedBreakdowns) => {
         const aggregated = aggregateData(fetchedBreakdowns)
@@ -184,7 +184,7 @@ const Dashboard = () => {
   }, [])
 
   useEffect(() => {
-    fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
+    fetch('https://backendmaintenx.onrender.com/api/breakdown')
       .then((response) => response.json())
       .then((fetchedBreakdowns) => {
         setBreakdown(fetchedBreakdowns, breakdowns)
@@ -194,7 +194,7 @@ const Dashboard = () => {
   }, [])
 
   useEffect(() => {
-    fetch('https://mms-backend-n2zv.onrender.com/getAllData')
+    fetch('https://backendmaintenx.onrender.com/api/pm')
       .then((response) => response.json())
 
       .then((fetchedTasks) => {
@@ -205,7 +205,7 @@ const Dashboard = () => {
   }, [])
 
   useEffect(() => {
-    fetch(`https://mms-backend-n2zv.onrender.com/getAllData?nextDate=${formattedToday}`)
+    fetch(`https://backendmaintenx.onrender.com/api/pm?nextDate=${formattedToday}`)
       .then((response) => response.json())
       .then((fetchedTasks) => {
         setTodaysTaskCount(fetchedTasks.length)
@@ -220,12 +220,11 @@ const Dashboard = () => {
       <div style={{ marginLeft: '70%' }}></div>
       <WidgetsDropdown />
       <CCard className="mb-4"></CCard>
-      <CRow>
+      {/* <CRow>
         <CCol xs={12} lg={6}>
           <CCard className="mb-4">
             <CCardHeader>BreakDown Type Wise Chart</CCardHeader>
             <CCardBody>
-              {/* <CChartBar data={formattedChartData} labels="months" /> */}
               <BarChart
                 width={window.innerWidth >= 992 ? 500 : 300}
                 height={300}
@@ -236,11 +235,9 @@ const Dashboard = () => {
                   // left: 5,
                 }}
               >
-                {/* <CartesianGrid strokeDasharray="3 3" /> */}
                 <XAxis dataKey="breakdownType" />
                 <YAxis />
                 <Tooltip />
-                {/* <Legend /> */}
                 <Bar
                   dataKey="value"
                   fill="#8884d8"
@@ -271,7 +268,6 @@ const Dashboard = () => {
                 <YAxis data={lineChartData} />
                 <Tooltip />
                 <Legend />
-                {/* <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} /> */}
                 <Line type="monotone" dataKey="value" stroke="#82ca9d" />
               </LineChart>
             </CCardBody>
@@ -315,7 +311,7 @@ const Dashboard = () => {
             </CCardBody>
           </CCard>
         </CCol>
-      </CRow>
+      </CRow> */}
     </>
   )
 }

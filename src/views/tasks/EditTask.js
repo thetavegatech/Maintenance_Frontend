@@ -61,7 +61,7 @@ export default function EditForm() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`https://mms-backend-n2zv.onrender.com/getId/${id}`)
+      const response = await axios.get(`http://192.168.1.4:5000/getId/${id}`)
       console.log(response)
       setAssetName(response.data.AssetName)
       setTaskName(response.data.TaskName)
@@ -104,7 +104,7 @@ export default function EditForm() {
   const Update = (e) => {
     e.preventDefault()
     axios
-      .put(`https://mms-backend-n2zv.onrender.com/updateRecord/${id}`, {
+      .put(`http://192.168.1.4:5000/updateRecord/${id}`, {
         AssetName,
         TaskName,
         TaskDescription,

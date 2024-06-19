@@ -12,15 +12,9 @@ export default function BreakDown() {
   const navigate = useNavigate()
   const [MachineName, setMachineName] = useState('')
   const [BreakdownStartDate, setBreakdownStartDate] = useState('')
-  const [BreakdownEndDate, setBreakdownEndDate] = useState(() => {
-    const currentDate = new Date().toISOString().split('T')[0]
-    return currentDate
-  })
+  const [BreakdownEndDate, setBreakdownEndDate] = useState('')
   const [BreakdownStartTime, setBreakdownStartTime] = useState('')
-  const [BreakdownEndTime, setBreakdownEndTime] = useState(() => {
-    const currentTime = new Date().toLocaleTimeString('en-US', { hour12: false })
-    return currentTime
-  })
+  const [BreakdownEndTime, setBreakdownEndTime] = useState('')
   const [Shift, setShift] = useState('') // Default to false
   const [LineName, setLineName] = useState('') // Default to false
   const [Operations, setOperations] = useState('')
@@ -42,7 +36,6 @@ export default function BreakDown() {
   const [SpareParts, setSpareParts] = useState('')
   const [Cost, setCost] = useState('')
   const [WhyWhyAnalysis, setWhyWhyAnalysis] = useState('')
-  const [AttendedBy, setAttendedBy] = useState('')
   const [whyWhyAnalysisList, setWhyWhyAnalysisList] = useState([])
   const [formData, setFormData] = useState({})
   //   let status = 'pending'
@@ -53,20 +46,13 @@ export default function BreakDown() {
   }, [])
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        `https://mms-backend-n2zv.onrender.com/getBreakdownDataId/${id}`,
-      )
+      const response = await axios.get(`https://backendmaintenx.onrender.com/api/breakdown/${id}`)
       console.log(response)
-      const currentDate = new Date().toISOString().split('T')[0]
-      const currentTime = new Date().toLocaleTimeString('en-US', { hour12: false })
-      setBreakdownEndDate(currentDate)
-      setAttendedBy(AttendedBy)
-      setBreakdownEndTime(currentTime)
       setMachineName(response.data.MachineName)
       setBreakdownStartDate(response.data.BreakdownStartDate)
       setBreakdownStartTime(response.data.BreakdownStartTime)
-      // setBreakdownEndDate(response.data.BreakdownEndDate)
-      // setBreakdownEndTime(response.data.BreakdownEndTime)
+      setBreakdownEndDate(response.data.BreakdownEndDate)
+      setBreakdownEndTime(response.data.BreakdownEndTime)
       setShift(response.data.Shift)
       setLineName(response.data.LineName)
       setOperations(response.data.Operations)
@@ -130,10 +116,9 @@ export default function BreakDown() {
     formData.append('attachment', attachment)
     // ... (append other data)
     axios
-      .put(`https://mms-backend-n2zv.onrender.com/updateBreakdownRecord/${id}`, {
+      .put(`https://backendmaintenx.onrender.com/api/breakdown/${id}`, {
         MachineName,
-        AttendedBy,
-        Date,
+        BreakdownStartDate,
         BreakdownEndDate,
         BreakdownStartTime,
         BreakdownEndTime,
@@ -165,9 +150,9 @@ export default function BreakDown() {
         whyWhyAnalysisList,
       })
       .then((result) => {
+        setSuccessMessage('Form submitted successfully!')
         console.log(formData)
         setMachineName('')
-        setAttendedBy('')
         setBreakdownStartDate('')
         setBreakdownEndDate('')
         setBreakdownStartTime('')
@@ -217,15 +202,20 @@ export default function BreakDown() {
             padding: '20px',
             borderRadius: '10px',
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-            width: '90%',
+            width: '95%',
           }}
         >
+          {successMessage && (
+            <div className="alert alert-success" role="alert" style={{ marginTop: '10px' }}>
+              {successMessage}
+            </div>
+          )}
           <form method="post" onSubmit={Update}>
             {/* Add Breakdown Detail Fields */}
             {/* <h3>Add Breakdown Detail</h3> */}
             <div className="row g-2">
               <div className="col-md-6">
-                <label htmlFor="machineName">Machine Code:</label>
+                <label htmlFor="machineName">Machine Name:</label>
                 <input
                   type="text"
                   className="form-control col-sm-6"
@@ -240,7 +230,7 @@ export default function BreakDown() {
                 <input
                   type="date"
                   className="form-control col-sm-6"
-                  name="Date"
+                  name="BreakdownDate"
                   value={BreakdownStartDate}
                   disabled
                   onChange={(e) => setBreakdownStartDate(e.target.value)}
@@ -332,7 +322,7 @@ export default function BreakDown() {
                   <option value="Production Setting">Production Setting</option>
                 </select>
               </div>
-              <div className="col-md-6">
+              {/* <div className="col-md-6">
                 <label htmlFor="spareparts">Spare Parts:</label>
                 <input
                   type="text"
@@ -342,14 +332,39 @@ export default function BreakDown() {
                   value={SpareParts}
                   onChange={(e) => setSpareParts(e.target.value)}
                 />
+              </div> */}
+              {/* <div className="col-md-5">
+                <label htmlFor="whyWhy">Why-Why Analysis:</label>
+                <input
+                  type="text"
+                  // required
+                  className="form-control col-sm-5"
+                  name="WhyWhyAnalysis"
+                  // value={WhyWhyAnalysis}
+                  value={WhyWhyAnalysis}
+                  onChange={handleInputChange}
+                  // onChange={(e) => setWhyWhyAnalysis(e.target.value)}
+                />
+                <button type="button" onClick={handleButtonClick}>
+                  Add Input
+                </button>
               </div>
+              <div>
+                <h6>Content:</h6>
+                <ul>
+                  {whyWhyAnalysisList &&
+                    whyWhyAnalysisList.map((item, index) => <li key={index}>{item}</li>)}
+                </ul>
+              </div> */}
+              {/* <button type="button" onClick={handleButtonClick}>
+                Add Input
+              </button> */}
 
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div className="col-md-5" style={{ marginRight: '10px' }}>
                   <label htmlFor="whyWhy">Why-Why Analysis:</label>
                   <textarea
                     style={{ display: '' }}
-                    required
                     type="text"
                     className="form-control col-sm-5"
                     name="WhyWhyAnalysis"
@@ -380,17 +395,17 @@ export default function BreakDown() {
                 </div>
               </div>
 
-              <div className="col-md-6">
+              {/* <div className="col-md-6">
                 <label htmlFor="cost">Cost:</label>
                 <input
-                  type="text"
+                  type="number"
                   required
                   name="Cost"
                   className="form-control col-sm-6"
                   value={Cost}
                   onChange={(e) => setCost(e.target.value)}
                 />
-              </div>
+              </div> */}
               <div className="col-md-6">
                 <label htmlFor="rootCause">Root Cause:</label>
                 <input
@@ -402,7 +417,7 @@ export default function BreakDown() {
                   onChange={(e) => setRootCause(e.target.value)}
                 />
               </div>
-              <div className="col-md-6">
+              {/* <div className="col-md-6">
                 <label htmlFor="PreventiveAction">Preventive Action:</label>
                 <input
                   type="text"
@@ -423,7 +438,7 @@ export default function BreakDown() {
                   value={CorrectiveAction}
                   onChange={(e) => setCorrectiveAction(e.target.value)}
                 />
-              </div>
+              </div> */}
               <div className="col-md-6">
                 <label htmlFor="targetDate">Target Date:</label>
                 <input
@@ -472,7 +487,7 @@ export default function BreakDown() {
                 <label htmlFor="BreakdownEndDate">BreakdownEndDate:</label>
                 <input
                   type="date"
-                  disabled
+                  required
                   className="form-control col-sm-6"
                   name="BreakdownEndDate"
                   value={BreakdownEndDate}
@@ -483,7 +498,7 @@ export default function BreakDown() {
                 <label htmlFor="BreakdownEndTime">BreakdownEndTime:</label>
                 <input
                   type="time"
-                  disabled
+                  required
                   className="form-control col-sm-6"
                   name="BreakdownEndTime"
                   value={BreakdownEndTime}
@@ -497,17 +512,6 @@ export default function BreakDown() {
                   className="form-control col-sm-6"
                   onChange={convertToBse64}
                 ></input>
-              </div>
-              <div className="col-md-6">
-                <label htmlFor="responsibility">Attended By:</label>
-                <input
-                  type="text"
-                  required
-                  className="form-control col-sm-6"
-                  name="AttendedBy"
-                  value={AttendedBy}
-                  onChange={(e) => setAttendedBy(e.target.value)}
-                />
               </div>
 
               <div style={{ marginTop: '20px' }}>

@@ -37,7 +37,7 @@ const Register = () => {
     e.preventDefault()
 
     try {
-      const response = await axios.post('https://mms-backend-n2zv.onrender.com/api/users', {
+      const response = await axios.post('https://backendmaintenx.onrender.com/api/users', {
         name: formData.username,
         email: formData.email,
         password: formData.password,

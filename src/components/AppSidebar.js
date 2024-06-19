@@ -1,4 +1,5 @@
 import React from 'react'
+import '../App.css'
 import { useSelector, useDispatch } from 'react-redux'
 import logo from '../assets/logo.svg'
 import {
@@ -56,6 +57,44 @@ const AppSidebar = () => {
     }
   }
 
+  const sidebarStyles = {
+    backgroundColor: '#000026', // Dark background color
+    color: '#ffffff', // Text color
+  }
+
+  const sidebarNavStyles = {
+    backgroundColor: '#000026', // Ensures the nav has the same background
+  }
+  // #eefbfd
+
+  const brandTextStyles = {
+    fontSize: '25px',
+    color: 'orange',
+  }
+
+  const navItemStyles = {
+    color: '#ffffff', // Nav item text color
+  }
+
+  const navItemHoverStyles = {
+    color: '#1e90ff', // Hover color
+  }
+
+  const activeNavItemStyles = {
+    backgroundColor: '#1e90ff', // Active link background color
+    color: '#ffffff', // Active link text color
+  }
+
+  const logoutButtonStyles = {
+    backgroundColor: '#000026', // Info button background color
+    border: '1px solid #ddd',
+    color: '#ffffff', // Info button text color
+  }
+
+  const logoutButtonHoverStyles = {
+    backgroundColor: '#138496', // Info button hover color
+  }
+
   return (
     <CSidebar
       position="fixed"
@@ -64,63 +103,119 @@ const AppSidebar = () => {
       onVisibleChange={(visible) => {
         dispatch({ type: 'set', sidebarShow: visible })
       }}
+      style={sidebarStyles}
     >
       <CSidebarBrand className="d-md-none">
         <img src={logo} className="logo1" alt="Before Logo" style={{ height: '45px' }} />
-        <h4 style={{ fontSize: '25px', color: 'orange' }}>AAAPL</h4>
+        <h4 style={brandTextStyles}>Thetavega Tech</h4>
       </CSidebarBrand>
       <CSidebarBrand className="d-none d-md-flex">
         <img
           src={logo}
           className="logo1"
           alt="Before Logo"
-          style={{ marginRight: '30px', height: '45px', marginLeft: '-35%' }}
+          style={{ marginRight: '20px', height: '45px', marginLeft: '-10%' }}
         />
-        <h4 style={{ fontSize: '25px', color: 'orange' }}>A A A P L</h4>
+        <h4 style={brandTextStyles}>Thetavega Tech</h4>
       </CSidebarBrand>
-      <CSidebarNav>
+      <CSidebarNav style={sidebarNavStyles}>
         {(() => {
           if (userrole === 'admin') {
             return (
               <>
-                <CNavItem component={NavLink} to="/dashboard">
+                <CNavItem
+                  component={NavLink}
+                  to="/dashboard"
+                  style={navItemStyles}
+                  activeStyle={activeNavItemStyles}
+                >
                   <CIcon customClassName="nav-icon" icon={cilSpeedometer} />
                   Dashboard
                 </CNavItem>
-                <CNavItem component={NavLink} to="/assetTable">
+                <CNavItem
+                  component={NavLink}
+                  to="/assetTable"
+                  style={navItemStyles}
+                  activeStyle={activeNavItemStyles}
+                >
                   <CIcon customClassName="nav-icon" icon={cilCalculator} />
                   AssetTable
                 </CNavItem>
-                <CNavItem component={NavLink} to="/production">
+
+                <CNavItem
+                  component={NavLink}
+                  to="/cbm"
+                  style={navItemStyles}
+                  activeStyle={activeNavItemStyles}
+                >
+                  <CIcon customClassName="nav-icon" icon={cilSpeedometer} />
+                  CBM
+                </CNavItem>
+                <CNavItem
+                  component={NavLink}
+                  to="/tbm"
+                  style={navItemStyles}
+                  activeStyle={activeNavItemStyles}
+                >
+                  <CIcon customClassName="nav-icon" icon={cilSpeedometer} />
+                  TBM
+                </CNavItem>
+                <CNavItem
+                  component={NavLink}
+                  to="/production"
+                  style={navItemStyles}
+                  activeStyle={activeNavItemStyles}
+                >
                   <CIcon customClassName="nav-icon" icon={cilSpeedometer} />
                   Production
                 </CNavItem>
-                <CNavItem component={NavLink} to="/breakdown">
+                <CNavItem
+                  component={NavLink}
+                  to="/breakdown"
+                  style={navItemStyles}
+                  activeStyle={activeNavItemStyles}
+                >
                   <CIcon customClassName="nav-icon" icon={cilPuzzle} />
                   Breakdown
                 </CNavItem>
-                <CNavItem component={NavLink} to="/breakdownHistory">
+                <CNavItem
+                  component={NavLink}
+                  to="/breakdownHistory"
+                  style={navItemStyles}
+                  activeStyle={activeNavItemStyles}
+                >
                   <CIcon customClassName="nav-icon" icon={cilPuzzle} />
                   Breakdown History
                 </CNavItem>
-                {/* <CNavItem component={NavLink} to="/taskTable">
-                  <CIcon customClassName="nav-icon" icon={cilPuzzle} />
-                  PM Schedule
-                </CNavItem> */}
-                <CNavItem component={NavLink} to="/pmSchedule">
+                <CNavItem
+                  component={NavLink}
+                  to="/pmSchedule"
+                  style={navItemStyles}
+                  activeStyle={activeNavItemStyles}
+                >
                   <CIcon customClassName="nav-icon" icon={cilPuzzle} />
                   PM Schedule
                 </CNavItem>
-                <CNavItem component={NavLink} to="/users">
+                {/* <CNavItem
+                  component={NavLink}
+                  to="/users"
+                  style={navItemStyles}
+                  activeStyle={activeNavItemStyles}
+                >
                   <CIcon customClassName="nav-icon" icon={cilNotes} />
                   Users
-                </CNavItem>
+                </CNavItem> */}
               </>
             )
           } else if (userrole === 'production') {
             return (
               <>
-                <CNavItem component={NavLink} to="/production">
+                <CNavItem
+                  component={NavLink}
+                  to="/production"
+                  style={navItemStyles}
+                  activeStyle={activeNavItemStyles}
+                >
                   <CIcon customClassName="nav-icon" icon={cilSpeedometer} />
                   Production
                 </CNavItem>
@@ -129,28 +224,48 @@ const AppSidebar = () => {
           } else if (userrole === 'maintenance') {
             return (
               <>
-                <CNavItem component={NavLink} to="/breakdown">
+                <CNavItem
+                  component={NavLink}
+                  to="/breakdown"
+                  style={navItemStyles}
+                  activeStyle={activeNavItemStyles}
+                >
                   <CIcon customClassName="nav-icon" icon={cilPuzzle} />
                   Breakdown
                 </CNavItem>
-                <CNavItem component={NavLink} to="/breakdownHistory">
+                <CNavItem
+                  component={NavLink}
+                  to="/breakdownHistory"
+                  style={navItemStyles}
+                  activeStyle={activeNavItemStyles}
+                >
                   <CIcon customClassName="nav-icon" icon={cilPuzzle} />
                   Breakdown History
                 </CNavItem>
-                <CNavItem component={NavLink} to="/taskTable">
+                <CNavItem
+                  component={NavLink}
+                  to="/taskTable"
+                  style={navItemStyles}
+                  activeStyle={activeNavItemStyles}
+                >
                   <CIcon customClassName="nav-icon" icon={cilPuzzle} />
                   PM Schedule
                 </CNavItem>
               </>
             )
           } else {
-            return
-            ;<></>
+            return null
           }
         })()}
       </CSidebarNav>
-      <button type="button" className="btn btn-info" onClick={logoutHandler}>
-        {' '}
+      <button
+        type="button"
+        className="btn btn-info"
+        onClick={logoutHandler}
+        style={logoutButtonStyles}
+        onMouseOver={(e) => (e.target.style.backgroundColor = '#138496')}
+        onMouseOut={(e) => (e.target.style.backgroundColor = '#17a2b8')}
+      >
         Logout
       </button>
     </CSidebar>

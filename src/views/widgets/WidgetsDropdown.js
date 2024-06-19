@@ -13,7 +13,17 @@ import { getStyle } from '@coreui/utils'
 import { useNavigate } from 'react-router-dom'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
-import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
+import {
+  cilOptions,
+  cilGraph,
+  cilBasket,
+  cilClock,
+  cilPending,
+  cilStorage,
+  cilUser,
+  cilTask,
+  cilCheckCircle,
+} from '@coreui/icons'
 import {
   BarChart,
   Bar,
@@ -27,6 +37,7 @@ import {
   Line,
 } from 'recharts'
 import { Date } from 'core-js'
+import './WidgetsDropdown.css'
 
 const WidgetsDropdown = () => {
   const navigate = useNavigate()
@@ -72,7 +83,7 @@ const WidgetsDropdown = () => {
   }
 
   useEffect(() => {
-    fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
+    fetch('https://backendmaintenx.onrender.com/api/breakdown')
       .then((response) => response.json())
       .then((fetchedBreakdowns) => {
         const aggregated = aggregateData(fetchedBreakdowns)
@@ -85,7 +96,7 @@ const WidgetsDropdown = () => {
   useEffect(() => {
     const breakdownType = []
     const getbreakdownRecord = async () => {
-      const dataReq = await fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
+      const dataReq = await fetch('https://backendmaintenx.onrender.com/api/breakdown')
       const dataRes = await dataReq.json()
       console.log(dataRes)
 
@@ -99,7 +110,7 @@ const WidgetsDropdown = () => {
   }, [])
 
   useEffect(() => {
-    fetch('https://mms-backend-n2zv.onrender.com/getBreakdownData')
+    fetch('https://backendmaintenx.onrender.com/api/breakdown')
       .then((response) => response.json())
       .then((fetchedBreakdowns) => {
         setBreakdown(fetchedBreakdowns, breakdowns)
@@ -111,7 +122,7 @@ const WidgetsDropdown = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://mms-backend-n2zv.onrender.com/getAllData')
+        const response = await fetch('https://backendmaintenx.onrender.com/api/pm')
         const fetchedTasks = await response.json()
 
         setAssets(fetchedTasks)
@@ -204,7 +215,7 @@ const WidgetsDropdown = () => {
   }
 
   useEffect(() => {
-    fetch(`https://mms-backend-n2zv.onrender.com/getAllData?nextDate=${formattedToday}`)
+    fetch(`https://backendmaintenx.onrender.com/api/pm?nextDate=${formattedToday}`)
       .then((response) => response.json())
       .then((fetchedTasks) => {
         setTodaysTaskCount(fetchedTasks.length)
@@ -214,7 +225,7 @@ const WidgetsDropdown = () => {
   }, [])
 
   useEffect(() => {
-    fetch('https://mms-backend-n2zv.onrender.com/api/assets')
+    fetch('https://backendmaintenx.onrender.com/api/assets')
       .then((response) => response.json())
       .then((fetchedTasks) => {
         setAssets(fetchedTasks)
@@ -225,268 +236,88 @@ const WidgetsDropdown = () => {
   return (
     <CRow>
       <CCol sm={6} lg={3}>
-        <CWidgetStatsA
-          className="mb-4"
-          color="primary"
-          value={
-            <>
-              {totalBreakdown}
-              <span className="fs-6 fw-normal">
-                <CIcon icon={cilArrowTop} />
-                {/* {totalBreakdown} */}
-              </span>
-            </>
-          }
-          title="Total Breakdown"
-          action={
-            <CDropdown alignment="end">
-              <CDropdownToggle color="transparent" caret={false} className="p-0">
-                <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
-              </CDropdownToggle>
-              <CDropdownMenu>
-                {/* Use NavLink to navigate to other page */}
-                <NavLink to="/production" className="nav-link">
-                  <CDropdownItem>View More</CDropdownItem>
-                </NavLink>
-              </CDropdownMenu>
-            </CDropdown>
-          }
-          chart={
-            <BarChart
-              width={240}
-              height={85}
-              data={formattedChartData}
-              margin={{
-                top: 5,
-                bottom: 10,
-                // right: 30,
-                left: 20,
-              }}
-            >
-              {/* <CartesianGrid strokeDasharray="3 3" /> */}
-              {/* <XAxis dataKey="breakdownType" /> */}
-              {/* <YAxis /> */}
-              {/* <Tooltip /> */}
-              {/* <Legend /> */}
-              <Bar
-                dataKey="value"
-                fill="#8884d8"
-                // name="My First dataset" // Add the label here
-                backgroundColor="rgba(255,255,255,.2)" // Add the background color here
-                borderColor="rgba(255,255,255,.55)" // Add the border color here
-              />
-            </BarChart>
-          }
-        />
+        <div className="custom-widget primary custom-card">
+          <div className="icon">
+            <CIcon icon={cilGraph} size="3xl" />
+          </div>
+          <div className="details">
+            <div className="stat-number">{totalBreakdown}</div>
+            <div className="stat-label">Total Breakdown</div>
+          </div>
+          <CDropdown alignment="end" className="options">
+            <CDropdownToggle color="transparent" caret={false} className="p-0">
+              <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
+            </CDropdownToggle>
+            <CDropdownMenu>
+              <NavLink to="/production" className="nav-link">
+                <CDropdownItem>View More</CDropdownItem>
+              </NavLink>
+            </CDropdownMenu>
+          </CDropdown>
+        </div>
       </CCol>
       <CCol sm={6} lg={3}>
-        <CWidgetStatsA
-          className="mb-4"
-          color="info"
-          value={
-            <>
-              {totalTasks}
-              <span className="fs-6 fw-normal">
-                <CIcon icon={cilArrowTop} />
-              </span>
-            </>
-          }
-          title="All Assets"
-          action={
-            <CDropdown alignment="end">
-              <CDropdownToggle color="transparent" caret={false} className="p-0">
-                <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
-              </CDropdownToggle>
-              <CDropdownMenu>
-                {/* Use NavLink to navigate to other page */}
-                <NavLink to="/assetTable" className="nav-link">
-                  <CDropdownItem>View More</CDropdownItem>
-                </NavLink>
-              </CDropdownMenu>
-            </CDropdown>
-          }
-          chart={
-            // <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              width={240}
-              height={85}
-              data={formattedChartData}
-              margin={{
-                top: 5,
-                // right: 30,
-                bottom: 10,
-                left: 20,
-                // bottom: 5,
-              }}
-            >
-              {/* <CartesianGrid strokeDasharray="3 3" /> */}
-              {/* <XAxis dataKey="breakdownType" /> */}
-              {/* <YAxis /> */}
-              {/* <Tooltip /> */}
-              {/* <Legend /> */}
-              {/* <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} /> */}
-              <Line type="monotone" dataKey="value" />
-            </LineChart>
-            // </ResponsiveContainer>
-          }
-        />
+        <div className="custom-widget info custom-card">
+          <div className="icon">
+            <CIcon icon={cilStorage} size="3xl" />
+          </div>
+          <div className="details">
+            <div className="stat-number">{totalTasks}</div>
+            <div className="stat-label">All Assets</div>
+          </div>
+          <CDropdown alignment="end" className="options">
+            <CDropdownToggle color="transparent" caret={false} className="p-0">
+              <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
+            </CDropdownToggle>
+            <CDropdownMenu>
+              <NavLink to="/assetTable" className="nav-link">
+                <CDropdownItem>View More</CDropdownItem>
+              </NavLink>
+            </CDropdownMenu>
+          </CDropdown>
+        </div>
       </CCol>
       <CCol sm={6} lg={3}>
-        <CWidgetStatsA
-          className="mb-4"
-          color="warning"
-          value={
-            <>
-              {completedTasksCount}
-              <span className="fs-6 fw-normal">
-                <CIcon icon={cilArrowTop} />
-              </span>
-            </>
-          }
-          title="Completed Task"
-          action={
-            <CDropdown alignment="end">
-              <CDropdownToggle color="transparent" caret={false} className="p-0">
-                <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
-              </CDropdownToggle>
-              <CDropdownMenu>
-                {/* Use NavLink to navigate to other page */}
-                <NavLink to="/taskTable" className="nav-link">
-                  <CDropdownItem>View More</CDropdownItem>
-                </NavLink>
-              </CDropdownMenu>
-            </CDropdown>
-          }
-          chart={
-            <CChartLine
-              className="mt-3"
-              style={{ height: '70px' }}
-              data={{
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                datasets: [
-                  {
-                    label: 'My First dataset',
-                    backgroundColor: 'rgba(255,255,255,.2)',
-                    borderColor: 'rgba(255,255,255,.55)',
-                    data: [78, 81, 80, 45, 34, 12, 40],
-                    fill: true,
-                  },
-                ],
-              }}
-              options={{
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
-                },
-                maintainAspectRatio: false,
-                scales: {
-                  x: {
-                    display: false,
-                  },
-                  y: {
-                    display: false,
-                  },
-                },
-                elements: {
-                  line: {
-                    borderWidth: 2,
-                    tension: 0.4,
-                  },
-                  point: {
-                    radius: 0,
-                    hitRadius: 10,
-                    hoverRadius: 4,
-                  },
-                },
-              }}
-            />
-          }
-        />
+        <div className="custom-widget warning custom-card">
+          <div className="icon">
+            <CIcon icon={cilTask} size="3xl" />
+          </div>
+          <div className="details">
+            <div className="stat-number">{todaysTaskCount}</div>
+            <div className="stat-label">Pending Tasks</div>
+          </div>
+          <CDropdown alignment="end" className="options">
+            <CDropdownToggle color="transparent" caret={false} className="p-0">
+              <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
+            </CDropdownToggle>
+            <CDropdownMenu>
+              <NavLink to="/pmSchedule" className="nav-link">
+                <CDropdownItem>View More</CDropdownItem>
+              </NavLink>
+            </CDropdownMenu>
+          </CDropdown>
+        </div>
       </CCol>
       <CCol sm={6} lg={3}>
-        <CWidgetStatsA
-          className="mb-4"
-          color="danger"
-          value={
-            <>
-              {pendingTaskCount}
-              <span className="fs-6 fw-normal">
-                <CIcon icon={cilArrowBottom} />
-              </span>
-            </>
-          }
-          title="Pending Task"
-          action={
-            <CDropdown alignment="end">
-              <CDropdownToggle color="transparent" caret={false} className="p-0">
-                <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
-              </CDropdownToggle>
-              <CDropdownMenu>
-                <CDropdownItem
-                  type="submit"
-                  onClick={handleButtonClick}
-                  // className="btn btn-primary"
-                  style={{
-                    fontSize: '16px',
-                  }}
-                >
-                  Send SMS
-                </CDropdownItem>
-                {/* <CDropdownItem>Another action</CDropdownItem>
-                <CDropdownItem>Something else here...</CDropdownItem>
-                <CDropdownItem disabled>Disabled action</CDropdownItem> */}
-              </CDropdownMenu>
-            </CDropdown>
-          }
-          chart={
-            <CChartBar
-              className="mt-3 mx-3"
-              style={{ height: '70px' }}
-              data={{
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                datasets: [
-                  {
-                    // label: 'My First dataset',
-                    backgroundColor: 'rgba(255,255,255,.2)',
-                    borderColor: 'rgba(255,255,255,.55)',
-                    data: [78, 81, 80, 45, 34, 12, 40],
-                    fill: true,
-                  },
-                ],
-              }}
-              options={{
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
-                },
-                scales: {
-                  x: {
-                    grid: {
-                      display: false,
-                      drawTicks: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
-                  },
-                  y: {
-                    grid: {
-                      display: false,
-                      drawBorder: false,
-                      drawTicks: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
-                  },
-                },
-              }}
-            />
-          }
-        />
+        <div className="custom-widget danger custom-card">
+          <div className="icon">
+            <CIcon icon={cilCheckCircle} size="3xl" />
+          </div>
+          <div className="details">
+            <div className="stat-number">{completedTasksCount}</div>
+            <div className="stat-label">Completed Tasks</div>
+          </div>
+          <CDropdown alignment="end" className="options">
+            <CDropdownToggle color="transparent" caret={false} className="p-0">
+              <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
+            </CDropdownToggle>
+            <CDropdownMenu>
+              <NavLink to="/pmSchedule" className="nav-link">
+                <CDropdownItem>View More</CDropdownItem>
+              </NavLink>
+            </CDropdownMenu>
+          </CDropdown>
+        </div>
       </CCol>
     </CRow>
   )

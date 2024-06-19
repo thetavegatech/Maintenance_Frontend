@@ -2,7 +2,6 @@ import React from 'react'
 import axios from 'axios'
 import { NavLink } from 'react-router-dom'
 import { FaEdit } from 'react-icons/fa'
-import { CContainer, CSpinner } from '@coreui/react'
 import {
   CAvatar,
   CButton,
@@ -23,6 +22,10 @@ import {
 } from '@coreui/react'
 import { format } from 'date-fns'
 import * as XLSX from 'xlsx'
+import loadingGif from '../assetTable/loader.gif'
+import '../assetTable/asset.css'
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
 
 class BreakdownHistory extends React.Component {
   state = {
@@ -35,7 +38,7 @@ class BreakdownHistory extends React.Component {
     message: '',
     searchQuery: '',
     isHovered: false,
-    loading: true,
+    loading: true, // New state for loading
   }
 
   handleMouseEnter = () => {
@@ -66,7 +69,7 @@ class BreakdownHistory extends React.Component {
 
     this.setState({
       filteredAssets,
-      searchLocation: e.target.value,
+      // searchLocation: e.target.value,
       searchQuery: query,
     })
   }
@@ -75,8 +78,8 @@ class BreakdownHistory extends React.Component {
     const { selectedLocation } = this.state
 
     const apiUrl = selectedLocation
-      ? `https://mms-backend-n2zv.onrender.com/getBreakdownData?location=${selectedLocation}`
-      : 'https://mms-backend-n2zv.onrender.com/getBreakdownData'
+      ? `https://backendmaintenx.onrender.com/api/breakdown?location=${selectedLocation}`
+      : 'https://backendmaintenx.onrender.com/api/breakdown'
 
     axios
       .get(apiUrl)
@@ -89,6 +92,7 @@ class BreakdownHistory extends React.Component {
       .catch((error) => {
         console.error('Error fetching data:', error)
         alert('Error fetching data')
+        this.setState({ loading: false })
       })
   }
 
@@ -155,17 +159,11 @@ class BreakdownHistory extends React.Component {
   }
 
   exportToExcel = () => {
-    const { breakdowns, searchLocation } = this.state
-
-    // Filter data based on the selected plant
-    const filteredData = searchLocation
-      ? breakdowns.filter((breakdown) => breakdown.Location === searchLocation)
-      : breakdowns
+    const { breakdowns } = this.state
     // const dataToExport = searchQuery ? filteredBreakdowns : breakdowns
     const dataToExport = breakdowns
-    // const exportData = dataToExport.map((item) => ({
-    const exportData = filteredData.map((item) => ({
-      Date: format(new Date(item.BreakdownStartDate), 'dd-MM-yyyy HH:mm:ss'),
+    const exportData = dataToExport.map((item) => ({
+      Date: format(new Date(item.BreakdownStartDate), 'HH:mm:ss dd-MM-yyyy'),
       MachineName: item.MachineName,
       BreakdownStartDate: item.BreakdownStartDate,
       BreakdownType: item.BreakdownType,
@@ -174,7 +172,7 @@ class BreakdownHistory extends React.Component {
       Operations: item.Operations,
       BreakdownPhenomenons: item.BreakdownPhenomenons,
       WhyWhyAnalysis: item.WhyWhyAnalysis,
-      // OCC: item.OCC,
+      OCC: item.OCC,
       RootCause: item.RootCause,
       PreventiveAction: item.PreventiveAction,
       CorrectiveAction: item.CorrectiveAction,
@@ -198,8 +196,16 @@ class BreakdownHistory extends React.Component {
 
   render() {
     // const { breakdowns, selectedMachine, mttr } = this.state;
-    const { breakdowns, selectedMachine, mtbf, mttr, filteredAssets, searchLocation, loading } =
-      this.state
+    const {
+      breakdowns,
+      selectedMachine,
+      mtbf,
+      mttr,
+      filteredAssets,
+      searchLocation,
+      searchQuery,
+      loading,
+    } = this.state
     const openBreakdowns = breakdowns.filter((breakdown) => breakdown.Status === 'close')
 
     const validatedAssets = breakdowns.filter(
@@ -231,11 +237,9 @@ class BreakdownHistory extends React.Component {
               onMouseLeave={this.handleMouseLeave}
             >
               <option>Search by Plant</option>
-              <option value="AAAPL-27">AAAPL-27</option>
-              <option value="AAAPL-29">AAAPL-29</option>
-              <option value="AAAPL- 89">AAAPL- 89</option>
-              <option value="DPAPL - 236">DPAPL - 236</option>
-              <option value=" DPAPL- GN"> DPAPL- GN</option>
+              <option value="Plant 1">Plant 1</option>
+              <option value="Plant 2">Plant 2</option>
+              <option value="Plant 3">Plant 3</option>
             </select>
             <CButton
               color="info"
@@ -246,73 +250,74 @@ class BreakdownHistory extends React.Component {
               Export to Excel
             </CButton>
           </div>
-          <CTable
-            bordered
-            striped
-            hover
-            responsive
-            style={{
-              marginTop: '20px',
-              borderCollapse: 'collapse',
-              width: '100%',
-            }}
-          >
-            <CTableHead color="dark">
-              <tr>
-                <th style={{ textAlign: 'center' }}>Machine Code</th>
-                <th style={{ textAlign: 'center' }}>BreakDown Start Date</th>
-                <th style={{ textAlign: 'center' }}>BreakDown End Date</th>
-                <th style={{ textAlign: 'center' }}>Shift</th>
-                <th style={{ textAlign: 'center' }}>Line Name</th>
-                <th style={{ textAlign: 'center' }}>Location</th>
-                <th style={{ textAlign: 'center' }}>End Date</th>
-                <th style={{ textAlign: 'center' }}>Status</th>
-                <th style={{ textAlign: 'center' }}>Edit</th>
-                <th>Images</th>
-              </tr>
-            </CTableHead>
-            <tbody>
-              {this.state.message && (
-                <tr>
-                  <td colSpan="8" style={{ textAlign: 'center' }}>
-                    {this.state.message}
-                  </td>
-                </tr>
-              )}
-              {(this.state.searchQuery
-                ? filteredAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
-                : validatedAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
-              ).map((breakdown) => (
-                <tr key={breakdown._id}>
-                  <td style={{ textAlign: 'center' }}>{breakdown.MachineName}</td>
-                  <td style={{ textAlign: 'center' }}>{breakdown.BreakdownStartDate}</td>
-                  <td style={{ textAlign: 'center' }}>{breakdown.BreakdownEndDate}</td>
-                  <td style={{ textAlign: 'center' }}>{breakdown.Shift}</td>
-                  <td style={{ textAlign: 'center' }}>{breakdown.LineName}</td>
-                  <td style={{ textAlign: 'center' }}>{breakdown.Location}</td>
-                  <td style={{ textAlign: 'center' }}>{breakdown.BreakdownEndDate}</td>
-                  <td style={{ textAlign: 'center' }}>{breakdown.Status}</td>
-                  <td style={{ textAlign: 'center' }}>
-                    <NavLink to={`/pbdStatus/${breakdown._id}`} style={{ color: '#000080' }}>
-                      <FaEdit />
-                    </NavLink>
-                  </td>
-                  <td style={{ textAlign: 'center' }}>
-                    <NavLink to={`/breakDownRecord/${breakdown._id}`}>
-                      <img src={breakdown.Image} height={50} width={50} />
-                    </NavLink>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </CTable>
-          {loading && (
-            <div className="loader-container">
-              {/* <div className="loader">Loading...</div> */}
-              <CSpinner color="primary" />
-              <div className="loader">Loading...</div>
-            </div>
-          )}
+          <div className="table-container">
+            <Table className="custom-table">
+              <Thead>
+                <Tr>
+                  <Th style={{ textAlign: 'center', height: '40px' }}>Machine Name</Th>
+                  <Th style={{ textAlign: 'center' }}>BreakDown Start Date</Th>
+                  <Td></Td>
+                  <Th style={{ textAlign: 'center' }}>Shift</Th>
+                  <Th style={{ textAlign: 'center' }}>Line Name</Th>
+                  <Th style={{ textAlign: 'center' }}>Location</Th>
+                  <Th style={{ textAlign: 'center' }}>End Date</Th>
+                  <Th style={{ textAlign: 'center' }}>Status</Th>
+                  <Th style={{ textAlign: 'center' }}>Edit</Th>
+                  {/* <th>Images</th> */}
+                </Tr>
+              </Thead>
+              <Tbody>
+                {loading ? ( // Show loader when loading is true
+                  <tr>
+                    <td colSpan="8" style={{ textAlign: 'center' }}>
+                      {/* Use an image tag for the loading GIF */}
+                      <img src={loadingGif} alt="Loading..." />
+                      <p>Loading...</p>
+                    </td>
+                  </tr>
+                ) : (
+                  <>
+                    {this.state.message && (
+                      <tr>
+                        <td colSpan="11" style={{ textAlign: 'center' }}>
+                          {this.state.message}
+                        </td>
+                      </tr>
+                    )}
+                    {(this.state.searchQuery
+                      ? filteredAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
+                      : validatedAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
+                    ).map((breakdown) => (
+                      <Tr key={breakdown._id}>
+                        <Td style={{ textAlign: 'center' }}>{breakdown.MachineName}</Td>
+                        <Td style={{ textAlign: 'center' }}>
+                          {new Date(breakdown.BreakdownStartDate).toLocaleDateString()}
+                        </Td>
+                        <Td></Td>
+                        <Td style={{ textAlign: 'center' }}>{breakdown.Shift}</Td>
+                        <Td style={{ textAlign: 'center' }}>{breakdown.LineName}</Td>
+                        <Td style={{ textAlign: 'center' }}>{breakdown.Location}</Td>
+                        <Td style={{ textAlign: 'center' }}>
+                          {new Date(breakdown.BreakdownEndDate).toLocaleDateString()}
+                        </Td>
+                        <Td style={{ textAlign: 'center' }}>{breakdown.Status}</Td>
+                        <Td style={{ textAlign: 'center' }}>
+                          <NavLink to={`/pbdStatus/${breakdown._id}`} style={{ color: '#000080' }}>
+                            <FaEdit />
+                          </NavLink>
+                        </Td>
+                        {/* <td style={{ textAlign: 'center' }}>
+                        <NavLink to={`/breakDownRecord/${breakdown._id}`}>
+                          <img src={breakdown.Image} height={50} width={50} />
+                        </NavLink>
+                      </td> */}
+                      </Tr>
+                    ))}
+                  </>
+                )}
+              </Tbody>
+            </Table>
+          </div>
 
           <div
             className="container"
@@ -411,7 +416,7 @@ class BreakdownHistory extends React.Component {
                 </button> */}
                 <CButton
                   color="info"
-                  onClick={this.calculateMTTR}
+                  onClick={this.calculateMTBF}
                   // shape="rounded-pill"
                   className="mb-2"
                   marginLeft="20px"

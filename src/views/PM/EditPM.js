@@ -49,23 +49,6 @@ export default function EditForm() {
     setFile(e.target.files[0])
   }
 
-  const handleUpload = async () => {
-    const formData = new FormData()
-    formData.append('image', file)
-
-    try {
-      await axios.post('https://mms-backend-n2zv.onrender.com/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-
-      console.log('File uploaded successfully')
-    } catch (error) {
-      console.error('Error uploading file', error)
-    }
-  }
-
   useEffect(() => {
     fetchData()
   }, [])
@@ -85,36 +68,14 @@ export default function EditForm() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`https://mms-backend-n2zv.onrender.com/getId/${id}`)
+      const response = await axios.get(`https://backendmaintenx.onrender.com/api/pm/${id}`)
       console.log(response)
       setAssetName(response.data.AssetName)
       setTaskName(response.data.TaskName)
       setTaskDescription(response.data.TaskDescription)
       setAssetCategory(response.data.AssetCategory)
       setLocation(response.data.Location)
-      setManufacturersName(response.data.ManufacturersName)
-      setManufacturersAddress(response.data.ManufacturersAddress)
-      setManufacturersContactNo(response.data.ManufacturersContactNo)
-      setSupplierVendorInformation(response.data.SupplierVendorInformation)
-      setCurrentOwner(response.data.CurrentOwner)
-      setDepartmentResponsible(response.data.DepartmentResponsible)
-      setLocationDepartment(response.data.LocationDepartment)
-      setPhysicalLocation(response.data.PhysicalLocation)
       setCurrentStatus(response.data.CurrentStatus)
-      setExpectedUsefulLife(response.data.ExpectedUsefulLife)
-      setDateofLastMaintenance(response.data.DateofLastMaintenance)
-      setDetailsofMaintenanceActivities(response.data.DetailsofMaintenanceActivities)
-      setScheduledMaintenanceDatesandIntervals(response.data.ScheduledMaintenanceDatesandIntervals)
-      setManufacturersEmail(response.data.ManufacturersEmail)
-      setModelNumber(response.data.ModelNumber)
-      setSerialNumber(response.data.SerialNumber)
-      setPurchaseCost(response.data.PurchaseCost)
-      setPurchaseDate(response.data.PurchaseDate)
-      setWarrantyStartDate(response.data.WarrantyStartDate)
-      setAcquisitionMethod(response.data.AcquisitionMethod)
-      seWarrantyEndDate(response.data.WarrantyEndDate)
-      setWarrantyProviderManufacturerContact(response.data.WarrantyProviderManufacturerContact)
-      setWarrantyTermsandConditions(response.data.WarrantyTermsandConditions)
       setPMDetails(response.data.PMDetails)
       setImage(response.data.Image)
       setstartDate(formatDate(response.data.startDate))
@@ -125,57 +86,16 @@ export default function EditForm() {
     }
   }
 
-  // JavaScript
-  function uploadFile() {
-    const fileInput = document.getElementById('fileInput')
-    const file = fileInput.files[0]
-
-    const formData = new FormData()
-    formData.append('file', file)
-
-    fetch('https://mms-backend-n2zv.onrender.com/upload', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data.message)
-      })
-      .catch((error) => {
-        console.error('Error:', error)
-      })
-  }
-
   const Update = (e) => {
     e.preventDefault()
     axios
-      .put(`https://mms-backend-n2zv.onrender.com/updateRecord/${id}`, {
+      .put(`https://backendmaintenx.onrender.com/api/pm/${id}`, {
         AssetName,
         TaskName,
         TaskDescription,
         AssetCategory,
         Location,
-        ManufacturersName,
-        ManufacturersAddress,
-        ManufacturersContactNo,
-        ManufacturersEmail,
         ModelNumber,
-        SerialNumber,
-        PurchaseDate,
-        WarrantyStartDate,
-        WarrantyEndDate,
-        PurchaseCost,
-        AcquisitionMethod,
-        WarrantyProviderManufacturerContact,
-        WarrantyTermsandConditions,
-        SupplierVendorInformation,
-        CurrentOwner,
-        DepartmentResponsible,
-        LocationDepartment,
-        PhysicalLocation,
-        CurrentStatus,
-        ExpectedUsefulLife,
-        DateofLastMaintenance,
         DetailsofMaintenanceActivities,
         ScheduledMaintenanceDatesandIntervals,
         PMDetails,
@@ -272,9 +192,10 @@ export default function EditForm() {
             <div className="form-group">
               <label htmlFor="startDate">Next Date :</label>
               <input
-                type="text"
+                type="text" // Change input type to text
                 className="form-control"
                 id="nextDate"
+                // style={{ width: '80%' }}
                 name="nextDate"
                 value={nextDate}
                 onChange={(e) => setnextDate(e.target.value)}

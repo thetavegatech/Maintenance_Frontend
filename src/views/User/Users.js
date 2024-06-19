@@ -2,37 +2,44 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { NavLink } from 'react-router-dom'
-import dlt from '../User/delete.png'
-import { CTable, CTableHead, CButton } from '@coreui/react'
+import {
+  CTable,
+  CTableHead,
+  CTableBody,
+  CTableRow,
+  CTableHeaderCell,
+  CTableDataCell,
+  CButton,
+} from '@coreui/react'
 import { FaEdit } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
+import loadingGif from '../assetTable/loader.gif'
+import './user.css'
 
 export default function Users() {
   const [usernos, setUsers] = useState([])
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Fetch user data from the server
     axios
-      .get('https://mms-backend-n2zv.onrender.com/userInfo')
+      .get('http://localhost:5000/userInfo')
       .then((response) => {
         setUsers(response.data)
-        console.log(response.data)
+        setLoading(false)
       })
       .catch((error) => {
         console.error('Error fetching user data:', error)
+        setLoading(false)
       })
   }, [])
 
   const deleteData = (id) => {
-    // Send DELETE request to the server to delete the user
     const isConfirmed = window.confirm('Are you sure you want to delete this data?')
     if (isConfirmed) {
       axios
-        .delete(`https://mms-backend-n2zv.onrender.com/UserInfo/${id}`)
+        .delete(`http://localhost:5000/UserInfo/${id}`)
         .then((response) => {
-          console.log('User deleted successfully:', response.data)
-          // Update the user list after deletion
           setUsers(usernos.filter((user) => user._id !== id))
         })
         .catch((error) => {
@@ -48,45 +55,54 @@ export default function Users() {
           Add New
         </CButton>
       </NavLink>
-      <CTable bordered striped hover responsive>
-        <CTableHead color="dark">
-          <tr>
-            <th style={{ textAlign: 'center' }}>Name</th>
-            <th style={{ textAlign: 'center' }}>Phone Number</th>
-            <th style={{ textAlign: 'center' }}>Address</th>
-            <th style={{ textAlign: 'center' }}>Email</th>
-            <th style={{ textAlign: 'center' }}>Location</th>
-            <th style={{ textAlign: 'center' }}>Edit</th>
-            <th style={{ textAlign: 'center' }}>Delete</th>
-          </tr>
-        </CTableHead>
-        <tbody>
-          {usernos.map((user) => (
-            <tr key={user.phoneNumber}>
-              <td style={{ textAlign: 'center' }}>{user.name}</td>
-              <td style={{ textAlign: 'center' }}>{user.phoneNumber}</td>
-              <td style={{ textAlign: 'center' }}>{user.address}</td>
-              <td style={{ textAlign: 'center' }}>{user.email}</td>
-              <td style={{ textAlign: 'center' }}>{user.Location}</td>
-              <td style={{ textAlign: 'center' }}>
-                <NavLink to={`/editUser/${user._id}`} style={{ color: '#000080' }}>
-                  <FaEdit />
-                </NavLink>
-              </td>
-              <td style={{ textAlign: 'center' }}>
-                <button
-                  className="btn"
-                  onClick={() => deleteData(user._id)}
-                  style={{ color: 'red' }}
-                >
-                  <MdDelete />
-                  {/* <img src={dlt} alt="" width={30} height={25} /> */}
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </CTable>
+      {loading ? (
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <img src={loadingGif} alt="Loading..." />
+          <p>Loading...</p>
+        </div>
+      ) : (
+        <CTable
+          bordered
+          striped
+          hover
+          responsive
+          className="table-custom"
+          style={{ backgroundColor: 'grey' }}
+        >
+          <CTableHead>
+            <CTableRow>
+              <CTableHeaderCell>Name</CTableHeaderCell>
+              <CTableHeaderCell>Phone Number</CTableHeaderCell>
+              <CTableHeaderCell>Address</CTableHeaderCell>
+              <CTableHeaderCell>Email</CTableHeaderCell>
+              <CTableHeaderCell>Location</CTableHeaderCell>
+              <CTableHeaderCell>Edit</CTableHeaderCell>
+              <CTableHeaderCell>Delete</CTableHeaderCell>
+            </CTableRow>
+          </CTableHead>
+          <CTableBody>
+            {usernos.map((user) => (
+              <CTableRow key={user._id}>
+                <CTableDataCell>{user.name}</CTableDataCell>
+                <CTableDataCell>{user.phoneNumber}</CTableDataCell>
+                <CTableDataCell>{user.address}</CTableDataCell>
+                <CTableDataCell>{user.email}</CTableDataCell>
+                <CTableDataCell>{user.Location}</CTableDataCell>
+                <CTableDataCell>
+                  <NavLink to={`/editUser/${user._id}`} className="btn-custom">
+                    <FaEdit />
+                  </NavLink>
+                </CTableDataCell>
+                <CTableDataCell>
+                  <button onClick={() => deleteData(user._id)} className="btn-custom btn-delete">
+                    <MdDelete />
+                  </button>
+                </CTableDataCell>
+              </CTableRow>
+            ))}
+          </CTableBody>
+        </CTable>
+      )}
     </div>
   )
 }

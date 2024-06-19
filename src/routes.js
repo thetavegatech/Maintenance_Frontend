@@ -27,10 +27,13 @@ const AssetRecord = React.lazy(() => import('./views/assetTable/AssetRecord'))
 const TaskRecord = React.lazy(() => import('./views/tasks/TaskRecord'))
 const PMSchedule = React.lazy(() => import('./views/PM/PMSchedule'))
 const EditPM = React.lazy(() => import('./views/PM/EditPM'))
-const Table = React.lazy(() => import('./views/assetTable/Table'))
-const EditTable = React.lazy(() => import('./views/assetTable/EditTable'))
-// const Assetsubtable = React.lazy(() => import('./views/assetTable/Assetsubtable.js'))
-
+const TBM = React.lazy(() => import('./views/TBM'))
+const TBMEdit = React.lazy(() => import('./views/TBMEdit'))
+const CBM = React.lazy(() => import('./views/CBM'))
+const CBMEdit = React.lazy(() => import('./views/CBMEdit'))
+const PM = React.lazy(() => import('./views/PM'))
+const CBMForm = React.lazy(() => import('./views/CBMForm'))
+const TBMForm = React.lazy(() => import('./views/TBMForm'))
 // Base
 
 //Forms
@@ -44,6 +47,7 @@ const routes = [
   { path: '/logout', exact: true, name: 'Logout', element: Logout },
 
   { path: '/', exact: true, name: 'Home' },
+  { path: '/assetRecord/:id', exact: true, name: 'assetRecord', element: AssetRecord },
 
   {
     path: '/dashboard',
@@ -89,9 +93,13 @@ const routes = [
   { path: '/taskRecord/:id', name: 'taskRecord', element: TaskRecord },
   { path: '/pmSchedule', name: 'pmSchedule', element: PMSchedule },
   { path: '/editPM/:id', name: 'editPM', element: EditPM },
-  // { path: '/assetsubtabled', name: 'assetsubtable', element: Assetsubtable },
-  { path: '/table', name: 'table', element: Table },
-  { path: '/edittable/:assetId/maintenance/:setId', name: 'edittable', element: EditTable },
+  { path: '/tbm', name: 'tbm', element: TBM },
+  { path: '/edittbm/:id', name: 'edittbm', element: TBMEdit },
+  { path: '/pm', name: 'pm', element: PM },
+  { path: '/cbm', name: 'cbm', element: CBM },
+  { path: '/editcbm/:id', name: 'editcbm', element: CBMEdit },
+  { path: '/cbmForm', name: 'CBMForm', element: CBMForm },
+  { path: '/tbmForm', name: 'TBMForm', element: TBMForm },
 ]
 
 export default routes

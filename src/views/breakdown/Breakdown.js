@@ -3,19 +3,7 @@ import React from 'react'
 import axios from 'axios'
 import { FaEdit } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
-import { CContainer, CSpinner } from '@coreui/react'
-import { CInput } from '@coreui/react'
 import {
-  CAvatar,
-  CButton,
-  CButtonGroup,
-  CCard,
-  CCardBody,
-  CCardFooter,
-  CCardHeader,
-  CCol,
-  CProgress,
-  CRow,
   CTable,
   CTableBody,
   CTableDataCell,
@@ -23,6 +11,10 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
+import '../assetTable/asset.css'
+import loadingGif from '../assetTable/loader.gif'
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
 
 class BDList extends React.Component {
   state = {
@@ -34,7 +26,7 @@ class BDList extends React.Component {
     isHovered: false,
     startDate: '',
     endDate: '',
-    loading: true,
+    loading: true, // New state for loading
   }
 
   handleMouseEnter = () => {
@@ -47,15 +39,6 @@ class BDList extends React.Component {
 
   handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase()
-
-    // Filter assets based on the search query
-    // const filteredAssets = this.state.breakdowns.filter((breakDown) => {
-    // const taskLocationLower = (breakDown.Location || '').toLowerCase()
-    // const taskDescriptionLower = (asset.TaskDescription || '').toLowerCase()
-    // const scheduledMaintenanceLower = (
-    //   asset.ScheduledMaintenanceDatesandIntervals || ''
-    // ).toLowerCase()
-    // const statusLower = (asset.status || '').toLowerCase()
 
     const filteredAssets = this.state.breakdowns.filter((breakDown) => {
       const taskLocationLower = (breakDown.Location || '').toLowerCase()
@@ -86,11 +69,11 @@ class BDList extends React.Component {
     const { selectedLocation } = this.state
 
     const apiUrl = selectedLocation
-      ? `https://mms-backend-n2zv.onrender.com/getBreakdownData?location=${selectedLocation}`
-      : 'https://mms-backend-n2zv.onrender.com/getBreakdownData'
+      ? `https://backendmaintenx.onrender.com/getBreakdownData?location=${selectedLocation}`
+      : 'https://backendmaintenx.onrender.com/api/getBreakdownData'
 
     axios
-      .get(apiUrl)
+      .get('https://backendmaintenx.onrender.com/api/breakdown')
       .then((response) => {
         this.setState({
           breakdowns: Array.isArray(response.data) ? response.data : [response.data],
@@ -100,24 +83,12 @@ class BDList extends React.Component {
       .catch((error) => {
         console.error('Error fetching data:', error)
         alert('Error fetching data')
+        this.setState({ loading: false })
       })
   }
 
   handleLocationChange = (event) => {
     this.setState({ selectedLocation: event.target.value })
-  }
-  formatDate = (dateString) => {
-    const options = { day: '2-digit', month: '2-digit', year: 'numeric' }
-    return new Intl.DateTimeFormat('en-GB', options).format(new Date(dateString))
-  }
-  formatTime = (dateString) => {
-    const options = {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    }
-
-    return new Intl.DateTimeFormat('en-GB', options).format(new Date(dateString))
   }
 
   handleDateChange = (field, value) => {
@@ -137,7 +108,7 @@ class BDList extends React.Component {
 
     return (
       <>
-        <div style={{ display: '', marginBottom: 'px' }}>
+        <div>
           <label
             htmlFor="startDate"
             style={{
@@ -146,7 +117,7 @@ class BDList extends React.Component {
               fontSize: '16px',
               fontWeight: 'bold',
               whiteSpace: 'nowrap',
-              '@media (max-width: 750px)': {
+              '@media (max-width: 650px)': {
                 // marginLeft: '3rem',
                 // marginRight: '0.8rem',
                 fontSize: '14px',
@@ -165,13 +136,14 @@ class BDList extends React.Component {
               borderRadius: '5px',
               border: '1px solid #ccc',
               marginRight: '10px',
+              marginLeft: '40px',
               fontSize: '14px',
             }}
           />
           <label
             htmlFor="endDate"
             style={{
-              marginRight: '0.2rem',
+              marginRight: '30px',
               fontSize: '16px',
               fontWeight: 'bold',
               whiteSpace: 'nowrap',
@@ -193,6 +165,9 @@ class BDList extends React.Component {
               marginBottom: '0.5rem',
             }}
           />
+        </div>
+
+        <div className="container">
           <label htmlFor="searchTask" style={{ marginLeft: '0%' }}>
             <span role="img" aria-label="search-icon"></span>
           </label>
@@ -201,7 +176,7 @@ class BDList extends React.Component {
             onChange={this.handleSearchChange}
             style={{
               display: 'flex',
-              marginBottom: '0%',
+              marginBottom: '10px',
               padding: '8px',
               border: '1px solid',
               borderRadius: '4px',
@@ -211,113 +186,77 @@ class BDList extends React.Component {
             onMouseEnter={this.handleMouseEnter}
             onMouseLeave={this.handleMouseLeave}
           >
-            <option>Search by Plant</option>
-            <option value="AAAPL-27">AAAPL-27</option>
-            <option value="AAAPL-29">AAAPL-29</option>
-            <option value="AAAPL- 89">AAAPL- 89</option>
-            <option value="DPAPL - 236">DPAPL - 236</option>
-            <option value=" DPAPL- GN"> DPAPL- GN</option>
+            {/* <option value="Plant 1">Search by Plant</option> */}
+            <option>Search by Plant </option>
+            <option value="Plant 1">Plant 1</option>
+            <option value="Plant 2">Plant 2</option>
+            <option value="Plant 3">Plant 3</option>
+            {/* <option value="Plant 1, Plant 2, Plant 3">Search </option> */}
           </select>
-        </div>
-
-        <div className="container">
-          <div className="table-responsive-sm">
-            <CTable
-              bordered
-              striped
-              hover
-              responsive
-              style={{
-                marginTop: '20px',
-                borderCollapse: 'collapse',
-                width: '100%',
-              }}
-            >
-              <CTableHead color="dark">
-                <CTableRow>
-                  <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
-                    Machine Code
-                  </CTableHeaderCell>
-                  <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
-                    BreakDown Start Date
-                  </CTableHeaderCell>
-                  <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
-                    BreakDown Start Time
-                  </CTableHeaderCell>
-                  <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
-                    Shift
-                  </CTableHeaderCell>
-                  <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
-                    Location
-                  </CTableHeaderCell>
-                  <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
-                    Line Name
-                  </CTableHeaderCell>
-                  <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
-                    Operations
-                  </CTableHeaderCell>
-                  <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
-                    Status
-                  </CTableHeaderCell>
-                  <CTableHeaderCell style={{ textAlign: 'center', color: 'white' }}>
-                    Edit
-                  </CTableHeaderCell>
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                {this.state.message && (
-                  <CTableRow>
-                    <CTableDataCell colSpan="8" style={{ textAlign: 'center' }}>
-                      {this.state.message}
-                    </CTableDataCell>
-                  </CTableRow>
+          <div className="table-container">
+            <Table className="custom-table">
+              <Thead style={{ backgroundColor: '#000026', color: 'white' }}>
+                <Tr>
+                  <Th style={{ textAlign: 'center', color: 'white', height: '40px' }}>
+                    Machine Name
+                  </Th>
+                  <Th style={{ textAlign: 'center', color: 'white' }}>BreakDown Start Date</Th>
+                  <Td></Td>
+                  <Th style={{ textAlign: 'center', color: 'white' }}>Shift</Th>
+                  <Th style={{ textAlign: 'center', color: 'white' }}>Location</Th>
+                  <Th style={{ textAlign: 'center', color: 'white' }}>Line Name</Th>
+                  <Th style={{ textAlign: 'center', color: 'white' }}>Operations</Th>
+                  <Th style={{ textAlign: 'center', color: 'white' }}>Status</Th>
+                  <Th style={{ textAlign: 'center', color: 'white' }}>Edit</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {loading ? ( // Show loader when loading is true
+                  <tr>
+                    <td colSpan="8" style={{ textAlign: 'center' }}>
+                      {/* Use an image tag for the loading GIF */}
+                      <img src={loadingGif} alt="Loading..." />
+                      <p>Loading...</p>
+                    </td>
+                  </tr>
+                ) : (
+                  <>
+                    {this.state.message && (
+                      <Tr>
+                        <CTableDataCell colSpan="8" style={{ textAlign: 'center' }}>
+                          {this.state.message}
+                        </CTableDataCell>
+                      </Tr>
+                    )}
+                    {(this.state.searchQuery
+                      ? filteredAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
+                      : validatedAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
+                    ).map((breakdown) => (
+                      <Tr key={breakdown._id}>
+                        <Td style={{ textAlign: 'center' }}>{breakdown.MachineName}</Td>
+                        <Td style={{ textAlign: 'center' }}>
+                          {new Date(breakdown.BreakdownStartDate).toISOString().split('T')[0]}
+                        </Td>
+                        <Td></Td>
+                        <Td style={{ textAlign: 'center' }}>{breakdown.Shift}</Td>
+                        <Td style={{ textAlign: 'center' }}>{breakdown.Location}</Td>
+                        <Td style={{ textAlign: 'center' }}>{breakdown.LineName}</Td>
+                        <Td style={{ textAlign: 'center' }}>{breakdown.Operations}</Td>
+                        <Td style={{ textAlign: 'center' }}>{breakdown.Status}</Td>
+                        <Td style={{ textAlign: 'center' }}>
+                          <NavLink
+                            to={`/productionBD/${breakdown._id}`}
+                            style={{ color: '#000080' }}
+                          >
+                            <FaEdit />
+                          </NavLink>
+                        </Td>
+                      </Tr>
+                    ))}
+                  </>
                 )}
-                {(this.state.searchQuery
-                  ? filteredAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
-                  : validatedAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
-                ).map((breakdown) => (
-                  <CTableRow key={breakdown._id}>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      {breakdown.MachineName}
-                    </CTableDataCell>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      {/* {this.formatDate(breakdown.Date)} */}
-                      {breakdown.BreakdownStartDate}
-                    </CTableDataCell>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      {this.formatTime(breakdown.Date)}
-                    </CTableDataCell>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      {breakdown.Shift}
-                    </CTableDataCell>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      {breakdown.Location}
-                    </CTableDataCell>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      {breakdown.LineName}
-                    </CTableDataCell>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      {breakdown.Operations}
-                    </CTableDataCell>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      {breakdown.Status}
-                    </CTableDataCell>
-                    <CTableDataCell style={{ textAlign: 'center' }}>
-                      <NavLink to={`/productionBD/${breakdown._id}`} style={{ color: '#000080' }}>
-                        <FaEdit />
-                      </NavLink>
-                    </CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-            {loading && (
-              <div className="loader-container">
-                {/* <div className="loader">Loading...</div> */}
-                <CSpinner color="primary" />
-                <div className="loader">Loading...</div>
-              </div>
-            )}
+              </Tbody>
+            </Table>
           </div>
         </div>
       </>

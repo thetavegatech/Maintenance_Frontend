@@ -31,7 +31,6 @@ export default function BreakDown() {
   const [HD, setHD] = useState('')
   const [Remark, setRemark] = useState('')
   const [Status, setStatus] = useState('')
-  const [AttendedBy, setAttendedBy] = useState('')
   //   let status = 'pending'
 
   useEffect(() => {
@@ -39,12 +38,9 @@ export default function BreakDown() {
   }, [])
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        `https://mms-backend-n2zv.onrender.com/getBreakdownDataId/${id}`,
-      )
+      const response = await axios.get(`https://backendmaintenx.onrender.com/api/breakdown/${id}`)
       console.log(response)
       setMachineName(response.data.MachineName)
-      setAttendedBy(response.data.AttendedBy)
       setBreakdownStartDate(response.data.BreakdownStartDate)
       setBreakdownEndDate(response.data.BreakdownEndDate)
       setBreakdownStartTime(response.data.BreakdownStartTime)
@@ -77,9 +73,8 @@ export default function BreakDown() {
   const Update = (e) => {
     e.preventDefault()
     axios
-      .put(`https://mms-backend-n2zv.onrender.com/updateBreakdownRecord/${id}`, {
+      .put(`https://backendmaintenx.onrender.com/api/breakdown/${id}`, {
         MachineName,
-        AttendedBy,
         BreakdownStartDate,
         BreakdownEndDate,
         BreakdownStartTime,
@@ -107,7 +102,6 @@ export default function BreakDown() {
       .then((result) => {
         console.log(result)
         setMachineName('')
-        setAttendedBy('')
         setBreakdownStartDate('')
         setBreakdownEndDate('')
         setBreakdownStartTime('')
@@ -140,7 +134,7 @@ export default function BreakDown() {
             padding: '20px',
             borderRadius: '10px',
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-            width: '90%',
+            width: '95%',
           }}
         >
           <form action="" method="post" onSubmit={Update}>
@@ -148,7 +142,7 @@ export default function BreakDown() {
             {/* <h3>Add Breakdown Detail</h3> */}
             <div className="row g-3">
               <div className="col-md-4">
-                <label htmlFor="machineName">Machine Code:</label>
+                <label htmlFor="machineName">Machine Name:</label>
                 <input
                   type="text"
                   className="form-control col-sm-6"
@@ -280,7 +274,7 @@ export default function BreakDown() {
               <div className="col-md-4">
                 <label htmlFor="whyWhy">Why-Why Analysis:</label>
                 <input
-                  type="text"
+                  type="textarea"
                   disabled
                   className="form-control col-sm-6"
                   name="WhyWhyAnalysis"
@@ -297,50 +291,6 @@ export default function BreakDown() {
                   name="RootCause"
                   value={RootCause}
                   onChange={(e) => setRootCause(e.target.value)}
-                />
-              </div>
-              <div className="col-md-4">
-                <label htmlFor="preventiveAction">Preventive Action:</label>
-                <input
-                  type="text"
-                  disabled
-                  className="form-control col-sm-6"
-                  name="PreventiveAction"
-                  value={PreventiveAction}
-                  onChange={(e) => setPreventiveAction(e.target.value)}
-                />
-              </div>
-              <div className="col-md-4">
-                <label htmlFor="correctiveAction">Corrective Action:</label>
-                <input
-                  type="text"
-                  disabled
-                  className="form-control col-sm-6"
-                  name="CorrectiveAction"
-                  value={CorrectiveAction}
-                  onChange={(e) => setCorrectiveAction(e.target.value)}
-                />
-              </div>
-              <div className="col-md-4">
-                <label htmlFor="spareParts">Spare Parts:</label>
-                <input
-                  type="text"
-                  disabled
-                  className="form-control col-sm-6"
-                  name="SpareParts"
-                  value={SpareParts}
-                  onChange={(e) => setSpareParts(e.target.value)}
-                />
-              </div>
-              <div className="col-md-4">
-                <label htmlFor="cost">Cost:</label>
-                <input
-                  type="text"
-                  disabled
-                  className="form-control col-sm-6"
-                  name="Cost"
-                  value={Cost}
-                  onChange={(e) => setCost(e.target.value)}
                 />
               </div>
               <div className="col-md-4">
@@ -363,17 +313,6 @@ export default function BreakDown() {
                   name="Responsibility"
                   value={Responsibility}
                   onChange={(e) => setResponsibility(e.target.value)}
-                />
-              </div>
-              <div className="col-md-4">
-                <label htmlFor="responsibility">Attended By:</label>
-                <input
-                  disabled
-                  type="text"
-                  className="form-control col-sm-6"
-                  name="AttendedBy"
-                  value={AttendedBy}
-                  onChange={(e) => setAttendedBy(e.target.value)}
                 />
               </div>
               <div className="col-md-4">

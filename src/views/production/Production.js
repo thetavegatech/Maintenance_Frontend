@@ -16,6 +16,9 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
+import '../assetTable/asset.css'
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
 
 class BDList extends React.Component {
   state = {
@@ -78,11 +81,11 @@ class BDList extends React.Component {
     const { selectedLocation } = this.state
 
     const apiUrl = selectedLocation
-      ? `https://mms-backend-n2zv.onrender.com/getBreakdownData?location=${selectedLocation}`
-      : 'https://mms-backend-n2zv.onrender.com/getBreakdownData'
+      ? `https://backendmaintenx.onrender.com/api/breakdown?location=${selectedLocation}`
+      : 'https://backendmaintenx.onrender.com/api/breakdown'
 
     axios
-      .get(apiUrl)
+      .get('https://backendmaintenx.onrender.com/api/breakdown')
       .then((response) => {
         this.setState({
           breakdowns: Array.isArray(response.data) ? response.data : [response.data],
@@ -167,18 +170,18 @@ class BDList extends React.Component {
             <NavLink to="/breakdownForm">
               {' '}
               <CButton
-                color="info"
+                // color="info"
                 // shape="rounded-pill"
                 className="mb-2"
-                style={{ marginTop: '5px' }}
+                style={{ marginTop: '5px', backgroundColor: '#000026' }}
               >
                 Add New
               </CButton>
             </NavLink>
             <CButton
-              color="info"
+              // color="info"
               type="button"
-              style={{ margin: '1rem' }}
+              style={{ margin: '1rem', backgroundColor: '#000026' }}
               onClick={this.exportToExcel}
             >
               Export to Excel
@@ -210,13 +213,14 @@ class BDList extends React.Component {
                 borderRadius: '5px',
                 border: '1px solid #ccc',
                 marginRight: '10px',
+                marginLeft: '10px',
                 fontSize: '14px',
               }}
             />
             <label
               htmlFor="endDate"
               style={{
-                marginRight: 'px',
+                marginRight: '30px',
                 fontSize: '16px',
                 fontWeight: 'bold',
                 whiteSpace: 'nowrap',
@@ -246,7 +250,7 @@ class BDList extends React.Component {
               onChange={this.handleSearchChange}
               style={{
                 // marginLeft: '70%',
-                marginBottom: '10px',
+                marginBottom: '20px',
                 padding: '8px',
                 border: '1px solid',
                 borderRadius: '4px',
@@ -263,161 +267,71 @@ class BDList extends React.Component {
               <option value="DPAPL - 236">DPAPL - 236</option>
               <option value=" DPAPL- GN"> DPAPL- GN</option>
             </select>
-
-            {/* <div style={{ marginLeft: '35rem' }}>
-              <label
-                htmlFor="startDate"
-                style={{
-                  marginLeft: 'rem',
-                  marginRight: '0.2rem',
-                  fontSize: '16px',
-                  fontWeight: 'bold',
-                  whiteSpace: 'nowrap',
-                  '@media (max-width: 750px)': {
-                    // marginLeft: '3rem',
-                    // marginRight: '0.8rem',
-                    fontSize: '14px',
-                  },
-                }}
-              >
-                From Date:
-              </label>
-              <input
-                type="date"
-                id="startDate"
-                value={this.state.startDate}
-                onChange={(e) => this.handleDateChange('startDate', e.target.value)}
-                style={{
-                  padding: '6px',
-                  borderRadius: '5px',
-                  border: '1px solid #ccc',
-                  marginRight: '10px',
-                  fontSize: '14px',
-                }}
-              />
-              <label
-                htmlFor="endDate"
-                style={{
-                  marginRight: 'px',
-                  fontSize: '16px',
-                  fontWeight: 'bold',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                To Date:
-              </label>
-              <input
-                type="date"
-                id="endDate"
-                value={this.state.endDate}
-                onChange={(e) => this.handleDateChange('endDate', e.target.value)}
-                style={{
-                  padding: '6px',
-                  borderRadius: '5px',
-                  border: '1px solid #ccc',
-                  marginRight: '10px',
-                  fontSize: '14px',
-                  marginBottom: '0.5rem',
-                }}
-              />
-              <label htmlFor="searchTask" style={{ marginLeft: 'rem' }}>
-                <span role="img" aria-label="search-icon"></span>
-              </label>
-              <select
-                value={this.searchQuery}
-                onChange={this.handleSearchChange}
-                style={{
-                  // marginLeft: '70%',
-                  marginBottom: '10px',
-                  padding: '8px',
-                  border: '1px solid',
-                  borderRadius: '4px',
-                  transition: 'border-color 0.3s ease-in-out',
-                  backgroundColor: isHovered ? '#f0f0f0' : 'transparent',
-                }}
-                onMouseEnter={this.handleMouseEnter}
-                onMouseLeave={this.handleMouseLeave}
-              >
-                <option>Search by Plant</option>
-                <option value="Plant 1">Plant 1</option>
-                <option value="Plant 2">Plant 2</option>
-                <option value="Plant 3">Plant 3</option>
-              </select>
-            </div> */}
-            {/* <h5>Search By Plant</h5> */}
           </div>
-          <CTable bordered striped hover responsive>
-            <CTableHead color="dark">
-              <CTableRow>
-                <CTableHeaderCell style={{ textAlign: 'center' }}>Machine Code</CTableHeaderCell>
-                <CTableHeaderCell style={{ textAlign: 'center' }}>
-                  BreakDown Start Date
-                </CTableHeaderCell>
-                <CTableHeaderCell style={{ textAlign: 'center' }}>Breakdown Type</CTableHeaderCell>
-                <CTableHeaderCell style={{ textAlign: 'center' }}>Location</CTableHeaderCell>
-                <CTableHeaderCell style={{ textAlign: 'center' }}>Line Name</CTableHeaderCell>
-                <CTableHeaderCell style={{ textAlign: 'center' }}>Remark</CTableHeaderCell>
-                <CTableHeaderCell style={{ textAlign: 'center' }}>Status</CTableHeaderCell>
-                <CTableHeaderCell style={{ textAlign: 'center' }}>Edit</CTableHeaderCell>
-                {/* <CTableHeaderCell style={{ textAlign: 'center' }}>excel</CTableHeaderCell> */}
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              {this.state.message && (
-                <CTableRow>
-                  <CTableDataCell colSpan="8">{this.state.message}</CTableDataCell>
-                </CTableRow>
-              )}
-              {(this.state.searchQuery
-                ? filteredAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
-                : validatedAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
-              ).map((breakdown) => (
-                <CTableRow key={breakdown._id}>
-                  <CTableDataCell style={{ textAlign: 'center' }}>
-                    {breakdown.MachineName}
-                  </CTableDataCell>
-                  <CTableDataCell style={{ textAlign: 'center' }}>
-                    {' '}
-                    {new Date(breakdown.Date).toLocaleDateString()}
-                  </CTableDataCell>
-                  <CTableDataCell style={{ textAlign: 'center' }}>
-                    {breakdown.BreakdownType}
-                  </CTableDataCell>
-                  <CTableDataCell style={{ textAlign: 'center' }}>
-                    {breakdown.Location}
-                  </CTableDataCell>
-                  <CTableDataCell style={{ textAlign: 'center' }}>
-                    {breakdown.LineName}
-                  </CTableDataCell>
-                  <CTableDataCell style={{ textAlign: 'center' }}>
-                    {breakdown.Remark}
-                  </CTableDataCell>
-                  <CTableDataCell style={{ textAlign: 'center' }}>
-                    {breakdown.Status}
-                  </CTableDataCell>
-                  <CTableDataCell style={{ textAlign: 'center' }}>
-                    <NavLink to={`/pbdStatus/${breakdown._id}`} style={{ color: '#000080' }}>
-                      <FaEdit />
-                    </NavLink>
-                  </CTableDataCell>
-                  {/* <CButton
+          <div className="table-container">
+            <Table className="custom-table">
+              <Thead>
+                <Tr>
+                  <Th style={{ textAlign: 'center', height: '40px' }}>Machine Code</Th>
+                  <Th style={{ textAlign: 'center' }}>BreakDown Start Date</Th>
+                  <Th></Th>
+                  <Th style={{ textAlign: 'center' }}>Breakdown Type</Th>
+                  {/* <Th></Th> */}
+                  <Th style={{ textAlign: 'center' }}>Location</Th>
+                  <Th style={{ textAlign: 'center' }}>Line Name</Th>
+                  <Th style={{ textAlign: 'center' }}>Remark</Th>
+                  <Th style={{ textAlign: 'center' }}>Status</Th>
+                  <Th style={{ textAlign: 'center' }}>Edit</Th>
+                  {/* <CTableHeaderCell style={{ textAlign: 'center' }}>excel</CTableHeaderCell> */}
+                </Tr>
+              </Thead>
+              <Tbody>
+                {this.state.message && (
+                  <Tr>
+                    <Td colSpan="8">{this.state.message}</Td>
+                  </Tr>
+                )}
+                {(this.state.searchQuery
+                  ? filteredAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
+                  : validatedAssets.filter((breakdown) => openBreakdowns.includes(breakdown))
+                ).map((breakdown) => (
+                  <Tr key={breakdown._id}>
+                    <Td style={{ textAlign: 'center' }}>{breakdown.MachineName}</Td>
+                    <Td style={{ textAlign: 'center' }}>
+                      {' '}
+                      {new Date(breakdown.Date).toLocaleDateString()}
+                    </Td>
+                    <Td></Td>
+                    <Td style={{ textAlign: 'center' }}>{breakdown.BreakdownType}</Td>
+                    {/* <Td></Td> */}
+                    <Td style={{ textAlign: 'center' }}>{breakdown.Location}</Td>
+                    <Td style={{ textAlign: 'center' }}>{breakdown.LineName}</Td>
+                    <Td style={{ textAlign: 'center' }}>{breakdown.Remark}</Td>
+                    <Td style={{ textAlign: 'center' }}>{breakdown.Status}</Td>
+                    <Td style={{ textAlign: 'center' }}>
+                      <NavLink to={`/pbdStatus/${breakdown._id}`} style={{ color: '#000080' }}>
+                        <FaEdit />
+                      </NavLink>
+                    </Td>
+                    {/* <CButton
                     type="button"
                     style={{ margin: '1rem', backgroundColor: 'grey' }}
                     onClick={this.exportToExcel}
                   >
                     Export to Excel
                   </CButton> */}
-                </CTableRow>
-              ))}
-            </CTableBody>
-          </CTable>
-          {loading && (
-            <div className="loader-container">
-              {/* <div className="loader">Loading...</div> */}
-              <CSpinner color="primary" />
-              <div className="loader">Loading...</div>
-            </div>
-          )}
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+            {loading && (
+              <div className="loader-container">
+                {/* <div className="loader">Loading...</div> */}
+                <CSpinner color="primary" />
+                <div className="loader">Loading...</div>
+              </div>
+            )}
+          </div>
         </div>
       </>
     )

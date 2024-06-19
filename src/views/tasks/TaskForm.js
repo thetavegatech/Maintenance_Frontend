@@ -8,14 +8,14 @@ const MyFormComponent = () => {
     AssetName: '',
     ScheduledMaintenanceDatesandIntervals: '',
     // PMDetails: '',
-    StartDateofMaintenance: '',
-    NextScheduledDate: '',
     TaskName: '',
     TaskDescription: '',
     startDate: '',
     nextDate: '',
-    status: 'Pending',
     Location: '',
+    status: 'Pending',
+    pmScheduleDate: '',
+    nextScheduleDate: '',
   })
   const navigate = useNavigate()
   const [assetNames, setAssetNames] = useState([])
@@ -39,7 +39,7 @@ const MyFormComponent = () => {
   useEffect(() => {
     // Fetch asset names when the component mounts
     axios
-      .get('https://mms-backend-n2zv.onrender.com/api/assets')
+      .get('https://backendmaintenx.onrender.com/api/assets')
       .then((response) => {
         const names = Array.from(new Set(response.data.map((asset) => asset.AssetName)))
         setAssetNames(names)
@@ -57,30 +57,17 @@ const MyFormComponent = () => {
       // Destructure form data from the state
       const {
         AssetName,
-        Description,
-        AssetCategory,
         Location,
-        ManufacturersName,
-        ManufacturersAddress,
-        ManufacturersContactNo,
-        ManufacturersEmail,
         ScheduledMaintenanceDatesandIntervals,
-        PMDetails,
-        StartDateofMaintenance,
-        NextScheduledDate,
+        pmScheduleDate,
+        nextScheduleDate,
         TaskName,
         TaskDescription,
         status = 'Pending',
       } = formData
 
       console.log('Asset Name:', AssetName)
-      console.log('Description:', Description)
-      console.log('Asset Category:', AssetCategory)
       console.log('Location:', Location)
-      console.log('Manufacturers Name:', ManufacturersName)
-      console.log('Manufacturers Address:', ManufacturersAddress)
-      console.log('Manufacturers Contact No:', ManufacturersContactNo)
-      console.log('Manufacturers Email:', ManufacturersEmail)
       console.log('Task Name:', TaskName)
       console.log('status', status)
       console.log(formData)
@@ -89,7 +76,7 @@ const MyFormComponent = () => {
       // ... continue with other fields
 
       // Your fetch logic here
-      const response = await fetch('https://mms-backend-n2zv.onrender.com/saveAsset', {
+      const response = await fetch('https://backendmaintenx.onrender.com/api/pm', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
@@ -102,8 +89,8 @@ const MyFormComponent = () => {
           Location,
           TaskName,
           TaskDescription,
-          startDate: StartDateofMaintenance,
-          nextDate: NextScheduledDate,
+          startDate: pmScheduleDate,
+          nextDate: nextScheduleDate,
           // Add other form data here as needed
           status,
         }),
@@ -122,22 +109,22 @@ const MyFormComponent = () => {
   }
 
   const someFunction = () => {
-    const startDate = this.state.StartDateofMaintenance
+    const startDate = this.state.pmScheduleDate
     const frequency = this.state.ScheduledMaintenanceDatesandIntervals
     const nextDate = this.getNextScheduleDate(startDate, frequency)
-    this.setState({ NextScheduledDate: nextDate.toISOString().split('T')[0] })
+    this.setState({ nextScheduleDate: nextDate.toISOString().split('T')[0] })
     console.log(nextDate) // or any other logic you want with nextDate
   }
 
   // Handle frequency change
   const handleFrequencyChange = (e) => {
     const frequency = e.target.value
-    const startDate = formData.StartDateofMaintenance
+    const startDate = formData.pmScheduleDate
     const nextDate = getNextScheduleDate(startDate, frequency)
     setFormData({
       ...formData,
       ScheduledMaintenanceDatesandIntervals: frequency,
-      NextScheduledDate: nextDate.toISOString().split('T')[0],
+      nextScheduleDate: nextDate.toISOString().split('T')[0],
     })
   }
 
@@ -149,7 +136,7 @@ const MyFormComponent = () => {
     const formData = new FormData()
     formData.append('file', file)
 
-    fetch('https://mms-backend-n2zv.onrender.com/upload', {
+    fetch('http://192.168.1.17:5000/upload', {
       method: 'POST',
       body: formData,
       headers: {
@@ -250,7 +237,7 @@ const MyFormComponent = () => {
       const formData = new FormData()
       formData.append('image', file)
 
-      await axios.post('https://mms-backend-n2zv.onrender.com/upload', formData)
+      await axios.post('http://192.168.1.17:3000/upload', formData)
 
       // File uploaded successfully
       console.log('File uploaded')
@@ -282,7 +269,7 @@ const MyFormComponent = () => {
         <form onSubmit={handleSubmit} style={{ marginLeft: '%' }}>
           <div className="row g-3">
             <div className="col-md-5">
-              <label htmlFor="assetName">Machine Code:</label>
+              <label htmlFor="assetName">Asset Name:</label>
               <select
                 required
                 className="form-control col-sm-6"
@@ -308,11 +295,10 @@ const MyFormComponent = () => {
                 onChange={(e) => setFormData({ ...formData, Location: e.target.value })}
               >
                 <option value="">Select an option</option>
-                <option value="AAAPL-27">AAAPL-27</option>
-                <option value="AAAPL-29">AAAPL-29</option>
-                <option value="AAAPL- 89">AAAPL- 89</option>
-                <option value="DPAPL - 236">DPAPL - 236</option>
-                <option value=" DPAPL- GN"> DPAPL- GN</option>
+                <option value="Plant 1">Plant 1</option>
+                <option value="Plant 2">Plant 2</option>
+                <option value="Plant 3">Plant 3</option>
+                <option value="Plant 4">Plant 4</option>
               </select>
             </div>
             <div className="col-md-5">
@@ -326,7 +312,9 @@ const MyFormComponent = () => {
               />
             </div>
             <div className="col-md-5">
-              <label htmlFor="description">Task Description:</label>
+              <label htmlFor="description" className="form-label">
+                Task Description:
+              </label>
               <input
                 className="form-control col-sm-6"
                 required
@@ -336,15 +324,13 @@ const MyFormComponent = () => {
               />
             </div>
             <div className="col-md-5">
-              <label htmlFor="StartDateofMaintenance">Start From :</label>
+              <label htmlFor="pmScheduleDate">Start From :</label>
               <input
                 type="date"
                 required
                 className="form-control col-sm-6"
-                id="StartDateofMaintenance"
-                onChange={(e) =>
-                  setFormData({ ...formData, StartDateofMaintenance: e.target.value })
-                }
+                id="pmScheduleDate"
+                onChange={(e) => setFormData({ ...formData, pmScheduleDate: e.target.value })}
               />
             </div>
             <div className="col-md-5">
@@ -374,10 +360,10 @@ const MyFormComponent = () => {
                 type="date"
                 required
                 className="form-control col-sm-6"
-                id="nextScheduledDate"
-                value={formData.NextScheduledDate}
+                id="nextScheduleDate"
+                value={formData.nextScheduleDate}
                 readOnly // to make it non-editable
-                onChange={(e) => setFormData({ ...formData, NextScheduledDate: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, nextScheduleDate: e.target.value })}
               />
             </div>
             <div className="col-md-5">
